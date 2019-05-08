@@ -1,3 +1,8 @@
-from django.test import TestCase
+from django.test import TestCase,SimpleTestCase
 
-# Create your tests here.
+
+class CoreViewTest(SimpleTestCase):
+
+    def test_index_200(self):
+        resposta = self.client.get("")
+        self.assertEqual(resposta,status_code,200)
