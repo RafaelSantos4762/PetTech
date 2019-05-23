@@ -6,9 +6,9 @@
 {% endblock  %}
 
 {% block content %}
-<h1>Entre em Contato!</h1>
+<h1 class="container">Entre em Contato!</h1>
 
-<form method="POST">
+<form method="POST" class="container">
     {% csrf_token %}
     <div class="form-group">
         {{ form.email.errors }}

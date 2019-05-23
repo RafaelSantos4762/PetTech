@@ -19,4 +19,6 @@ class ContatoForm(forms.Form):
         print("E-mail: "+self.cleaned_data["email"])
         print("Mensagem:")
         print(self.cleaned_data["mensagem"])
+
+
         
