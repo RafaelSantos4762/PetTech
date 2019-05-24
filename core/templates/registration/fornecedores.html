@@ -6,4 +6,115 @@
 
 {% block content %}
     <h2 class="container">Cadastro de Fornecedores</h2>
+    <br>
+    <br>
+    <div class="container">
+      <form action="/registerfornecedores/" method="POST" class="text-primary">
+        {% csrf_token %}
+        <div class="form-row">
+          <div class="col-10">
+            <label>Nome Fantasia</label>
+            <input type="text" name="nome_fantasia" class="form-control" placeholder="Nome Fantasia">
+          </div>
+          <div class="form-group col">
+                <label for="tipo_pessoa">Tipo Pessoa</label>
+                <select name="tipo_pessoa" id="tipo_pessoa" class="form-control">
+                  <option selected>Tipo Pessoa</option>
+                  <option>Fisica</option>
+                  <option>Juridica</option>
+                </select>
+          </div>
+          <div class="col-10">
+            <label>Razão Social</label>
+            <input type="text" name="razao_social" class="form-control" placeholder="Razão Social">
+          </div>
+          <div class="form-group">
+            <label>Data Cadastro</label>
+            <input type="date" name="data_cadastro" max="3000-12-31"
+                  min="1000-01-01" class="form-control">
+          </div>
+          <div class="col-6">
+            <label>CPF/CNPJ</label>
+            <input type="text" name="cpf_cnpj" class="form-control" placeholder="CPF/CNPJ">
+          </div>
+          <div class="col-6">
+            <label>RG/IE</label>
+            <input type="text" name="rg_ie" class="form-control" placeholder="RG/IE">
+          </div>
+          <div class="col-5">
+            <label>CEP</label>
+            <input type="text" name="cep" class="form-control" placeholder="CEP">
+          </div>
+          <div class="col-5">
+            <label>Endereço</label>
+            <input type="text" name="endereco" class="form-control" placeholder="Endereço">
+          </div>
+          <div class="col-2">
+            <label>Número</label>
+            <input type="number" name="numero" class="form-control" placeholder="Número">
+          </div>
+          <div class="col-5">
+            <label>Bairro</label>
+            <input type="text" name="bairro" class="form-control" placeholder="Bairro">
+          </div>
+          <div class="col-6">
+            <label>Cidade</label>
+            <input type="text" name="cidade" class="form-control" placeholder="Cidade">
+          </div>
+          <div class="form-group col">
+                <label for="state">Estado</label>
+                <select name="estado" id="estado" class="form-control">
+                  <option selected>Estado</option>
+                  <option>AC</option>
+                  <option>AL</option>
+                  <option>AP</option>
+                  <option>AM</option>
+                  <option>BA</option>
+                  <option>CE</option>
+                  <option>DF</option>
+                  <option>ES</option>
+                  <option>GO</option>
+                  <option>MA</option>
+                  <option>MT</option>
+                  <option>MS</option>
+                  <option>MG</option>
+                  <option>PA</option>
+                  <option>PB</option>
+                  <option>PR</option>
+                  <option>PE</option>
+                  <option>PI</option>
+                  <option>RJ</option>
+                  <option>RN</option>
+                  <option>RS</option>
+                  <option>RO</option>
+                  <option>RR</option>
+                  <option>SC</option>
+                  <option>SP</option>
+                  <option>SE</option>
+                  <option>TO</option>
+                </select>
+              </div>
+              <div class="col-4">
+                <label>Telefone</label>
+                <input type="tel" name="tel" class="form-control" placeholder="Telefone">
+              </div>
+              <div class="col-4">
+                <label>Fax</label>
+                <input type="tel" name="fax" class="form-control" placeholder="Fax">
+              </div>
+              <div class="col-4">
+                <label>E-mail</label>
+                <input type="email" name="email" class="form-control" placeholder="E-mail">
+              </div>
+        </div>
+        <br>
+        <br>
+        <center class="text-danger">
+          <h5>{{ erro }}</h5>
+        </center>
+        <center>
+          <input type='submit' class="btn text-white bg-primary" value='Cadastrar'/>
+        </center>
+      </form>
+    </div>
 {% endblock  %}

@@ -19,13 +19,21 @@ from core import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.home, name='home'),
+    path('', views.index, name='index'),
+    path('home', views.home, name='home'),
     path('contato/',views.contato,name='contato'),
-    path('login/',views.login,name='login'),
-    path('produtos/',views.produtos,name='produtos'),
-    path('clientes/',views.clientes,name='clientes'),
+    path('login/',views.log_in,name='login'),
+    path('register/',views.register,name='register'),
+    path('registerprodutos/',views.produtos,name='registerprodutos'),
+    path('produtos/',views.list_produtos,name='produtos'),
+    path('registerclientes/',views.clientes,name='registerclientes'),
+    path('clientes/',views.list_clientes,name='clientes'),
     path('pedidos/',views.pedidos,name='pedidos'),
-    path('fornecedores/',views.fornecedores,name='fornecedores'),
+    path('fornecedores/',views.list_fornecedores,name='fornecedores'),
+    path('registerfornecedores/',views.fornecedores,name='registerfornecedores'),
     path('agendamentos/',views.agendamentos,name='agendamentos'),
-    
+    path('cliente/details/<str:uuid>/', views.client_details, name='detailsclientes'),
+    path('fornecedor/details/<str:uuid>/', views.forn_details, name='detailsfornecedores'),
+    path('produto/details/<str:uuid>/', views.prod_details, name='detailsprodutos'),
+
 ]

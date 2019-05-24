@@ -1,0 +1,72 @@
+{% extends "base.html" %}
+
+{% block titulo %}
+   Produto
+{% endblock  %}
+
+{% block content %}
+    <div class="container">
+      <center>
+          <h1>Detalhes de Produto</h1>
+            <form method="POST">
+              {% csrf_token %}
+              <button type="submit" class="btn text-white bg-danger col-7" name="button">
+                Deletar Produto
+              </button>
+            </form>
+            <br><br>
+        </div>
+      </center>
+      <br>
+      <br>
+      <center>
+      <div class="form-row container">
+        <table class="table container">
+            <tbody>
+                <tr>
+                  <td>ID</td>
+                  <td>{{ produto.id }}</td>
+                </tr>
+                <tr>
+                  <td>ID fornecedor</td>
+                  <td>{{ produto.id_fornecedor }}</td>
+                </tr>
+                <tr>
+                  <td>Barcode</td>
+                  <td>{{ produto.cod_bar }}</td>
+                </tr>
+                <tr>
+                  <td>Data de Cadastro</td>
+                  <td>{{ produto.data_cadastro }}</td>
+                </tr>
+                <tr>
+                  <td>Descrição</td>
+                  <td>{{ produto.descricao }}</td>
+                </tr>
+                <tr>
+                  <td>Marca</td>
+                  <td>{{ produto.marca }}</td>
+                </tr>
+                <tr>
+                  <td>Preço Custo</td>
+                  <td>{{ produto.custo }}</td>
+                </tr>
+                <tr>
+                  <td>Preço de Venda</td>
+                  <td>{{ produto.venda }}</td>
+                </tr>
+                <tr>
+                  <td>Lucro</td>
+                  <td>{{ produto.lucro }}</td>
+                </tr>
+                <tr>
+                  <td>Estoque</td>
+                  <td>{{ produto.estoque }}</td>
+                </tr>
+            </tbody>
+          </table>
+      </center>
+      </div>
+      <br>
+      <br>
+{% endblock  %}

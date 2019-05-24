@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+<!-- Title -->
+{% block titulo %}
+    Produtos
+{% endblock  %}
+
+<!-- Main -->
+{% block content%}
+    <h2 class="container"   >PetShop - Entre Patas e mimos</h2>
+    <center>
+      <a href="{% url 'registerprodutos' %}">
+        <button type="button" class="btn text-white bg-primary col-7" name="button">
+          Cadastrar novo Produto
+        </button>
+      </a>
+      <br><br>
+      <h1>Lista de Produtos</h1>
+    </center>
+    <br><br>
+    <table class="table container">
+        <tbody>
+          <tr class="text-primary">
+            <td>ID</td>
+            <td>ID Fornecedor</td>
+            <td>Descrição</td>
+            <td>Barcode</td>
+            <td>Quantidade</td>
+            <td>Preço</td>
+            <td> </td>
+          </tr>
+          {% for produto in produtos %}
+            <tr>
+              <td>{{ produto.id }}</td>
+              <td>{{ produto.id_fornecedor }}</td>
+              <td>{{ produto.descricao }}</td>
+              <td>{{ produto.cod_bar }}</td>
+              <td>{{ produto.estoque }}</td>
+              <td>{{ produto.venda }}</td>
+              <td>
+                <a href="{{ produto.url }}">
+                  <button class="btn text-white bg-primary" type="button" name="button">Detalhes</button>
+                </a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <br><br>
+{% endblock %}

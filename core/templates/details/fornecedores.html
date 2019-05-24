@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block titulo %}
+   Fornecedor
+{% endblock  %}
+
+{% block content %}
+    <div class="container">
+      <center>
+          <h1>Detalhes de Fornecedor</h1>
+            <form method="POST">
+              {% csrf_token %}
+              <button type="submit" class="btn text-white bg-danger col-7" name="button">
+                Deletar fornecedor
+              </button>
+            </form>
+            <br><br>
+        </div>
+      </center>
+      <br>
+      <br>
+      <center>
+      <div class="form-row container">
+        <table class="table container">
+            <tbody>
+                <tr>
+                  <td>ID</td>
+                  <td>{{ fornecedor.id }}</td>
+                </tr>
+                <tr>
+                  <td>Nome Fantasia</td>
+                  <td>{{ fornecedor.nome_fantasia }}</td>
+                </tr>
+                <tr>
+                  <td>Razao Social</td>
+                  <td>{{ fornecedor.razao_social }}</td>
+                </tr>
+                <tr>
+                  <td>Tipo Pessoa</td>
+                  <td>{{ fornecedor.tipo_pessoa }}</td>
+                </tr>
+                <tr>
+                  <td>CPF/CNPJ</td>
+                  <td>{{ fornecedor.cpf_cnpj }}</td>
+                </tr>
+                <tr>
+                  <td>RG/IE</td>
+                  <td>{{ fornecedor.rg_ie }}</td>
+                </tr>
+                <tr>
+                  <td>Data de Cadastro</td>
+                  <td>{{ fornecedor.data_cadastro }}</td>
+                </tr>
+                <tr>
+                  <td>CEP</td>
+                  <td>{{ fornecedor.cep }}</td>
+                </tr>
+                <tr>
+                  <td>Rua</td>
+                  <td>{{ fornecedor.endereco }}</td>
+                </tr>
+                <tr>
+                  <td>Número</td>
+                  <td>{{ fornecedor.numero }}</td>
+                </tr>
+                <tr>
+                  <td>Bairro</td>
+                  <td>{{ fornecedor.bairro }}</td>
+                </tr>
+                <tr>
+                  <td>Cidade</td>
+                  <td>{{ fornecedor.cidade }}</td>
+                </tr>
+                <tr>
+                  <td>Estado</td>
+                  <td>{{ fornecedor.estado }}</td>
+                </tr>
+                <tr>
+                  <td>Fax</td>
+                  <td>{{ fornecedor.fax }}</td>
+                </tr>
+                <tr>
+                  <td>Telefone</td>
+                  <td>{{ fornecedor.tel }}</td>
+                </tr>
+                <tr>
+                  <td>E-mail</td>
+                  <td>{{ fornecedor.email }}</td>
+                </tr>
+            </tbody>
+          </table>
+      </center>
+      </div>
+      <br>
+      <br>
+{% endblock  %}
