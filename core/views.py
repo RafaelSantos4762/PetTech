@@ -1,80 +1,56 @@
-from django.shortcuts import render,render_to_response
+from django.shortcuts import render,redirect,render_to_response
 from django.http import HttpResponse,HttpResponseRedirect
-from django.contrib.auth.forms import UserCreationForm # Formulario de criacao de usuarios
-from django.contrib.auth.forms import AuthenticationForm # Formulario de autenticacao de usuarios
-from django.contrib.auth import login # funcao que salva o usuario na sessao
-
-from .forms import ContatoForm, ClienteForm, FornecedorForm, ProdutoForm
+from django.views.decorators.csrf import csrf_protect
+from django.contrib.auth import authenticate,login,logout
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 from .models import Cliente, Fornecedor, Produto
+from .forms import ClienteForm, FornecedorForm, ProdutoForm
 
-import uuid
+from rest_framework import viewsets
+from .serializers import ProductSerializer
 
-def index(request):
-    context = {
-     "titulo":"INDEX"
-    }
-    return render(request,'index.html',context)
+#import uuid
 
-def home(request):
-    context = {
-     "titulo":"HOME"
-    }
-    return render(request,'home.html',context)
+# Create your views here.
 
-def contato(request):
-    context = {}
+def login_user(request):
+    return render(request,'login.html')
+
+
+@login_required(login_url='/login/')
+def logout_user(request):
+    logout(request) 
+    return redirect('/login/')
+
+
+@csrf_protect
+def submit_login(request):
     if request.POST:
-        form = ContatoForm(request.POST)
-        if form.is_valid():
-            context["mensagem"] = "Formulário enviado com sucesso!"
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        user=authenticate(username=username,password=password)
+        if user is not None:
+            if user.is_staff:
+                print("O ", username,'é Staff')
+            login(request,user)
+            return redirect('index')
         else:
-            context["mensagem"] = "Formulário Inválido"
-    else:
-        form = ContatoForm()
-        context["form"] = form
-    return render(request,'contato.html',context)
+            messages.error(request, 'Usuário /ou senha inválidos!')
+            return redirect('login.html')
 
 
-def log_in(request):
-    """-------------------------------------------------------------------------
-    View de login.
-    -------------------------------------------------------------------------"""
-    # Se dados forem passados via POST
-    if request.method == 'POST':
-        form = AuthenticationForm(data=request.POST)
-        # se o formulario for valido
-        if form.is_valid():
-            # significa que o Django encontrou o usuario no banco de dados
-            login(request, form.get_user())
-            # redireciona o usuario logado para a pagina inicial(index2)
-            return HttpResponseRedirect("/home")
-        else:
-            return render(request, "login.html", {"form": form})
+@login_required(login_url='/login/')
+def index(request):
+    print("==============================================================================")
+    print(request)
+    print("==============================================================================")
+    return render(request,'index.html')
 
-    #se nenhuma informacao for passada, exibe a pagina de login com o formulario
-    return render(request, "login.html", {"form": AuthenticationForm()})
 
-def register(request):
-    """-------------------------------------------------------------------------
-    View de cadastro de usuário.
-    -------------------------------------------------------------------------"""
-    # Se dados forem passados via POST
-    if request.method == 'POST':
-        form = UserCreationForm(request.POST)
-        # se o formulario for valido
-        if form.is_valid():
-            # cria um novo usuario a partir dos dados enviados
-            form.save()
-            # redireciona para a tela de login
-            return HttpResponseRedirect("/login/")
-        else:
-            # mostra novamente o formulario de cadastro com os erros do formulario atual
-            return render(request, "register.html", {"form": form})
-
-    # se nenhuma informacao for passada, exibe a pagina de cadastro com o formulario
-    return render(request, "register.html", {"form": UserCreationForm() })
-
+@login_required(login_url='/login/')
 def produtos(request):
     """-------------------------------------------------------------------------
     View para cadastro de produto.
@@ -88,7 +64,7 @@ def produtos(request):
         # se o formulario for valido
         if form.is_valid():
             # pego info do form
-            id_fornecedor = form.cleaned_data['id_fornecedor']
+            id_produto = form.cleaned_data['id_produto']
             cod_bar = form.cleaned_data['cod_bar']
             data_cadastro = form.cleaned_data['data_cadastro']
             descricao = form.cleaned_data['descricao']
@@ -97,11 +73,11 @@ def produtos(request):
             venda = form.cleaned_data['venda']
             estoque = form.cleaned_data['estoque']
             # gero codigo uuid para a criação da url de detalhes
-            cod = uuid.uuid4().hex
+            #cod = uuid.uuid4().hex
             # persisto cliente
             try:
                 Produto.objects.create(
-                    id_fornecedor = id_fornecedor,
+                    id_produto = id_produto,
                     cod_bar = cod_bar,
                     data_cadastro = data_cadastro,
                     descricao = descricao,
@@ -109,7 +85,7 @@ def produtos(request):
                     custo = custo,
                     venda = venda,
                     estoque = estoque,
-                    uuid = cod
+                    #uuid = cod
                     )
             # em caso de erro
             except Exception as e:
@@ -128,50 +104,63 @@ def produtos(request):
             return render(request, "./registration/produtos.html", {"form": form})
 
     # se nenhuma informacao for passada, exibe a pagina de cadastro com o formulario
-    return render(request, "./registration/produtos.html", {"form": UserCreationForm()})
+    return render(request, "./registration/produtos.html", {"form": ProdutoForm()})
 
-
+@login_required(login_url='/login/')
 def list_produtos(request):
     """-------------------------------------------------------------------------
     View que lista produtos.
     -------------------------------------------------------------------------"""
     # faço um "SELECT *" ordenado pelo id
-    produtos = Produto.objects.all().order_by('-id')
-
+    try:
+        produtos = Produto.objects.all().order_by('-id')
+        print(produtos)
+    except Exception as e:
+        print("-------------------------")
+        print(e)
+        print("-------------------------")
+        
     # Incluímos no context
     context = {
-      'produtos': produtos
+      'produtos': produtos,
     }
 
     # Retornamos o template no qual os produtos serão dispostos
     return render(request, "produtos.html", context)
 
-def prod_details(request, uuid):
+
+@login_required(login_url='/login/')
+def prod_details(request,id_produto):
     """-------------------------------------------------------------------------
     View que mostra detalhes de produto.
     -------------------------------------------------------------------------"""
+
+    #Save the template I want to load
+    #template = loader.get_template('details/produtos.html')
+
     # Primeiro, buscamos o produto
-    produto = Produto.objects.get(uuid=uuid)
+    produto = Produto.objects.get(id_produto=int(id_produto))
 
     # Incluímos no contexto
     context = {
-      'produto': produto
+      "produto": produto,
     }
     if request.method == 'POST':
-        Produto.objects.get(uuid=uuid).delete()
-        return HttpResponseRedirect("/produtos/")
+       Produto.objects.get(id_produto=int(id_produto)).delete()
 
     # Retornamos o template no qual o cliente será disposto
     return render(request, "./details/produtos.html", context)
+    #return HttpResponse(template.render(context, request))
 
 
-
+@login_required(login_url='/login/')
 def clientes(request):
     """-------------------------------------------------------------------------
     View para cadastro de cliente.
     -------------------------------------------------------------------------"""
     context = {
-     "titulo":"Cadastro de Clientes"
+     "titulo":"Cadastro de Clientes",
+     "estados":['SP','SC']
     }
     # Se dados forem passados via POST
     if request.method == 'POST':
@@ -197,7 +186,7 @@ def clientes(request):
             tipo_tel = form.cleaned_data['tipo_tel']
             tel = form.cleaned_data['tel']
             # gero codigo uuid para a criação da url de detalhes
-            cod = uuid.uuid4().hex
+            #cod = uuid.uuid4().hex
             # persisto cliente
             try:
                 Cliente.objects.create(
@@ -217,8 +206,7 @@ def clientes(request):
                     bairro = bairro,
                     estado = estado,
                     tipo_tel = tipo_tel,
-                    tel = tel,
-                    uuid=cod
+                    tel = tel
                     )
             # em caso de erro
             except Exception as e:
@@ -238,9 +226,10 @@ def clientes(request):
             return render(request, "./registration/clientes.html", {"form": form})
 
     # se nenhuma informacao for passada, exibe a pagina de cadastro com o formulario
-    return render(request, "./registration/clientes.html", {"form": UserCreationForm()})
+    return render(request, "./registration/clientes.html", {"form": ClienteForm()})
 
 
+@login_required(login_url='/login/')
 def list_clientes(request):
     """-------------------------------------------------------------------------
     View que lista clientes.
@@ -256,24 +245,28 @@ def list_clientes(request):
     # Retornamos o template no qual os clientes serão dispostos
     return render(request, "clientes.html", context)
 
-def client_details(request, uuid):
+
+@login_required(login_url='/login/')
+def client_details(request, id_cliente):
     """-------------------------------------------------------------------------
     View que mostra detalhes de cliente.
     -------------------------------------------------------------------------"""
     # Primeiro, buscamos o cliente
-    cliente = Cliente.objects.get(uuid=uuid)
+    cliente = Cliente.objects.get(id=id_cliente)
 
     # Incluímos no contexto
     context = {
       'cliente': cliente
     }
-    if request.method == 'POST':
-        Cliente.objects.get(uuid=uuid).delete()
+    if request.method == 'DELETE':
+        Cliente.objects.get(id=id_cliente).delete()
         return HttpResponseRedirect("/clientes/")
 
     # Retornamos o template no qual o cliente será disposto
     return render(request, "./details/clientes.html", context)
 
+
+@login_required(login_url='/login/')
 def fornecedores(request):
     """-------------------------------------------------------------------------
     View para cadastro de cliente.
@@ -303,8 +296,8 @@ def fornecedores(request):
             fax = form.cleaned_data['fax']
             tel = form.cleaned_data['tel']
             # gero codigo uuid para a criação da url de detalhes
-            cod = uuid.uuid4().hex
-            # persisto cliente
+            #cod = uuid.uuid4().hex
+            # persisto fornecedor
             try:
                 Fornecedor.objects.create(
                     tipo_pessoa = tipo_pessoa,
@@ -320,8 +313,7 @@ def fornecedores(request):
                     bairro = bairro,
                     estado = estado,
                     fax = fax,
-                    tel = tel,
-                    uuid = cod
+                    tel = tel
                     )
             # em caso de erro
             except Exception as e:
@@ -340,8 +332,10 @@ def fornecedores(request):
             return render(request, "./registration/fornecedores.html", {"form": form})
 
     # se nenhuma informacao for passada, exibe a pagina de cadastro com o formulario
-    return render(request, "./registration/fornecedores.html", {"form": UserCreationForm()})
+    return render(request, "./registration/fornecedores.html", {"form": FornecedorForm()})
 
+
+@login_required(login_url='/login/')
 def list_fornecedores(request):
     """-------------------------------------------------------------------------
     View que lista fornecedores.
@@ -358,34 +352,49 @@ def list_fornecedores(request):
     return render(request, "fornecedores.html", context)
 
 
-def forn_details(request, uuid):
+@login_required(login_url='/login/')
+def forn_details(request, id_fornecedor):
     """-------------------------------------------------------------------------
     View que mostra detalhes de fornecedor.
     -------------------------------------------------------------------------"""
     # Primeiro, buscamos o fornecedor
-    fornecedor = Fornecedor.objects.get(uuid=uuid)
+    fornecedor = Fornecedor.objects.get(id=id_fornecedor)
 
     # Incluímos no contexto
     context = {
       'fornecedor': fornecedor
     }
-    if request.method == 'POST':
-        Fornecedor.objects.get(uuid=uuid).delete()
+    if request.method == 'DELETE':
+        Fornecedor.objects.get(id=id_fornecedor).delete()
         return HttpResponseRedirect("/fornecedores/")
 
     # Retornamos o template no qual o fornecedor será disposto
     return render(request, "./details/fornecedores.html", context)
 
 
+@login_required(login_url='/login/')
 def pedidos(request):
+
+    clientes = Cliente.objects.all().order_by('-id')
+
     context = {
-     "titulo":"Cadastro de pedidos"
+     "titulo":"Cadastro de pedidos",
+     "clientes": clientes
     }
     return render(request,'registration/pedidos.html',context)
 
 
+@login_required(login_url='/login/')
 def agendamentos(request):
     context = {
      "titulo":"agendamentos"
     }
     return render(request,'registration/agendamentos.html',context)
+
+
+class getProdutos(viewsets.ModelViewSet):
+    """
+    API endpoint that allows users to be viewed or edited.
+    """
+    queryset = Produto.objects.all()
+    serializer_class = ProductSerializer

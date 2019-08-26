@@ -14,16 +14,28 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path,include
+from core.views import getProdutos
 from core import views
+from django.conf import settings
+#from django.conf.urls.static import static
+
+#from django.conf.urls import url, include
+from django.contrib.auth.models import User
+from rest_framework import routers, serializers, viewsets
+
+
+# Routers provide an easy way of automatically determining the URL conf.
+router = routers.DefaultRouter()
+router.register('getprodutos', getProdutos)
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    path('', views.index, name='index'),
-    path('home', views.home, name='home'),
-    path('contato/',views.contato,name='contato'),
-    path('login/',views.log_in,name='login'),
-    path('register/',views.register,name='register'),
+    path('api/', include(router.urls)),
+    path('admin/', admin.site.urls,name="admin"),
+    path('login/', views.login_user,name="login"),
+    path('login/submit', views.submit_login,name="submit"),
+    path('logout/', views.logout_user,name="logout"),
+    path('', views.index,name="index"),
     path('registerprodutos/',views.produtos,name='registerprodutos'),
     path('produtos/',views.list_produtos,name='produtos'),
     path('registerclientes/',views.clientes,name='registerclientes'),
@@ -31,9 +43,9 @@ urlpatterns = [
     path('pedidos/',views.pedidos,name='pedidos'),
     path('fornecedores/',views.list_fornecedores,name='fornecedores'),
     path('registerfornecedores/',views.fornecedores,name='registerfornecedores'),
+    path('createsales/',views.pedidos,name='createsales'),
     path('agendamentos/',views.agendamentos,name='agendamentos'),
-    path('cliente/details/<str:uuid>/', views.client_details, name='detailsclientes'),
-    path('fornecedor/details/<str:uuid>/', views.forn_details, name='detailsfornecedores'),
-    path('produto/details/<str:uuid>/', views.prod_details, name='detailsprodutos'),
-
+    path('clientes/details/<str:id_cliente>/', views.client_details, name='detailsclientes'),
+    path('fornecedores/details/<str:id_fornecedor>/', views.forn_details, name='detailsfornecedores'),
+    path('produtos/details/<str:id_produto>/', views.prod_details, name='detailsprodutos'),
 ]

@@ -11,7 +11,7 @@
     <center>
       <a href="{% url 'registerclientes' %}">
         <button type="button" class="btn text-white bg-primary col-7" name="button">
-          Cadastrar novo usuário
+          Cadastrar novo cliente
         </button>
       </a>
       <br><br>
@@ -34,7 +34,7 @@
               <td>{{ cliente.cpf_cnpj }}</td>
               <td>{{ cliente.bairro }}</td>
               <td>
-                <a href="{{ cliente.url }}">
+                <a href="details/{{ cliente.id }}/ ">
                   <button class="btn text-white bg-primary" type="button" name="button">Detalhes</button>
                 </a>
               </td>

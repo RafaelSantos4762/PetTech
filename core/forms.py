@@ -2,25 +2,6 @@ from django import forms
 from django.core.mail import EmailMessage
 
 
-class ContatoForm(forms.Form):
-
-    email = forms.EmailField()
-    nome = forms.CharField()
-    mensagem = forms.CharField()
-
-    def is_valid(self):
-        valido = super(ContatoForm, self).is_valid()
-        if valido:
-            self.enviar_email()
-        return valido
-
-    def enviar_email(self):
-        print("Nome: "+self.cleaned_data["nome"])
-        print("E-mail: "+self.cleaned_data["email"])
-        print("Mensagem:")
-        print(self.cleaned_data["mensagem"])
-
-
 class ClienteForm(forms.Form):
 
     tipo_pessoa = forms.CharField(required=True)
@@ -61,7 +42,7 @@ class FornecedorForm(forms.Form):
 
 
 class ProdutoForm(forms.Form):
-    id_fornecedor = forms.IntegerField(required=True)
+    id_produto = forms.IntegerField(required=True)
     cod_bar = forms.CharField(required=True)
     data_cadastro = forms.DateField()
     descricao = forms.CharField(required=True)

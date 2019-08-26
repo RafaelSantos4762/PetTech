@@ -1,9 +1,0 @@
-{% extends "base_out.html" %}
-{% load crispy_forms_tags %}
-<h2>Login</h2>
-    {% block content %}
-      <form method="POST" style="width: 300px;" class="container" novalidate>
-          {% csrf_token %}
-          {{ form|crispy }}
-          <input type='submit' class="btn text-white bg-primary" value='Cadastrar'/>
-    {% endblock %}

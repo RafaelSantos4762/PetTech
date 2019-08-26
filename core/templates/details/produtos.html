@@ -8,7 +8,7 @@
     <div class="container">
       <center>
           <h1>Detalhes de Produto</h1>
-            <form method="POST">
+            <form method="DELETE">
               {% csrf_token %}
               <button type="submit" class="btn text-white bg-danger col-7" name="button">
                 Deletar Produto
@@ -29,7 +29,7 @@
                 </tr>
                 <tr>
                   <td>ID fornecedor</td>
-                  <td>{{ produto.id_fornecedor }}</td>
+                  <td>{{ produto.id_produto }}</td>
                 </tr>
                 <tr>
                   <td>Barcode</td>
