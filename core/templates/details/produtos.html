@@ -8,19 +8,13 @@
     <div class="container">
       <center>
           <h1>Detalhes de Produto</h1>
-            <form method="DELETE">
-              {% csrf_token %}
-              <button type="submit" class="btn text-white bg-danger col-7" name="button">
-                Deletar Produto
-              </button>
-            </form>
-            <br><br>
+          <br><br>
         </div>
       </center>
       <br>
       <br>
       <center>
-      <div class="form-row container">
+      <div class="form-row container w-50">
         <table class="table container">
             <tbody>
                 <tr>
@@ -66,7 +60,22 @@
             </tbody>
           </table>
       </center>
+      <br>
+      <br>
+      <div class="d-flex justify-content-center w-100">
+
+        <form method="DELETE" class="w-50 d-flex justify-content-around">
+          <div class="col-5">
+            <a href="/produtos">
+              <button type="button" class="btn btn-outline-secondary col-12">Cancelar</button>
+            </a>
+          </div>
+          <div class="col-5">
+            {% csrf_token %}
+            <button type="submit" class="btn text-white bg-danger col-12" name="button">
+              Deletar Produto
+            </button>
+          </div>
+        </form>
       </div>
-      <br>
-      <br>
 {% endblock  %}

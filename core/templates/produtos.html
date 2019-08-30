@@ -9,11 +9,6 @@
 {% block content%}
     <h2 class="container"   >PetShop - Entre Patas e mimos</h2>
     <center>
-      <a href="{% url 'registerprodutos' %}">
-        <button type="button" class="btn text-white bg-primary col-7" name="button">
-          Cadastrar novo Produto
-        </button>
-      </a>
       <br><br>
       <h1>Lista de Produtos</h1>
     </center>
@@ -27,7 +22,13 @@
             <td>Barcode</td>
             <td>Quantidade</td>
             <td>Preço</td>
-            <td> </td>
+            <td> 
+              <a href="{% url 'registerprodutos' %}">
+                <button type="button" class="btn btn-success col-8" name="button">
+                  Novo
+                </button>
+              </a>
+            </td>
           </tr>
           {% for produto in produtos %}
             <tr>
@@ -39,7 +40,7 @@
               <td>{{ produto.venda }}</td>
               <td>
                 <a href="details/{{ produto.id }} " >
-                  <button class="btn text-white bg-primary" type="button" name="button">Detalhes</button>
+                  <button class="btn btn-outline-primary col-8" type="button" name="button">Detalhes</button>
                 </a>
               </td>
             </tr>
