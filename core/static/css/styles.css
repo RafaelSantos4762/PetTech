@@ -1,13 +1,10 @@
-body {  
-    height: 100vh; padding-bottom: 20px;
-};
-
-main {
-    height: calc(100% - 120px);
+body {
+  height: 100vh;
+  padding-bottom: 20px;
 }
 
 footer {
-    position: absolute;
-    bottom: 0;
-    width: 100%;
+  position: relative;
+  bottom: 0;
+  width: 100%;
 }
