@@ -1,46 +1,46 @@
 {% extends "base.html" %}
 
 <!-- Title -->
-{% block titulo %}
-    Clientes
-{% endblock  %}
+{% block titulo %} Clientes {% endblock %}
 
 <!-- Main -->
 {% block content%}
-    <h2 class="container"   >PetShop - Entre Patas e mimos</h2>
-    <center>
-      <a href="{% url 'registerclientes' %}">
-        <button type="button" class="btn text-white bg-primary col-7" name="button">
-          Cadastrar novo cliente
-        </button>
-      </a>
-      <br><br>
-      <h1>Lista de Clientes</h1>
-    </center>
-    <br><br>
-    <table class="table container">
-        <tbody>
-          <tr class="text-primary">
-            <td>ID</td>
-            <td>Nome</td>
-            <td>CPF</td>
-            <td>Bairro</td>
-            <td> </td>
-          </tr>
-          {% for cliente in clientes %}
-            <tr>
-              <td>{{ cliente.id }}</td>
-              <td>{{ cliente.nome }}</td>
-              <td>{{ cliente.cpf_cnpj }}</td>
-              <td>{{ cliente.bairro }}</td>
-              <td>
-                <a href="details/{{ cliente.id }}/ ">
-                  <button class="btn text-white bg-primary" type="button" name="button">Detalhes</button>
-                </a>
-              </td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-      <br><br>
+<center>
+  <br /><br />
+  <h1>Lista de Clientes</h1>
+</center>
+<br /><br />
+<table class="table container">
+  <tbody>
+    <tr class="text-primary">
+      <td>ID</td>
+      <td>Nome</td>
+      <td>CPF</td>
+      <td>Bairro</td>
+      <td>
+        <a href="{% url 'registerclientes' %}">
+          <button type="button" class="btn btn-success col-8" name="button">
+            Novo
+          </button>
+        </a>
+      </td>
+    </tr>
+    {% for cliente in clientes %}
+    <tr>
+      <td>{{ cliente.id }}</td>
+      <td>{{ cliente.nome }}</td>
+      <td>{{ cliente.cpf_cnpj }}</td>
+      <td>{{ cliente.bairro }}</td>
+      <td>
+        <a href="details/{{ cliente.id }}/ ">
+          <button class="btn btn-outline-primary col-8" type="button" name="button">
+            Detalhes
+          </button>
+        </a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<br /><br />
 {% endblock %}
