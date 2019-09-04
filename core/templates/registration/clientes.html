@@ -122,9 +122,14 @@
     <center class="text-danger">
       <h5>{{ erro }}</h5>
     </center>
-    <center>
-      <input type="submit" class="btn text-white bg-primary" value="Cadastrar" />
-    </center>
+    <div class="d-flex justify-content-around">
+      <div class="col-5">
+        <a href="/clientes">
+          <button type="button" class="btn btn-outline-danger col-12">Cancelar</button>
+        </a>
+      </div>
+      <button type="submit" class="btn btn-outline-primary col-5">Cadastrar</button>
+    </div>
   </form>
 </div>
 {% endblock %}
