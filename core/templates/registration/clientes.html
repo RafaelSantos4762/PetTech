@@ -1,120 +1,130 @@
-{% extends "base.html" %}
-
-
-{% block titulo %}
-   Clientes
-{% endblock  %}
-
-{% block content %}
-    <h2 class="container">Cadastro de Clientes</h2>
-    <br>
-    <br>
-    <div class="container">
-      <form action="/registerclientes/" method="POST" class="text-primary">
-        {% csrf_token %}
-        <div class="form-row">
-          <div class="form-group col">
-                <label for="tipo_pessoa">Tipo Pessoa</label>
-                <select name="tipo_pessoa" id="tipo_pessoa" class="form-control">
-                  <option selected>Tipo Pessoa</option>
-                  <option>Fisica</option>
-                  <option>Juridica</option>
-                </select>
-          </div>
-          <div class="col-7">
-            <label>Nome</label>
-            <input type="text" name="nome" class="form-control" placeholder="Nome">
-          </div>
-          <div class="form-group col">
-                <label for="sexo">Sexo</label>
-                <select name="sexo" id="sexo" class="form-control">
-                  <option selected>Sexo</option>
-                  <option>Masculino</option>
-                  <option>Feminino</option>
-                </select>
-          </div>
-          <div class="col-4">
-            <label>CPF</label>
-            <input type="text" name="cpf_cnpj" class="form-control" placeholder="CPF">
-          </div>
-          <div class="col-4">
-            <label>RG</label>
-            <input type="text" name="rg" class="form-control" placeholder="RG">
-          </div>
-          <div class="form-group">
-            <label>Data de nascimento</label>
-            <input type="date" name="data_nasc" max="3000-12-31"
-                  min="1000-01-01" class="form-control">
-          </div>
-          <div class="form-group col">
-                <label for="estado_civil">Estado Civil</label>
-                <select name="estado_civil" id="estado_civil" class="form-control">
-                  <option selected>Estado Civil</option>
-                  <option>Solteiro(a)</option>
-                  <option>Casado(a)</option>
-                  <option>Divorciado(a)</option>
-                  <option>Viúvo(a)</option>
-                </select>
-          </div>
-          <div class="col-3">
-            <label>CEP</label>
-            <input type="text" name="cep" class="form-control" placeholder="CEP">
-          </div>
-          <div class="col-5">
-            <label>Endereço</label>
-            <input type="text" name="endereco" class="form-control" placeholder="Endereço">
-          </div>
-          <div class="col-2">
-            <label>Complemento</label>
-            <input type="text" name="complemento" class="form-control" placeholder="Complemento">
-          </div>
-          <div class="col-2">
-            <label>Número</label>
-            <input type="number" name="numero" class="form-control" placeholder="Número">
-          </div>
-          <div class="col-5">
-            <label>Bairro</label>
-            <input type="text" name="bairro" class="form-control" placeholder="Bairro">
-          </div>
-          <div class="col-6">
-            <label>Cidade</label>
-            <input type="text" name="cidade" class="form-control" placeholder="Cidade">
-          </div>
-          <div class="form-group col">
-                <label for="state">Estado</label>
-                <select name="estado" id="estado" class="form-control">
-                  <option selected>Estado</option>
-                  {% for estado in estados %}
-                     <option>{{ estado }}</option>
-                  {% endfor %}
-                </select>
-              </div>
-              <div class="form-group col">
-                    <label for="tipo_tel">Tipo</label>
-                    <select name="tipo_tel" id="tipo_tel" class="form-control">
-                      <option selected>Tipo Telefone</option>
-                      <option>Residencial</option>
-                      <option>Celular</option>
-                      <option>Comercial</option>
-                    </select>
-              </div>
-              <div class="col-4">
-                <label>Telefone</label>
-                <input type="tel" name="tel" class="form-control" placeholder="Telefone">
-              </div>
-              <div class="col-4">
-                <label>E-mail</label>
-                <input type="email" name="email" class="form-control" placeholder="E-mail">
-              </div>
-        </div>
-        <br>
-        <br>
-        <center class="text-danger">
-          <h5>{{ erro }}</h5>
-        </center>
-        <center>
-          <input type='submit' class="btn text-white bg-primary" value='Cadastrar'/>
-        </center>
-      </form>
+{% extends "base.html" %} {% block titulo %} Clientes {% endblock %} {% block content %}
+<h2 class="container">Cadastro de Clientes</h2>
+<br />
+<br />
+<div class="d-flex justify-content-center align-items-center">
+  <form action="/registerclientes/" method="POST" class="text-primary">
+    {% csrf_token %}
+    <div class="form-row">
+      <div class="form-group col-2">
+        <label for="tipo_pessoa">Tipo</label>
+        <select name="tipo_pessoa" id="tipo_pessoa" class="form-control">
+          <option selected>----</option>
+          <option>Fisica</option>
+          <option>Juridica</option>
+        </select>
+      </div>
+      <div class="col-7">
+        <label>Número do Documento</label>
+        <input type="text" name="cpf_cnpj" class="form-control" placeholder="CPF/CNPJ" />
+      </div>
+      <div class="col-3">
+        <label>RG</label>
+        <input type="text" name="rg" class="form-control" placeholder="RG" />
+      </div>
     </div>
-{% endblock  %}
+    <div class="form-row">
+      <div class="col-10">
+        <label>Nome</label>
+        <input type="text" name="nome" class="form-control" placeholder="Nome" />
+      </div>
+      <div class="form-group col-2">
+        <label for="sexo">Sexo</label>
+        <select name="sexo" id="sexo" class="form-control">
+          <option selected>----</option>
+          <option>Masculino</option>
+          <option>Feminino</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-4">
+        <label>Data de nascimento</label>
+        <input
+          type="date"
+          name="data_nasc"
+          max="3000-12-31"
+          min="1000-01-01"
+          class="form-control"
+        />
+      </div>
+      <div class="form-group col-4">
+        <label for="estado_civil">Estado Civil</label>
+        <select name="estado_civil" id="estado_civil" class="form-control">
+          <option selected>----</option>
+          <option>Solteiro(a)</option>
+          <option>Casado(a)</option>
+          <option>Divorciado(a)</option>
+          <option>Viúvo(a)</option>
+        </select>
+      </div>
+      <div class="col-4">
+        <label>CEP</label>
+        <input type="text" name="cep" class="form-control" placeholder="CEP" />
+      </div>
+    </div>
+    <div class="form-row mb-3">
+      <div class="col-5">
+        <label>Endereço</label>
+        <input type="text" name="endereco" class="form-control" placeholder="Endereço" />
+      </div>
+      <div class="col-5">
+        <label>Complemento</label>
+        <input type="text" name="complemento" class="form-control" placeholder="Complemento" />
+      </div>
+      <div class="col-2">
+        <label>Número</label>
+        <input type="number" name="numero" class="form-control" placeholder="Número" />
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="col-5">
+        <label>Bairro</label>
+        <input type="text" name="bairro" class="form-control" placeholder="Bairro" />
+      </div>
+      <div class="col-4">
+        <label>Cidade</label>
+        <input type="text" name="cidade" class="form-control" placeholder="Cidade" />
+      </div>
+      <div class="form-group col">
+        <label for="state">Estado</label>
+        <select name="estado" id="estado" class="form-control">
+          <option selected>Estado</option>
+          {% for estado in estados %}
+          <option>{{ estado }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="col-4">
+        <label>Telefone</label>
+        <input type="tel" name="tel" class="form-control" placeholder="Telefone" />
+      </div>
+
+      <div class="form-group col-2">
+        <label for="tipo_tel">Tipo</label>
+        <select name="tipo_tel" id="tipo_tel" class="form-control">
+          <option selected>----</option>
+          <option>Residencial</option>
+          <option>Celular</option>
+          <option>Comercial</option>
+        </select>
+      </div>
+
+      <div class="col-6">
+        <label>E-mail</label>
+        <input type="email" name="email" class="form-control" placeholder="E-mail" />
+      </div>
+    </div>
+    <br />
+    <br />
+    <center class="text-danger">
+      <h5>{{ erro }}</h5>
+    </center>
+    <center>
+      <input type="submit" class="btn text-white bg-primary" value="Cadastrar" />
+    </center>
+  </form>
+</div>
+{% endblock %}
