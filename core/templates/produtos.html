@@ -1,51 +1,50 @@
 {% extends "base.html" %}
 
 <!-- Title -->
-{% block titulo %}
-    Produtos
-{% endblock  %}
+{% block titulo %} Produtos {% endblock %}
 
 <!-- Main -->
 {% block content%}
-    <h2 class="container"   >PetShop - Entre Patas e mimos</h2>
-    <center>
-      <br><br>
-      <h1>Lista de Produtos</h1>
-    </center>
-    <br><br>
-    <table class="table container">
-        <tbody>
-          <tr class="text-primary">
-            <td>ID</td>
-            <td>ID Produto</td>
-            <td>Descrição</td>
-            <td>Barcode</td>
-            <td>Quantidade</td>
-            <td>Preço</td>
-            <td> 
-              <a href="{% url 'registerprodutos' %}">
-                <button type="button" class="btn btn-success col-8" name="button">
-                  Novo
-                </button>
-              </a>
-            </td>
-          </tr>
-          {% for produto in produtos %}
-            <tr>
-              <td>{{ produto.id }}</td>
-              <td>{{ produto.id_produto }}</td>
-              <td>{{ produto.descricao }}</td>
-              <td>{{ produto.cod_bar }}</td>
-              <td>{{ produto.estoque }}</td>
-              <td>{{ produto.venda }}</td>
-              <td>
-                <a href="details/{{ produto.id }} " >
-                  <button class="btn btn-outline-primary col-8" type="button" name="button">Detalhes</button>
-                </a>
-              </td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-      <br><br>
+<center>
+  <br /><br />
+  <h1>Lista de Produtos</h1>
+</center>
+<br /><br />
+<table class="table container">
+  <tbody>
+    <tr class="text-primary">
+      <td>ID</td>
+      <td>ID Produto</td>
+      <td>Descrição</td>
+      <td>Barcode</td>
+      <td>Quantidade</td>
+      <td>Preço</td>
+      <td>
+        <a href="{% url 'registerprodutos' %}">
+          <button type="button" class="btn btn-success col-8" name="button">
+            Novo
+          </button>
+        </a>
+      </td>
+    </tr>
+    {% for produto in produtos %}
+    <tr>
+      <td>{{ produto.id }}</td>
+      <td>{{ produto.id_produto }}</td>
+      <td>{{ produto.descricao }}</td>
+      <td>{{ produto.cod_bar }}</td>
+      <td>{{ produto.estoque }}</td>
+      <td>{{ produto.venda }}</td>
+      <td>
+        <a href="details/{{ produto.id }} ">
+          <button class="btn btn-outline-primary col-8" type="button" name="button">
+            Detalhes
+          </button>
+        </a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<br /><br />
 {% endblock %}
