@@ -1,46 +1,51 @@
 {% extends "base.html" %}
 
 <!-- Title -->
-{% block titulo %}
-    Fornecedores
-{% endblock  %}
+{% block titulo %} Fornecedores {% endblock %}
 
 <!-- Main -->
 {% block content%}
-    <h2 class="container"   >PetShop - Entre Patas e mimos</h2>
-    <center>
-      <a href="{% url 'registerfornecedores' %}">
-        <button type="button" class="btn text-white bg-primary col-7" name="button">
-          Cadastrar novo Fornecedor
-        </button>
-      </a>
-      <br><br>
-      <h1>Lista de Fornecedores</h1>
-    </center>
-    <br><br>
-    <table class="table container">
-        <tbody>
-          <tr class="text-primary">
-            <td>ID</td>
-            <td>Nome Fantasia</td>
-            <td>CPF/CNPJ</td>
-            <td>Bairro</td>
-            <td> </td>
-          </tr>
-          {% for fornecedor in fornecedores %}
-            <tr>
-              <td>{{ fornecedor.id }}</td>
-              <td>{{ fornecedor.nome_fantasia }}</td>
-              <td>{{ fornecedor.cpf_cnpj }}</td>
-              <td>{{ fornecedor.bairro }}</td>
-              <td>
-                <a href="details/{{ fornecedor.id }}/">
-                  <button class="btn text-white bg-primary" type="button" name="button">Detalhes</button>
-                </a>
-              </td>
-            </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-      <br><br>
+<h2 class="container">PetShop - Entre Patas e mimos</h2>
+<center>
+  <br /><br />
+  <h1>Lista de Fornecedores</h1>
+</center>
+<br /><br />
+<table class="table container">
+  <tbody>
+    <tr class="text-primary">
+      <td>ID</td>
+      <td>Nome Fantasia</td>
+      <td>CPF/CNPJ</td>
+      <td>Bairro</td>
+      <td>
+        <a href="{% url 'registerfornecedores' %}">
+          <button type="button" class="btn btn-success col-8" name="button">
+            Novo
+          </button>
+        </a>
+      </td>
+    </tr>
+    {% for fornecedor in fornecedores %}
+    <tr>
+      <td>{{ fornecedor.id }}</td>
+      <td>{{ fornecedor.nome_fantasia }}</td>
+      <td>{{ fornecedor.cpf_cnpj }}</td>
+      <td>{{ fornecedor.bairro }}</td>
+      <td>
+        <a href="details/{{ fornecedor.id }}/">
+          <button
+            class="btn btn-outline-primary col-8"
+            type="button"
+            name="button"
+          >
+            Detalhes
+          </button>
+        </a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<br /><br />
 {% endblock %}
