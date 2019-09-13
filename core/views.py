@@ -258,7 +258,7 @@ def client_details(request, id_cliente):
     context = {
       'cliente': cliente
     }
-    if request.method == 'DELETE':
+    if request.method == 'POST':
         Cliente.objects.get(id=id_cliente).delete()
         return HttpResponseRedirect("/clientes/")
 
@@ -364,7 +364,7 @@ def forn_details(request, id_fornecedor):
     context = {
       'fornecedor': fornecedor
     }
-    if request.method == 'DELETE':
+    if request.method == 'POST':
         Fornecedor.objects.get(id=id_fornecedor).delete()
         return HttpResponseRedirect("/fornecedores/")
 
