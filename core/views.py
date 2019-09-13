@@ -5,11 +5,11 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 
-from .models import Cliente, Fornecedor, Produto
+from .models import Cliente, Fornecedor, Produto,Pedido
 from .forms import ClienteForm, FornecedorForm, ProdutoForm
 
-from rest_framework import viewsets
-from .serializers import ProductSerializer
+#from rest_framework import viewsets
+#from .serializers import ProductSerializer
 
 #import uuid
 
@@ -385,16 +385,52 @@ def pedidos(request):
 
 
 @login_required(login_url='/login/')
+def ped_details(request, id_pedido):
+    """-------------------------------------------------------------------------
+    View que mostra detalhes de pedido.
+    -------------------------------------------------------------------------"""
+    # Primeiro, buscamos o fornecedor
+    pedido = Pedido.objects.get(id=id_pedido)
+
+    # Incluímos no contexto
+    context = {
+      'fornecedor': fornecedor
+    }
+    if request.method == 'POST':
+        Fornecedor.objects.get(id=id_pedido).delete()
+        return HttpResponseRedirect("/pedidos/")
+
+    # Retornamos o template no qual o fornecedor será disposto
+    return render(request, "./details/pedidos.html", context)
+
+@login_required(login_url='/login/')
+def list_pedidos(request):
+    """-------------------------------------------------------------------------
+    View que lista pedidos cadastrados.
+    -------------------------------------------------------------------------"""
+    # faço um "SELECT *" ordenado pelo id
+    pedidos = Pedido.objects.all().order_by('-id')
+
+    # Incluímos no context
+    context = {
+      'pedidos': pedidos
+    }
+
+    # Retornamos o template no qual os fornecedores serão dispostos
+    return render(request, "pedidos.html", context)
+
+@login_required(login_url='/login/')
 def agendamentos(request):
     context = {
      "titulo":"agendamentos"
     }
     return render(request,'registration/agendamentos.html',context)
 
-
+'''
 class getProdutos(viewsets.ModelViewSet):
     """
     API endpoint that allows users to be viewed or edited.
     """
     queryset = Produto.objects.all()
     serializer_class = ProductSerializer
+'''

@@ -1,3 +1,4 @@
+'''
 from django.contrib.auth.models import User, Group
 from rest_framework import serializers
 from .models import Produto
@@ -8,3 +9,4 @@ class ProductSerializer(serializers.HyperlinkedModelSerializer):
         model = Produto
         fields = ['id_produto','descricao']
 
+'''

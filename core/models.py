@@ -119,6 +119,7 @@ class Produto(models.Model):
         #self.url = f'/produto/details/{self.uuid}/'
         super(Produto, self).save(*args, **kwargs)
 
+
 class Pedido(models.Model):
     cliente = models.IntegerField() 
     cpf_cnpj = models.CharField(max_length=14)
@@ -126,7 +127,6 @@ class Pedido(models.Model):
     pagamento = models.CharField(max_length=20)
     vendedor  = models.CharField(max_length=150)
     observacao = models.CharField(max_length=200)     
- 
 
     def save(self, *args, **kwargs):
         """
@@ -144,26 +144,29 @@ class Pedido(models.Model):
             
         super(Pedido, self).save(*args, **kwargs)
 
-'''
+
 class Itens_pedido(models.Model):
     
-    tipo
-    codigo
-    quantidade
-    valor 
-    total
+    TIPOS = [('P','S')]
+
+    tipo = models.CharField(max_length=14, choices=TIPOS, blank=False)
+    descricao = models.CharField(max_length=150, blank=False) 
+    quantidade = models.IntegerField()
+    valor_unitario = models.DecimalField(max_digits=12, decimal_places=2,blank=False)
+    valor_total = models.DecimalField(max_digits=12, decimal_places=2)
+    pedido = models.ForeignKey('Pedido',on_delete=models.CASCADE,)
 
     def save(self, *args, **kwargs):
         """
         Validação do objeto.
         """
-        #produto = Produto.objects.get(id=self.id_produto)
-        if not self.codigo:
-            raise Exception('Campo codigo invalido !')
+
+        if not self.valor_unitario:
+            raise Exception('Campo valor_unitario invalido !')
         if not self.quantidade:
             raise Exception('Campo quantidade invalido !')
-        super(Pedido, self).save(*args, **kwargs)
+        if not self.valor_total:
+            raise Exception('Campo valor_total invalido !')
+        super(Itens_pedido, self).save(*args, **kwargs)
 
-
-    '''
     
