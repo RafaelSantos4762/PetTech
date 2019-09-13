@@ -15,22 +15,22 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
-from core.views import getProdutos
+#from core.views import getProdutos
 from core import views
 from django.conf import settings
 #from django.conf.urls.static import static
 
 #from django.conf.urls import url, include
 from django.contrib.auth.models import User
-from rest_framework import routers, serializers, viewsets
+#from rest_framework import routers, serializers, viewsets
 
 
 # Routers provide an easy way of automatically determining the URL conf.
-router = routers.DefaultRouter()
-router.register('getprodutos', getProdutos)
+#router = routers.DefaultRouter()
+#router.register('getprodutos', getProdutos)
 
 urlpatterns = [
-    path('api/', include(router.urls)),
+    #path('api/', include(router.urls)),
     path('admin/', admin.site.urls,name="admin"),
     path('login/', views.login_user,name="login"),
     path('login/submit', views.submit_login,name="submit"),
@@ -38,9 +38,10 @@ urlpatterns = [
     path('', views.index,name="index"),
     path('registerprodutos/',views.produtos,name='registerprodutos'),
     path('produtos/',views.list_produtos,name='produtos'),
+    path('registerpedidos/',views.pedidos,name='registerpedidos'),
     path('registerclientes/',views.clientes,name='registerclientes'),
     path('clientes/',views.list_clientes,name='clientes'),
-    path('pedidos/',views.pedidos,name='pedidos'),
+    path('pedidos/',views.list_pedidos,name='pedidos'),
     path('fornecedores/',views.list_fornecedores,name='fornecedores'),
     path('registerfornecedores/',views.fornecedores,name='registerfornecedores'),
     path('createsales/',views.pedidos,name='createsales'),
