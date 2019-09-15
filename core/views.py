@@ -147,6 +147,7 @@ def prod_details(request,id_produto):
     }
     if request.method == 'POST':
        Produto.objects.get(id_produto=int(id_produto)).delete()
+       return HttpResponseRedirect("/produtos/")
 
     # Retornamos o template no qual o cliente será disposto
     return render(request, "./details/produtos.html", context)
@@ -258,8 +259,10 @@ def client_details(request, id_cliente):
     context = {
       'cliente': cliente
     }
+    print(cliente)
     if request.method == 'POST':
-        Cliente.objects.get(id=id_cliente).delete()
+        print('\n entriuee')
+        cliente.delete()
         return HttpResponseRedirect("/clientes/")
 
     # Retornamos o template no qual o cliente será disposto
