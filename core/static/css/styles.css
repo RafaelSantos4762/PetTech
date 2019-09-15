@@ -12,3 +12,10 @@ footer {
   width: 100%; */
   margin-top: auto;
 }
+
+.logo {
+  background-image: url('../img/PetShopLogo.jpg');
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+}

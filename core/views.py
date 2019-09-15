@@ -47,7 +47,7 @@ def index(request):
     print("==============================================================================")
     print(request)
     print("==============================================================================")
-    return render(request,'index.html')
+    return render(request,'index.html', {'logo': True})
 
 
 @login_required(login_url='/login/')
