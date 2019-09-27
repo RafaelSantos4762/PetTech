@@ -32,6 +32,7 @@ from django.contrib.auth.models import User
 urlpatterns = [
     #path('api/', include(router.urls)),
     path('admin/', admin.site.urls,name="admin"),
+    path('register/', views.signup,name="register"),
     path('login/', views.login_user,name="login"),
     path('login/submit', views.submit_login,name="submit"),
     path('logout/', views.logout_user,name="logout"),
@@ -49,4 +50,5 @@ urlpatterns = [
     path('clientes/details/<str:id_cliente>/', views.client_details, name='detailsclientes'),
     path('fornecedores/details/<str:id_fornecedor>/', views.forn_details, name='detailsfornecedores'),
     path('produtos/details/<str:id_produto>/', views.prod_details, name='detailsprodutos'),
+    path('pedidos/details/<str:id_pedido>/', views.ped_details, name='detailspedidos'),
 ]

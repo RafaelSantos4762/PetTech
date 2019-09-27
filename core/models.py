@@ -120,31 +120,6 @@ class Produto(models.Model):
         super(Produto, self).save(*args, **kwargs)
 
 
-class Pedido(models.Model):
-    cliente = models.IntegerField() 
-    cpf_cnpj = models.CharField(max_length=14)
-    tipo  = models.CharField(max_length=20)
-    pagamento = models.CharField(max_length=20)
-    vendedor  = models.CharField(max_length=150)
-    observacao = models.CharField(max_length=200)     
-
-    def save(self, *args, **kwargs):
-        """
-        Validação do objeto.
-        """
-
-        clientes = Cliente.objects.all().order_by('-id')  
-
-        #produto = Produto.objects.get(id=self.id_produto)
-        if not self.cliente:
-            raise Exception('Campo cliente invalido !')
-        
-        if cliente not in clientes:
-            raise Exception('Cliente inválido')
-            
-        super(Pedido, self).save(*args, **kwargs)
-
-
 class Itens_pedido(models.Model):
     
     TIPOS = [('P','S')]
@@ -170,3 +145,29 @@ class Itens_pedido(models.Model):
         super(Itens_pedido, self).save(*args, **kwargs)
 
     
+
+
+class Pedido(models.Model):
+    cliente = models.IntegerField() 
+    cpf_cnpj = models.CharField(max_length=14)
+    tipo  = models.CharField(max_length=20)
+    pagamento = models.CharField(max_length=20)
+    vendedor  = models.CharField(max_length=150)
+    observacao = models.CharField(max_length=200)     
+
+    def save(self, *args, **kwargs):
+        """
+        Validação do objeto.
+        """
+
+        clientes = Cliente.objects.all().order_by('-id')  
+
+        #produto = Produto.objects.get(id=self.id_produto)
+        if not self.cliente:
+            raise Exception('Campo cliente invalido !')
+        
+        if Cliente.objects.get(id=self.cliente) == None:
+            raise Exception('Cliente inválido')
+            
+        super(Pedido, self).save(*args, **kwargs)
+

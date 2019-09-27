@@ -133,4 +133,22 @@ USE_TZ = True
 STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, 'core/static')]
+STATICFILES_DIRS = [os.path.join(BASE_DIR, '/static')]
+
+
+APPEND_SLASH = False
+
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+STATIC_URL = '/static/'
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# ie if Heroku server (POSTGREeS)
+if 'DATABASE_URL' in os.environ:
+    import dj_database_url
+    DATABASES = {'default': dj_database_url.config()}
+
+# Configure Django App for Heroku.
+import django_heroku
+django_heroku.settings(locals())

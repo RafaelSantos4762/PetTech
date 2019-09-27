@@ -4,6 +4,7 @@ body {
   position: relative;
   display: flex;
   flex-direction: column;
+  background-color: #3C5AE8 ;
 }
 
 footer {

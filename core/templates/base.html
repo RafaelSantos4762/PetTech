@@ -12,6 +12,11 @@
       crossorigin="anonymous"
       defer
     />
+    <link
+      rel="stylesheet"
+      href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"
+      defer
+    />
     <script
       src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
       integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
@@ -29,9 +34,10 @@
       crossorigin="anonymous"
       defer
     ></script>
+    <script src="/static/scripts/deletion_confirm.js"></script>
     <title class="container">PetTech - {% block titulo %}{% endblock %}</title>
   </head>
-  <body>
+  <body class=body>
     {% block body %}
     <header>
       <nav class="navbar navbar-expand-lg navbar-light bg-light">

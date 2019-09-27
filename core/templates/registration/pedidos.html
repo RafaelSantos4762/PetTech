@@ -9,11 +9,11 @@
     <br>
     <br>
     <div class="container">
-      <form action="/registerprodutos/" method="POST" class="text-primary">
+      <form action="/registerpedidos/" method="POST" class="text-primary">
         {% csrf_token %}
         <div class="form-group col">
-            <label for="id_cliente">ID cliente</label>
-            <select name="tipo_pessoa" id="id_cliente" class="form-control">
+            <label for="id_clientes">ID cliente</label>
+            <select name="id_cliente" id="id_cliente" class="form-control">
                 <option selected></option>
                 {% for cliente in clientes %}
                     <option>{{ cliente.id }}</option>
@@ -30,21 +30,83 @@
           </div>
           <div class="form-group">
             <label>Pagamento</label>
-            <input type="date" name="data_cadastro" max="3000-12-31" min="1000-01-01" class="form-control">
+            <input type="date" name="pagamento" max="3000-12-31" min="1000-01-01" class="form-control">
           </div>
           <div class="col-6">
             <label>Observações</label>
-            <input type="text" name="descricao" class="form-control" placeholder="Descrição">
+            <input type="text" name="observacao" class="form-control" placeholder="observacao">
           </div>
           <div class="col-6">
             <label>Vendedor</label>
-            <input type="text" name="marca" class="form-control" placeholder="Marca">
+            <input type="text" name="vendedor" class="form-control" placeholder="Vendedor">
           </div>
         </div>
         <br>
         <br>
+        <h2 class="container" >Itens do Pedido</h2>
+        <br>
+        <br>
+        <div class="container">
+            <!--
+            <div class="col-6">
+              <label>Tipo</label>
+              <input type="text" id=tipo_prod name="tipo_prod" class="form-control" placeholder="Tipo do produto">
+            </div>
+            <div class="col-6">
+              <label>Produto/Serviço</label>
+              <input type="text" id= descricao name="descricao" class="form-control" placeholder="descricao">
+            </div>
+            <div class="col-4">
+              <label>Quantidade</label>
+              <input type="number" name="quantidade" class="form-control" placeholder="quantidade">
+            </div>
+            <div class="col-4">
+              <label>Valor Unitário</label>
+              <input type="number" name="unitario" class="form-control" placeholder="Valor unitário">
+            </div>
+            <div class="col-4">
+              <label>Valor Total</label>
+              <input type="number" name="total" class="form-control" placeholder="Valor total">
+            </div>      -->
+          <table id="tb_items" class="display">
+              <thead>
+                <tr>
+                  <th>Tipo</th>
+                  <th>Produto</th>
+                  <th>Quantidade</th>
+                  <th>Valor unitário</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><input type="text" id="tipo_prod" name="tipo_prod"  placeholder="Tipo"></td>
+                  <td><input type="text" id="descricao" name="descricao"  placeholder="Produto"></td>
+                  <td><input type="text" id="quantidade" name="quantidade" placeholder="Quantidade"></td>
+                  <td><input type="text" id="unitario" name="unitario" placeholder="Unitário">
+                <!--  
+                  </select><select size="1" id="row-1-office" name="row-1-office">
+                    <option value="Edinburgh" selected="selected">
+                      Edinburgh
+                    </option>-->
+                </tr>
+              </tbody>
+              <!--<tfoot>
+                <tr>
+                  <th>Name</th>
+                  <th>Age</th>
+                  <th>Position</th>
+                  <th>Office</th>
+                </tr>
+              </tfoot>-->
+              </table>      
+        </div>
+        <br>
+        <br>
+        <br>
         <center class="text-danger">
-          <h5>{{ e }}</h5>
+        {% if erro %}
+            <h5>{{ erro }}</h5>
+        {% endif %}
         </center>
         <center>
           <input type='submit' class="btn text-white bg-primary" value='Cadastrar'/>

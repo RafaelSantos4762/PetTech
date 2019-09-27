@@ -3,10 +3,12 @@ from django.http import HttpResponse,HttpResponseRedirect
 from django.views.decorators.csrf import csrf_protect
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 
-from .models import Cliente, Fornecedor, Produto,Pedido
-from .forms import ClienteForm, FornecedorForm, ProdutoForm
+from .models import Cliente, Fornecedor, Produto,Pedido,Itens_pedido
+
+from .forms import ClienteForm, FornecedorForm, ProdutoForm,PedidoForm
 
 #from rest_framework import viewsets
 #from .serializers import ProductSerializer
@@ -14,6 +16,22 @@ from .forms import ClienteForm, FornecedorForm, ProdutoForm
 #import uuid
 
 # Create your views here.
+
+def signup(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            try:
+                form.save()
+            except Exception as e:
+                messages.error(request,f'Erro ao criar usuário')
+                return render(request,'registration/usuario.html',{})
+                messages.success(request,f'usuário criado com sucesso!')
+            return render(request,'registration/usuario.html',{})
+    else:
+        form = UserCreationForm()
+    return render(request, 'registration/usuario.html', {'form': form})
+
 
 def login_user(request):
     return render(request,'login.html')
@@ -39,7 +57,7 @@ def submit_login(request):
             return redirect('index')
         else:
             messages.error(request, 'Usuário /ou senha inválidos!')
-            return redirect('login.html')
+            return render(request,'login.html')
 
 
 @login_required(login_url='/login/')
@@ -364,7 +382,7 @@ def forn_details(request, id_fornecedor):
     context = {
       'fornecedor': fornecedor
     }
-    if request.method == 'DELETE':
+    if request.method == 'POST':
         Fornecedor.objects.get(id=id_fornecedor).delete()
         return HttpResponseRedirect("/fornecedores/")
 
@@ -375,13 +393,88 @@ def forn_details(request, id_fornecedor):
 @login_required(login_url='/login/')
 def pedidos(request):
 
-    clientes = Cliente.objects.all().order_by('-id')
-
+    clientes = Cliente.objects.all()
+    """-------------------------------------------------------------------------
+    View para cadastro de pedidos.
+    -------------------------------------------------------------------------"""
     context = {
-     "titulo":"Cadastro de pedidos",
-     "clientes": clientes
-    }
-    return render(request,'registration/pedidos.html',context)
+            "titulo":"Cadastro de Pedido",
+            'clientes': clientes
+        }    
+    # Se dados forem passados via POST
+    if request.method == 'POST':
+        #form = ProdutoForm(request.POST)
+        # se o formulario for valido
+        #if form.is_valid():
+        # pego info do form
+        id_cli 	=  request.POST.get('id_cliente')
+        cpf_cnpj 	=  request.POST.get('cpf_cnpj')
+        tipo  		=  request.POST.get('tipo_pessoa')
+        pagamento 	=  request.POST.get('pagamento')
+        vendedor  	=  request.POST.get('vendedor')
+        observacao 	=  request.POST.get('observacao')
+        #tipo 		=  request.POST['tipo']
+        tipo_prod   =  request.POST.get('tipo_prod')
+        descricao 	=  request.POST.get('descricao')
+        quantidade 	=  request.POST.get('quantidade')
+        unitario = request.POST.get('unitario')
+        total    = request.POST.get('total')
+
+        # persisto Pedido
+        try:
+            P = Pedido(
+                cliente = id_cli,
+                cpf_cnpj=cpf_cnpj,
+                tipo=tipo,
+                pagamento=pagamento,
+                vendedor=vendedor,
+                observacao=observacao
+                )
+            
+            P.save()
+
+            I = Itens_pedido(
+                tipo = tipo_prod,
+                descricao = descricao,
+                quantidade = int(quantidade),
+                valor_unitario = float(unitario),
+                valor_total = float(total),
+                pedido = P
+            )
+
+            I.save()
+            '''
+            Pedido.objects.create(
+                cliente = id_cli,
+                cpf_cnpj = cpf_cnpj,
+                tipo = tipo,
+                pagamento = pagamento,
+                vendedor = vendedor,
+                observacao = observacao,
+                )
+            
+            Itens_pedido.objects.create(
+                descricao = descricao,
+                quantidade = quantidade,
+                valor_unitario = valor_unitario,
+                valor_total = valor_total,
+                pedido = 1 #Todo : Alterar pedido
+            )  '''    
+
+        except Exception as e:
+            print(e)
+            # Incluímos no contexto
+            context['erro'] = e
+            # retorno a pagina de cadastro com mensagem de erro
+            return render(request, "./registration/pedidos.html", context)
+
+        # se não houver erros redireciono para a lista de fornecedores
+        return HttpResponseRedirect("/pedidos/")
+    else:
+        # se for um get, renderizo a pagina de cadastro de fornecedor
+        return render(request, "./registration/pedidos.html", context)
+    # se nenhuma informacao for passada, exibe a pagina de cadastro com o formulario
+    return render(request, "./registration/pedidos.html", context)
 
 
 @login_required(login_url='/login/')
@@ -391,16 +484,17 @@ def ped_details(request, id_pedido):
     -------------------------------------------------------------------------"""
     # Primeiro, buscamos o fornecedor
     pedido = Pedido.objects.get(id=id_pedido)
-
+    itens_pedido = Itens_pedido.objects.filter(pedido=pedido)
     # Incluímos no contexto
     context = {
-      'fornecedor': fornecedor
+      'pedido': pedido,
+      'itens_pedido' :itens_pedido
     }
     if request.method == 'POST':
-        Fornecedor.objects.get(id=id_pedido).delete()
+        Pedido.objects.get(id=id_pedido).delete()
         return HttpResponseRedirect("/pedidos/")
 
-    # Retornamos o template no qual o fornecedor será disposto
+    # Retornamos o template no qual o pedido será disposto
     return render(request, "./details/pedidos.html", context)
 
 @login_required(login_url='/login/')

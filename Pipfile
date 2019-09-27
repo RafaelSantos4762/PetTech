@@ -1,0 +1,19 @@
+[[source]]
+
+url = "https://pypi.python.org/simple"
+verify_ssl = true
+
+
+[packages]
+
+Django = "*"
+djangorestframework = "*"
+requests = "*"
+django-heroku = "*"
+gunicorn = "*"
+whitenoise = "*"
+
+
+[requires]
+
+python_version = "3.6.4"
