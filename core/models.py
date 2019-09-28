@@ -95,7 +95,7 @@ class Fornecedor(models.Model):
 
 
 class Produto(models.Model):
-    id_produto = models.IntegerField()
+    # id_produto = models.IntegerField()
     cod_bar = models.CharField(max_length=200, unique=True)
     data_cadastro = models.DateField()
     descricao = models.CharField(max_length=200)
@@ -112,12 +112,15 @@ class Produto(models.Model):
         Validação do objeto.
         """
         #produto = Produto.objects.get(id=self.id_produto)
-        if not self.id_produto:
-            raise Exception('Campo id do produto inválido!')
+        # if not self.id_produto:
+        #     raise Exception('Campo id do produto inválido!')
         if self.lucro == 0.00:
             self.lucro = self.venda - self.custo
         #self.url = f'/produto/details/{self.uuid}/'
-        super(Produto, self).save(*args, **kwargs)
+        try:
+            super(Produto, self).save(*args, **kwargs)
+        except e:
+            raise(e)
 
 
 class Pedido(models.Model):
