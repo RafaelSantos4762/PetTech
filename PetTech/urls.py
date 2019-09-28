@@ -48,5 +48,5 @@ urlpatterns = [
     path('agendamentos/',views.agendamentos,name='agendamentos'),
     path('clientes/details/<str:id_cliente>/', views.client_details, name='detailsclientes'),
     path('fornecedores/details/<str:id_fornecedor>/', views.forn_details, name='detailsfornecedores'),
-    path('produtos/details/<str:id_produto>/', views.prod_details, name='detailsprodutos'),
+    path('produtos/details/<str:id>/', views.prod_details, name='detailsprodutos'),
 ]

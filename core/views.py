@@ -130,7 +130,7 @@ def list_produtos(request):
 
 
 @login_required(login_url='/login/')
-def prod_details(request,id_produto):
+def prod_details(request,id):
     """-------------------------------------------------------------------------
     View que mostra detalhes de produto.
     -------------------------------------------------------------------------"""
@@ -139,14 +139,14 @@ def prod_details(request,id_produto):
     #template = loader.get_template('details/produtos.html')
 
     # Primeiro, buscamos o produto
-    produto = Produto.objects.get(id_produto=int(id_produto))
+    produto = Produto.objects.get(id=int(id))
 
     # Incluímos no contexto
     context = {
       "produto": produto,
     }
     if request.method == 'POST':
-       Produto.objects.get(id_produto=int(id_produto)).delete()
+       Produto.objects.get(id=int(id)).delete()
        return HttpResponseRedirect("/produtos/")
 
     # Retornamos o template no qual o cliente será disposto
