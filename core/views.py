@@ -64,7 +64,7 @@ def produtos(request):
         # se o formulario for valido
         if form.is_valid():
             # pego info do form
-            id_produto = form.cleaned_data['id_produto']
+            # id_produto = form.cleaned_data['id_produto']
             cod_bar = form.cleaned_data['cod_bar']
             data_cadastro = form.cleaned_data['data_cadastro']
             descricao = form.cleaned_data['descricao']
@@ -77,7 +77,7 @@ def produtos(request):
             # persisto cliente
             try:
                 Produto.objects.create(
-                    id_produto = id_produto,
+                    # id_produto = id_produto,
                     cod_bar = cod_bar,
                     data_cadastro = data_cadastro,
                     descricao = descricao,
@@ -93,7 +93,7 @@ def produtos(request):
                 # Incluímos no contexto
                 context = {
                   "titulo":"Cadastro de Produto",
-                  'erro': 'Dados incorretos!'
+                  'erro': e
                 }
                 # retorno a pagina de cadastro com mensagem de erro
                 return render(request, "./registration/produtos.html", context)
