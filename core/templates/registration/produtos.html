@@ -1,74 +1,118 @@
-{% extends "base.html" %}
-
-{% block titulo %}
-   Produtos
-{% endblock  %}
-
-{% block content %}
-    <h2 class="h2 d-flex justify-content-center">Cadastro de Produtos</h2>
-    <br>
-    <br>
-    <div class="h-100 d-flex justify-content-center align-items-center">
-      <form action="/registerprodutos/" method="POST" class="text-primary">
-        {% csrf_token %}
-        <div class="form-row">
-          <div class="col-8">
+{% extends "base.html" %} {% block titulo %} Produtos {% endblock %} {% block content %}
+<h2 class="h2 d-flex justify-content-center">Cadastro de Produtos</h2>
+<br />
+<br />
+<div class="h-100 d-flex justify-content-center align-items-center">
+  <form action="/registerprodutos/" method="POST" class="text-primary">
+    {% csrf_token %}
+    <div class="form-row">
+      <!-- <div class="col-8">
             <label>ID Produto</label>
             <input type="number" name="id_produto" class="form-control" placeholder="ID Produto">
-          </div>
-          <div class="form-group col-4">
-              <label>Data Cadastro</label>
-              <input type="date" name="data_cadastro" max="3000-12-31"
-                    min="1000-01-01" class="form-control">
-            </div>
-        </div>
-        <div class="form-row">
-            <div class="col-12">
-                <label>Barcode</label>
-                <input type="text" name="cod_bar" class="form-control" placeholder="Barcode">
-              </div>
-        </div>
-        <div class="form-row">
-         
-          <div class="col-12">
-            <label>Descrição</label>
-            <input type="text" name="descricao" class="form-control" placeholder="Descrição">
-          </div>
-        </div>
-        <div class="form-row">
-     
-          <div class="col-12">
-            <label>Marca</label>
-            <input type="text" name="marca" class="form-control" placeholder="Marca">
-          </div>
-        </div>
-        <div class="form-row">
-          <div class="col-4">
-            <label>Custo</label>
-            <input type="number" step="any" name="custo" class="form-control" placeholder="Custo">
-          </div>
-          <div class="col-4">
-            <label>Venda</label>
-            <input type="number" step="any" name="venda" class="form-control" placeholder="Venda">
-          </div>
-          <div class="col-4">
-            <label>Estoque</label>
-            <input type="number" name="estoque" class="form-control" placeholder="Estoque">
-          </div>
-        </div>
-        <br>
-        <br>
-        <center class="text-danger">
-          <h5>{{ erro }}</h5>
-        </center>
-        <div class="d-flex justify-content-around">
-          <div class="col-5">
-            <a href="/produtos">
-              <button type="button" class="btn btn-outline-danger col-12">Cancelar</button>
-            </a>
-          </div>
-          <button type='submit' class="btn btn-outline-primary col-5">Cadastrar</button>
-        </div>
-      </form>
+          </div> -->
+      <div class="col-8">
+        <label>Barcode</label>
+        <input
+          type="number"
+          name="cod_bar"
+          class="form-control"
+          placeholder="Barcode"
+          maxlength="13"
+        />
+      </div>
+      <div class="form-group col-4">
+        <label>Data Cadastro</label>
+        <input
+          type="date"
+          name="data_cadastro"
+          max="3000-12-31"
+          min="1000-01-01"
+          class="form-control"
+        />
+      </div>
     </div>
-{% endblock  %}
+    <div class="form-row">
+      {% if form.cod_bar.errors %}
+      <div class="alert alert-danger col-8">
+        <strong>{{ form.cod_bar.errors | escape }}</strong>
+      </div>
+      {% endif %}
+    </div>
+    <div class="form-row">
+      {% if form.data_cadastro.errors %}
+      <div class="alert alert-danger col-4">
+        <strong>{{ form.data_cadastro.errors | escape }}</strong>
+      </div>
+      {% endif %}
+    </div>
+    <div class="form-row">
+      <div class="col-12">
+        <label>Descrição</label>
+        <input type="text" name="descricao" class="form-control" placeholder="Descrição" />
+      </div>
+    </div>
+    <div class="form-row">
+      {% if form.descricao.errors %}
+      <div class="alert alert-danger col-12">
+        <strong>{{ form.descricao.errors | escape }}</strong>
+      </div>
+      {% endif %}
+    </div>
+    <div class="form-row">
+      <div class="col-12">
+        <label>Marca</label>
+        <input type="text" name="marca" class="form-control" placeholder="Marca" />
+      </div>
+    </div>
+    <div class="form-row">
+      {% if form.marca.errors %}
+      <div class="alert alert-danger col-12">
+        <strong>{{ form.marca.errors | escape }}</strong>
+      </div>
+      {% endif %}
+    </div>
+    <div class="form-row">
+      <div class="col-4">
+        <label>Custo</label>
+        <input type="number" step="any" name="custo" class="form-control" placeholder="Custo" />
+      </div>
+      <div class="col-4">
+        <label>Venda</label>
+        <input type="number" step="any" name="venda" class="form-control" placeholder="Venda" />
+      </div>
+      <div class="col-4">
+        <label>Estoque</label>
+        <input type="number" name="estoque" class="form-control" placeholder="Estoque" />
+      </div>
+    </div>
+    <div class="form-row">
+      {% if form.custo.errors %}
+      <div class="alert alert-danger col-12">
+        <strong>{{ form.custo.erros | escape }}</strong>
+      </div>
+      {% endif %} {% if form.venda.errors %}
+      <div class="alert alert-danger col-12">
+        <strong>{{ form.venda.erros | escape }}</strong>
+      </div>
+      {% endif %} {% if form.estoque.errors %}
+      <div class="alert alert-danger col-12">
+        <strong>{{ form.estoque.erros | escape }}</strong>
+      </div>
+      {% endif %}
+    </div>
+    <br />
+    <br />
+    <center class="text-danger">
+      <h5>{{ erro }}</h5>
+    </center>
+    <div class="d-flex justify-content-around">
+      <div class="col-5">
+        <a href="/produtos">
+          <button type="button" class="btn btn-outline-danger col-12">Cancelar</button>
+        </a>
+      </div>
+      <button type="submit" class="btn btn-outline-primary col-5">Cadastrar</button>
+    </div>
+  </form>
+</div>
+{% endblock %}
