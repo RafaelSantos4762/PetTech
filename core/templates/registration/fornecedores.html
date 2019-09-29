@@ -20,12 +20,12 @@
       </div>
     </div>
     <div class="form-row">
-      <div class="alert alert-danger col-8">
+      <div class="alert alert-danger col-9">
         {% if form.nome_fantasia.errors %}
         <strong>{{ form.nome_fantasia.errors | escape }}</strong>
         {% endif %}
       </div>
-      <div class="alert alert-danger col-2">
+      <div class="alert alert-danger col-3">
         {% if form.tipo_pessoa.errors %}
         <strong>{{ form.tipo_pessoa.errors | escape }}</strong>
         {% endif %}
@@ -50,12 +50,12 @@
     </div>
 
     <div class="form-row">
-      <div class="alert alert-danger col-8">
+      <div class="alert alert-danger col-9">
         {% if form.razao_social.errors %}
         <strong>{{ form.razao_social.errors | escape }}</strong>
         {% endif %}
       </div>
-      <div class="alert alert-danger col-2">
+      <div class="alert alert-danger col-3">
         {% if form.data_cadastro.errors %}
         <strong>{{ form.data_cadastro.errors | escape }}</strong>
         {% endif %}
@@ -160,7 +160,7 @@
     </div>
 
     <div class="form-row">
-      <div class="alert alert-danger col-4">
+      <div class="alert alert-danger col-2">
         {% if form.numero.errors %}
         <strong>{{ form.numero.errors | escape }}</strong>
         {% endif %}
@@ -173,6 +173,11 @@
       <div class="alert alert-danger col-4">
         {% if form.cidade.errors %}
         <strong>{{ form.cidade.errors | escape }}</strong>
+        {% endif %}
+      </div>
+      <div class="alert alert-danger col-2">
+        {% if form.estado.errors %}
+        <strong>{{ form.estado.errors | escape }}</strong>
         {% endif %}
       </div>
     </div>
