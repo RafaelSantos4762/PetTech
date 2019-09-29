@@ -32,13 +32,11 @@
       </div>
     </div>
     <div class="form-row">
-      {% if form.cod_bar.errors %}
       <div class="alert alert-danger col-8">
-        <strong>{{ form.cod_bar.errors | escape }}</strong>
+        <strong> </strong>
       </div>
-      {% endif %}
-    </div>
-    <div class="form-row">
+    <!-- </div>
+    <div class="form-row"> -->
       {% if form.data_cadastro.errors %}
       <div class="alert alert-danger col-4">
         <strong>{{ form.data_cadastro.errors | escape }}</strong>
@@ -87,16 +85,16 @@
     </div>
     <div class="form-row">
       {% if form.custo.errors %}
-      <div class="alert alert-danger col-12">
-        <strong>{{ form.custo.erros | escape }}</strong>
+      <div class="alert alert-danger col-4">
+        <strong>{{ form.custo.errors | escape }}</strong>
       </div>
       {% endif %} {% if form.venda.errors %}
-      <div class="alert alert-danger col-12">
-        <strong>{{ form.venda.erros | escape }}</strong>
+      <div class="alert alert-danger col-4">
+        <strong>{{ form.venda.errors | escape }}</strong>
       </div>
       {% endif %} {% if form.estoque.errors %}
-      <div class="alert alert-danger col-12">
-        <strong>{{ form.estoque.erros | escape }}</strong>
+      <div class="alert alert-danger col-4">
+        <strong>{{ form.estoque.errors | escape }}</strong>
       </div>
       {% endif %}
     </div>
