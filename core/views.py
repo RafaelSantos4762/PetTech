@@ -413,7 +413,7 @@ def pedidos(request):
         pagamento 	=  request.POST.get('pagamento')
         vendedor  	=  request.POST.get('vendedor')
         observacao 	=  request.POST.get('observacao')
-        #tipo 		=  request.POST['tipo']
+        
         tipo_prod   =  request.POST.get('tipo_prod')
         descricao 	=  request.POST.get('descricao')
         quantidade 	=  request.POST.get('quantidade')
