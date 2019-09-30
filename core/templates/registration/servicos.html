@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block titulo %}
+    Serviços
+{% endblock  %}
+
+{% block content %}
+    <h2 class="container">{{ titulo }}</h2>
+    <div class="container">
+        <form action="/registerservicos/" method="POST">
+            {% csrf_token %}
+            <div class="container">
+                <div class="col-8">
+                    <label>Serviço</label>
+                    <input id="descricao" type="text" class="form-control" placeholder="servico">
+                </div>
+                <div class="form-check form-check-inline">
+                    <input class="form-check-input" type="checkbox" id="disponibilidade"  value="option1">
+                    <label class="form-check-label" for="banho">Disponivel ?</label>
+                </div>
+            </div>
+            <center class="text-danger">
+            {% if erro %}
+                <h5>{{ erro }}</h5>
+            {% endif %}
+            </center>
+            <center>
+                <input type='submit' class="btn text-white bg-primary" value='Cadastrar'/>
+            </center>
+      </form>
+    </div>
+{% endblock  %}

@@ -6,7 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 
-from .models import Cliente, Fornecedor, Produto,Pedido,Itens_pedido
+from .models import Cliente, Fornecedor, Produto,Pedido,Itens_pedido,Servicos,Agendamentos
 
 from .forms import ClienteForm, FornecedorForm, ProdutoForm,PedidoForm
 
@@ -515,10 +515,81 @@ def list_pedidos(request):
 
 @login_required(login_url='/login/')
 def agendamentos(request):
+
+    servicos = Servicos.objects.all().order_by('-id')
+
     context = {
-     "titulo":"agendamentos"
+    "titulo":"agendamentos",
+    "servicos":servicos
     }
+
+    if request.method == "POST":
+        dono = request.POST.get("dono")
+        pet  = request.POST.get("pet") 
+        data = request.POST.get("data")
+        hora = request.POST.get("hora")
+        servico = request.POST.get("servico")
+        serv_id = Servicos.objects.get(descricao=servico)
+
+        try:
+            Agenda = Agendamentos(
+                proprietario = dono,
+                animal= pet,
+                telefone = '964354314',
+                email = 'rafael.ssilva134@hotmail.com',
+                data = data,
+                hora = hora,
+                servico = serv_id,
+                serv_desc = servico
+                )
+            
+            Agenda.save()
+
+        except Exception as e:
+            # Incluímos no contexto
+            context['erro'] = e
+            # retorno a pagina de cadastro com mensagem de erro
+            return render(request,'registration/agendamentos.html',context)
+
+        return HttpResponseRedirect("/agendamentos/")
+
+
     return render(request,'registration/agendamentos.html',context)
+
+@login_required(login_url='/login/')
+def list_agendamentos(request):
+    """-------------------------------------------------------------------------
+    View que lista os serviços disponíveis.
+    -------------------------------------------------------------------------"""
+    # faço um "SELECT *" ordenado pelo id
+    agendamentos = Agendamentos.objects.all().order_by('-id')
+
+    # Incluímos no context
+    context = {
+      'servicos': agendamentos
+    }
+
+    # Retornamos o template no qual os fornecedores serão dispostos
+    return render(request, "agendamentos.html", context)
+
+@login_required(login_url='/login/')
+def agendamento_details(request, id_servico):
+    """-------------------------------------------------------------------------
+    View que mostra detalhes de agendamento.
+    -------------------------------------------------------------------------"""
+    # Primeiro, buscamos o fornecedor
+    agendamentos = Agendamentos.objects.get(id=id_servico)
+
+    # Incluímos no contexto
+    context = {
+      'agendamento': agendamentos,
+    }
+    if request.method == 'POST':
+        Agendamentos.objects.get(id=id_servico).delete()
+        return HttpResponseRedirect("/agendamentos/")
+
+    # Retornamos o template no qual o pedido será disposto
+    return render(request, "./details/Agendamentos.html", context)
 
 '''
 class getProdutos(viewsets.ModelViewSet):
@@ -528,3 +599,47 @@ class getProdutos(viewsets.ModelViewSet):
     queryset = Produto.objects.all()
     serializer_class = ProductSerializer
 '''
+
+@login_required(login_url='/login/')
+def servicos(request):
+
+    context = {
+     "titulo":"serviços",
+    }
+
+    if request.method == 'POST':
+
+        descricao  = request.POST.get("descricao")
+        disponivel = request.POST.get("disponibilidade")
+
+        try:
+            servico = Pedido(
+                descricao = descricao,
+                disponivel= True
+                )
+            
+            servico.save()
+        except Exception as e:
+            # Incluímos no contexto
+            context['erro'] = e
+            # retorno a pagina de cadastro com mensagem de erro
+            return render(request,'registration/servicos.html',context)
+
+        return render(request,'.registration/servicos.html',context)
+
+
+@login_required(login_url='/login/')
+def list_servicos(request):
+    """-------------------------------------------------------------------------
+    View que lista os serviços disponíveis.
+    -------------------------------------------------------------------------"""
+    # faço um "SELECT *" ordenado pelo id
+    servicos = Servicos.objects.all().order_by('-id')
+
+    # Incluímos no context
+    context = {
+      'servicos': servicos
+    }
+
+    # Retornamos o template no qual os fornecedores serão dispostos
+    return render(request, "servicos.html", context)

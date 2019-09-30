@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+
+{% block titulo %}
+   Agendamento
+{% endblock  %}
+
+{% block content %}
+    <div class="container">
+      <center>
+          <h1>Detalhes do agendamento</h1>
+            <form method="POST" >
+              {% csrf_token %}
+              <button type="submit" class="btn text-white bg-danger col-7" name="button" id=pedido_del>
+                Deletar Agendamento
+              </button>
+            </form>
+            <br><br>
+        </div>
+      </center>
+      <br>
+      <br>
+      <center>
+      <div class="form-row container">
+        <table class="table container">
+          <tbody>
+              <tr>
+                <td>ID do agendamento</td>
+                <td>{{ agendamento.id }}</td>
+              </tr>  
+              <tr>
+                <td>Dono</td>
+                <td>{{ agendamento.proprietario }}</td>
+              </tr>
+              <tr>
+                <td>Animal</td>
+                <td>{{ agendamento.animal }}</td>
+              </tr>
+              <tr>
+                <td>Data</td>
+                <td>{{ agendamento.data }}</td>
+              </tr>
+              <tr>
+                <td>Hora</td>
+                <td>{{ agendamento.hora }}</td>
+              </tr>
+
+          </tbody>
+        </table>
+        <div class=container>
+          <h2 class=container>Descrição</h2>
+          <table class="table container">
+                <tr>
+                  <td>Código do serviço</td>
+                  <td>Descrição</td>
+                </tr>
+                
+                
+                  <tr>
+                      <td>{{ agendamento.servico_id}}</td>
+                    <td>{{ agendamento.serv_desc}}</td>
+                  </tr>
+                
+          </table>
+        </div>
+      </center>
+      </div>
+      <br>
+      <br>
+    </div>
+{% endblock  %}

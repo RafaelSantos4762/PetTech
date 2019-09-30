@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+<!-- Title -->
+{% block titulo %}
+    Pedidos
+{% endblock  %}
+
+<!-- Main -->
+{% block content%}
+    <h2 class="container"   >PetShop - Entre Patas e mimos</h2>
+    <center>
+      <br><br>
+      <h1>Lista de Agendamentos</h1>
+    </center>
+    <br><br>
+    <table class="table container">
+        <tbody>
+          <tr class="text-primary">
+            <td>ID</td>
+            <td>Pet</td>
+            <td>Responsável</td>
+            <td>Servico</td>
+            <td>data</td>
+            <td>hora</td>
+            <td>
+              <a href="{% url 'registeragenda' %}">
+                <button type="button" class="btn btn-success col-8" name="button">
+                  Novo
+                </button>
+            </td>
+          </tr>
+          {% for servico in servicos %}
+            <tr>
+              <td>{{ servico.id }}</td>
+              <td>{{ servico.animal }}</td>
+              <td>{{ servico.proprietario }}</td>
+              <td>{{ servico.serv_desc }}</td>
+              <td>{{ servico.data }}</td>
+              <td>{{ servico.hora }}</td>
+              <td>
+                <a href="details/{{ servico.id }}/ ">
+                  <button class="btn btn-outline-primary col-8" type="button" name="button">
+                    Detalhes
+                  </button>
+                </a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      <br><br>
+{% endblock %}

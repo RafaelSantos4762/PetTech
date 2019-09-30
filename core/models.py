@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 # Create your models here.
 class Cliente(models.Model):
@@ -146,6 +147,58 @@ class Itens_pedido(models.Model):
 
     
 
+
+class Agendamentos(models.Model): 
+    proprietario = models.CharField(max_length=80)
+    animal   = models.CharField(max_length=60)
+    telefone = models.CharField(max_length=60)
+    email    = models.EmailField()
+    
+    #Serviços
+    #servico = models.CharField(max_length=50,on)
+    servico = models.ForeignKey('Servicos',on_delete=models.CASCADE,)
+    serv_desc = models.CharField(max_length=50,default="")
+
+    #Agendamento
+    data = models.DateField()
+    hora = models.CharField(max_length=5)
+
+    def save(self, *args, **kwargs):
+        """
+        Validação do objeto.
+        """
+
+        servicos_all = Servicos.objects.all().order_by('-id')  
+
+        if not self.proprietario:
+            raise Exception('Campo proprietario invalido !')
+        if not self.animal:
+            raise Exception('Campo animal invalido !')        
+        if not self.telefone:
+            raise Exception('Campo telefone invalido !')
+        if not self.email:
+            raise Exception('Campo e-mail invalido !')   
+
+        if self.servico not in servicos_all:
+            raise Exception('Serviço inválido')
+
+        super(Agendamentos, self).save(*args, **kwargs)
+
+
+class Servicos(models.Model):
+    descricao = models.CharField(max_length=50)
+    disponivel = models.BooleanField(default=True)
+
+    def save(self, *args, **kwargs):
+        """
+        Validação do objeto.
+        """
+
+        #produto = Produto.objects.get(id=self.id_produto)
+        if not self.descricao:
+            raise Exception('Campo descricao precisa ser preenchido !')
+            
+        super(Servicos, self).save(*args, **kwargs)
 
 class Pedido(models.Model):
     cliente = models.IntegerField() 
