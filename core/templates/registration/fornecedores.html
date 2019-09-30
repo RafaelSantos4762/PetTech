@@ -7,13 +7,13 @@
     {% csrf_token %}
     <div class="form-row">
       <div class="col-9">
-        <label>Nome Fantasia</label>
+        <label>Nome Fantasia \ Nome Reduzido</label>
         <input type="text" name="nome_fantasia" class="form-control" placeholder="Nome Fantasia" />
       </div>
       <div class="form-group col">
         <label for="tipo_pessoa">Tipo Pessoa</label>
         <select name="tipo_pessoa" id="tipo_pessoa" class="form-control">
-          <option selected>Tipo Pessoa</option>
+          <option selected></option>
           <option>Fisica</option>
           <option>Juridica</option>
         </select>
@@ -34,7 +34,7 @@
 
     <div class="form-row">
       <div class="col-9">
-        <label>Razão Social</label>
+        <label>Razão Social \ Nome Completo</label>
         <input type="text" name="razao_social" class="form-control" placeholder="Razão Social" />
       </div>
       <div class="form-group">
@@ -127,7 +127,7 @@
       <div class="form-group col">
         <label for="state">Estado</label>
         <select name="estado" id="estado" class="form-control">
-          <option selected>Estado</option>
+          <option selected></option>
           <option>AC</option>
           <option>AL</option>
           <option>AP</option>
@@ -185,7 +185,7 @@
     <div class="form-row">
       <div class="col-4">
         <label>Telefone</label>
-        <input type="tel" name="tel" class="form-control" placeholder="Telefone" />
+        <input type="tel" name="tel" class="form-control" placeholder="ex: (99)9999-9999" />
       </div>
       <div class="col-4">
         <label>Fax</label>

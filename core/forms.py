@@ -25,19 +25,19 @@ class ClienteForm(forms.Form):
 
 class FornecedorForm(forms.Form):
     tipo_pessoa = forms.CharField(required=True)
-    data_cadastro = forms.DateField()
+    data_cadastro = forms.DateField(required=True)
     nome_fantasia = forms.CharField(required=True)
     razao_social = forms.CharField(required=True)
-    cpf_cnpj = forms.CharField(required=True)
-    rg_ie = forms.CharField(required=True)
-    cep = forms.CharField(required=True)
+    cpf_cnpj = forms.CharField(required=True, min_length=11, max_length=14)
+    rg_ie = forms.CharField(required=True, min_length=9, max_length=9 )
+    cep = forms.IntegerField(required=True,min_value=8, max_value=8)
     endereco = forms.CharField(required=True)
     numero = forms.CharField(required=True)
     cidade = forms.CharField(required=True)
     bairro = forms.CharField(required=True)
     estado = forms.CharField(required=True)
     fax = forms.CharField(required=False)
-    tel = forms.CharField(required=True)
+    tel = forms.IntegerField(required=True, min_value=10, max_value=11)
     email = forms.EmailField(required=True)
 
 
