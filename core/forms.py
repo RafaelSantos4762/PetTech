@@ -30,14 +30,14 @@ class FornecedorForm(forms.Form):
     razao_social = forms.CharField(required=True)
     cpf_cnpj = forms.CharField(required=True, min_length=11, max_length=14)
     rg_ie = forms.CharField(required=True, min_length=9, max_length=9 )
-    cep = forms.IntegerField(required=True,min_value=8, max_value=8)
+    cep = forms.CharField(required=True,min_length=8, max_length=8)
     endereco = forms.CharField(required=True)
     numero = forms.CharField(required=True)
     cidade = forms.CharField(required=True)
     bairro = forms.CharField(required=True)
     estado = forms.CharField(required=True)
     fax = forms.CharField(required=False)
-    tel = forms.IntegerField(required=True, min_value=10, max_value=11)
+    tel = forms.CharField(required=True, min_length=10, max_length=11)
     email = forms.EmailField(required=True)
 
 

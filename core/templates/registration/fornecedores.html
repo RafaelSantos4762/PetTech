@@ -8,11 +8,11 @@
     <div class="form-row">
       <div class="col-9">
         <label>Nome Fantasia \ Nome Reduzido</label>
-        <input type="text" name="nome_fantasia" class="form-control" placeholder="Nome Fantasia" />
+        <input type="text" name="nome_fantasia" value="{{form.nome_fantasia.value}}" class="form-control" placeholder="Nome Fantasia" />
       </div>
       <div class="form-group col">
         <label for="tipo_pessoa">Tipo Pessoa</label>
-        <select name="tipo_pessoa" id="tipo_pessoa" class="form-control">
+        <select name="tipo_pessoa" id="id_tipo_pessoa" class="form-control">
           <option selected></option>
           <option>Fisica</option>
           <option>Juridica</option>
@@ -35,13 +35,14 @@
     <div class="form-row">
       <div class="col-9">
         <label>Razão Social \ Nome Completo</label>
-        <input type="text" name="razao_social" class="form-control" placeholder="Razão Social" />
+        <input type="text" name="razao_social"  value="{{form.razao_social.value}}" class="form-control" placeholder="Razão Social" />
       </div>
       <div class="form-group">
         <label>Data Cadastro</label>
         <input
           type="date"
           name="data_cadastro"
+          value="{{form.data_cadastro.value}}"
           max="3000-12-31"
           min="1000-01-01"
           class="form-control"
@@ -65,11 +66,11 @@
     <div class="form-row">
       <div class="col-6">
         <label>CPF/CNPJ</label>
-        <input type="text" name="cpf_cnpj" class="form-control" placeholder="CPF/CNPJ" />
+        <input type="text" name="cpf_cnpj"  value="{{form.cpf_cnpj.value}}" class="form-control" placeholder="CPF/CNPJ" />
       </div>
       <div class="col-6">
         <label>RG/IE</label>
-        <input type="text" name="rg_ie" class="form-control" placeholder="RG/IE" />
+        <input type="text" name="rg_ie"  value="{{form.rg_ie.value}}" class="form-control" placeholder="RG/IE" />
       </div>
     </div>
 
@@ -89,11 +90,11 @@
     <div class="form-row">
       <div class="col-2">
         <label>CEP</label>
-        <input type="text" name="cep" class="form-control" placeholder="CEP" />
+        <input type="number" name="cep"  value="{{form.cep.value}}" class="form-control" placeholder="CEP" />
       </div>
       <div class="col-10">
         <label>Endereço</label>
-        <input type="text" name="endereco" class="form-control" placeholder="Endereço" />
+        <input type="text" name="endereco"  value="{{form.endereco.value}}" class="form-control" placeholder="Endereço" />
       </div>
     </div>
 
@@ -113,20 +114,20 @@
     <div class="form-row">
       <div class="col-2">
         <label>Número</label>
-        <input type="number" name="numero" class="form-control" placeholder="Número" />
+        <input type="number" name="numero"  value="{{form.numero.value}}" class="form-control" placeholder="Número" />
       </div>
 
       <div class="col-4">
         <label>Bairro</label>
-        <input type="text" name="bairro" class="form-control" placeholder="Bairro" />
+        <input type="text" name="bairro"  value="{{form.bairro.value}}" class="form-control" placeholder="Bairro" />
       </div>
       <div class="col-4">
         <label>Cidade</label>
-        <input type="text" name="cidade" class="form-control" placeholder="Cidade" />
+        <input type="text" name="cidade"  value="{{form.cidade.value}}" class="form-control" placeholder="Cidade" />
       </div>
       <div class="form-group col">
         <label for="state">Estado</label>
-        <select name="estado" id="estado" class="form-control">
+        <select name="estado" id="estado"  value="{{form.estado.value}}" class="form-control">
           <option selected></option>
           <option>AC</option>
           <option>AL</option>
@@ -185,15 +186,15 @@
     <div class="form-row">
       <div class="col-4">
         <label>Telefone</label>
-        <input type="tel" name="tel" class="form-control" placeholder="ex: (99)9999-9999" />
+        <input type="number" name="tel"  value="{{form.tel.value}}" class="form-control" placeholder="ex: (99)9999-9999" />
       </div>
       <div class="col-4">
         <label>Fax</label>
-        <input type="tel" name="fax" class="form-control" placeholder="Fax" />
+        <input type="tel" name="fax"  value="{{form.fax.value}}" class="form-control" placeholder="Fax" />
       </div>
       <div class="col-4">
         <label>E-mail</label>
-        <input type="email" name="email" class="form-control" placeholder="E-mail" />
+        <input type="email" name="email"  value="{{form.email.value}}" class="form-control" placeholder="E-mail" />
       </div>
     </div>
 

@@ -332,6 +332,7 @@ def fornecedores(request):
             return HttpResponseRedirect("/fornecedores/")
         else:
             # se for um get, renderizo a pagina de cadastro de fornecedor
+            print(form.cleaned_data)
             return render(request, "./registration/fornecedores.html", {"form": form})
 
     # se nenhuma informacao for passada, exibe a pagina de cadastro com o formulario
