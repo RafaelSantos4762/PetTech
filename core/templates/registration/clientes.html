@@ -9,29 +9,28 @@
       <div class="form-group col-2">
         <label for="tipo_pessoa">Tipo</label>
         <select name="tipo_pessoa" id="tipo_pessoa" class="form-control">
-          <option selected>----</option>
+          <option selected></option>
           <option>Fisica</option>
           <option>Juridica</option>
         </select>
       </div>
       <div class="col-7">
         <label>Número do Documento</label>
-        <input type="text" name="cpf_cnpj" class="form-control" placeholder="CPF/CNPJ" />
+        <input type="text" name="cpf_cnpj" value="{% if form.cpf_cnpj.value %}{{form.cpf_cnpj.value}}{% endif %}" class="form-control" placeholder="CPF/CNPJ" />
       </div>
       <div class="col-3">
         <label>RG</label>
-        <input type="text" name="rg" class="form-control" placeholder="RG" />
+        <input type="text" name="rg" value="{% if form.rg.value %}{{form.rg.value}}{% endif %}" class="form-control" placeholder="RG" />
       </div>
     </div>
     <div class="form-row">
       <div class="col-10">
         <label>Nome</label>
-        <input type="text" name="nome" class="form-control" placeholder="Nome" />
+        <input type="text" name="nome" value="{% if form.nome.value %}{{form.nome.value}}{% endif %}" class="form-control" placeholder="Nome" />
       </div>
       <div class="form-group col-2">
         <label for="sexo">Sexo</label>
         <select name="sexo" id="sexo" class="form-control">
-          <option selected>----</option>
           <option>Masculino</option>
           <option>Feminino</option>
         </select>
@@ -46,6 +45,7 @@
           max="3000-12-31"
           min="1000-01-01"
           class="form-control"
+          value="{% if form.data_nasc.value %}{{form.data_nasc.value}}{% endif %}"
         />
       </div>
       <div class="form-group col-4">
@@ -66,30 +66,30 @@
     <div class="form-row mb-3">
       <div class="col-5">
         <label>Endereço</label>
-        <input type="text" name="endereco" class="form-control" placeholder="Endereço" />
+        <input type="text" name="endereco" value="{% if form.endereco.value %}{{form.endereco.value}}{% endif %}" class="form-control" placeholder="Endereço" />
       </div>
       <div class="col-5">
         <label>Complemento</label>
-        <input type="text" name="complemento" class="form-control" placeholder="Complemento" />
+        <input type="text" name="complemento" value="{% if form.complemento.value %}{{form.complemento.value}}{% endif %}" class="form-control" placeholder="Complemento" />
       </div>
       <div class="col-2">
         <label>Número</label>
-        <input type="number" name="numero" class="form-control" placeholder="Número" />
+        <input type="number" name="numero" value="{% if form.numero.value %}{{form.numero.value}}{% endif %}" class="form-control" placeholder="Número" />
       </div>
     </div>
     <div class="form-row">
       <div class="col-5">
         <label>Bairro</label>
-        <input type="text" name="bairro" class="form-control" placeholder="Bairro" />
+        <input type="text" name="bairro" value="{% if form.bairro.value %}{{form.bairro.value}}{% endif %}" class="form-control" placeholder="Bairro" />
       </div>
       <div class="col-4">
         <label>Cidade</label>
-        <input type="text" name="cidade" class="form-control" placeholder="Cidade" />
+        <input type="text" name="cidade" value="{% if form.cidade.value %}{{form.cidade.value}}{% endif %}" class="form-control" placeholder="Cidade" />
       </div>
       <div class="form-group col">
         <label for="state">Estado</label>
         <select name="estado" id="estado" class="form-control">
-          <option selected>Estado</option>
+          <option selected></option>
           {% for estado in estados %}
           <option>{{ estado }}</option>
           {% endfor %}
@@ -99,13 +99,13 @@
     <div class="form-row">
       <div class="col-4">
         <label>Telefone</label>
-        <input type="tel" name="tel" class="form-control" placeholder="Telefone" />
+        <input type="tel" name="tel" value="{% if form.tel.value %}{{form.tel.value}}{% endif %}" class="form-control" placeholder="Telefone" />
       </div>
 
       <div class="form-group col-2">
         <label for="tipo_tel">Tipo</label>
         <select name="tipo_tel" id="tipo_tel" class="form-control">
-          <option selected>----</option>
+          <option selected></option>
           <option>Residencial</option>
           <option>Celular</option>
           <option>Comercial</option>
@@ -114,7 +114,7 @@
 
       <div class="col-6">
         <label>E-mail</label>
-        <input type="email" name="email" class="form-control" placeholder="E-mail" />
+        <input type="email" name="email" value="{% if form.email.value %}{{form.email.value}}{% endif %}" class="form-control" placeholder="E-mail" />
       </div>
     </div>
     <br />

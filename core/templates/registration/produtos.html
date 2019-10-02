@@ -86,19 +86,21 @@
       </div>
     </div>
     <div class="form-row">
-      {% if form.custo.errors %}
       <div class="alert alert-danger col-4">
+          {% if form.custo.errors %}
         <strong>{{ form.custo.errors | escape }}</strong>
+        {% endif %}
       </div>
-      {% endif %} {% if form.venda.errors %}
       <div class="alert alert-danger col-4">
+          {% if form.venda.errors %}
         <strong>{{ form.venda.errors | escape }}</strong>
+        {% endif %}
       </div>
-      {% endif %} {% if form.estoque.errors %}
       <div class="alert alert-danger col-4">
+          {% if form.estoque.errors %}
         <strong>{{ form.estoque.errors | escape }}</strong>
+        {% endif %}
       </div>
-      {% endif %}
     </div>
     <br />
     <br />
