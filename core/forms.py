@@ -43,7 +43,7 @@ class FornecedorForm(forms.Form):
 
 class ProdutoForm(forms.Form):
     # id_produto = forms.IntegerField(required=True)
-    cod_bar = forms.IntegerField(required=True,min_value=0, max_value=9999999999999)
+    cod_bar = forms.IntegerField(required=False,min_value=1, max_value=9999999999999)
     data_cadastro = forms.DateField(required=True)
     descricao = forms.CharField(required=True)
     marca = forms.CharField(required=True)
