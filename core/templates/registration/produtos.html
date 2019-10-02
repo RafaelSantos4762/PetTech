@@ -18,7 +18,7 @@
           class="form-control"
           placeholder="EAN-13"
           maxlength="13"
-          value="{% if form.cod_bar.value %}{{form.cod_bar.value}}{% endif %}"
+          value="{% if form.cod_bar.value %}{{ form.cod_bar.value }}{%else%}''{% endif %}"
         />
       </div>
       <div class="form-group col-4">
@@ -29,15 +29,17 @@
           max="3000-12-31"
           min="1000-01-01"
           class="form-control"
-          value="{% if form.data_cadastro.value %}{{form.data_cadastro.value}}{% endif %}"
+          value="{% if form.data_cadastro.value %}{{ form.data_cadastro.value }}{% endif %}"
         />
       </div>
     </div>
     <div class="form-row">
       <div class="alert alert-danger col-8">
-        <strong> </strong>
+        {% if form.cod_bar.errors %}
+        <strong>{{ form.cod_bar.errors | escape }}</strong>
+        {% endif %}
       </div>
-    <!-- </div>
+      <!-- </div>
     <div class="form-row"> -->
       {% if form.data_cadastro.errors %}
       <div class="alert alert-danger col-4">
@@ -48,7 +50,13 @@
     <div class="form-row">
       <div class="col-12">
         <label>Descrição</label>
-        <input type="text" name="descricao" class="form-control" placeholder="Descrição" value="{% if form.descricao.value %}{{form.descricao.value}}{% endif %}" />
+        <input
+          type="text"
+          name="descricao"
+          class="form-control"
+          placeholder="Descrição"
+          value="{% if form.descricao.value %}{{ form.descricao.value }}{% endif %}"
+        />
       </div>
     </div>
     <div class="form-row">
@@ -61,7 +69,13 @@
     <div class="form-row">
       <div class="col-12">
         <label>Marca</label>
-        <input type="text" name="marca" class="form-control" placeholder="Marca" value="{% if form.marca.value %}{{form.marca.value}}{% endif %}" />
+        <input
+          type="text"
+          name="marca"
+          class="form-control"
+          placeholder="Marca"
+          value="{% if form.marca.value %}{{ form.marca.value }}{% endif %}"
+        />
       </div>
     </div>
     <div class="form-row">
@@ -74,30 +88,50 @@
     <div class="form-row">
       <div class="col-4">
         <label>Custo</label>
-        <input type="number" step="any" name="custo" value="{% if form.custo.value %}{{form.custo.value}}{% endif %}" class="form-control" placeholder="Custo" />
+        <input
+          type="number"
+          step="any"
+          name="custo"
+          value="{% if form.custo.value %}{{ form.custo.value }}{% endif %}"
+          class="form-control"
+          placeholder="Custo"
+        />
       </div>
       <div class="col-4">
         <label>Venda</label>
-        <input type="number" step="any" name="venda" value="{% if form.venda.value %}{{form.venda.value}}{% endif %}" class="form-control" placeholder="Venda" />
+        <input
+          type="number"
+          step="any"
+          name="venda"
+          value="{% if form.venda.value %}{{ form.venda.value }}{% endif %}"
+          class="form-control"
+          placeholder="Venda"
+        />
       </div>
       <div class="col-4">
         <label>Estoque</label>
-        <input type="number" name="estoque" value="{% if form.estoque.value %}{{form.estoque.value}}{% endif %}" class="form-control" placeholder="Estoque" />
+        <input
+          type="number"
+          name="estoque"
+          value="{% if form.estoque.value %}{{ form.estoque.value }}{% endif %}"
+          class="form-control"
+          placeholder="Estoque"
+        />
       </div>
     </div>
     <div class="form-row">
       <div class="alert alert-danger col-4">
-          {% if form.custo.errors %}
+        {% if form.custo.errors %}
         <strong>{{ form.custo.errors | escape }}</strong>
         {% endif %}
       </div>
       <div class="alert alert-danger col-4">
-          {% if form.venda.errors %}
+        {% if form.venda.errors %}
         <strong>{{ form.venda.errors | escape }}</strong>
         {% endif %}
       </div>
       <div class="alert alert-danger col-4">
-          {% if form.estoque.errors %}
+        {% if form.estoque.errors %}
         <strong>{{ form.estoque.errors | escape }}</strong>
         {% endif %}
       </div>
