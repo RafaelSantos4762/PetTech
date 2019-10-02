@@ -96,7 +96,7 @@ class Fornecedor(models.Model):
 
 class Produto(models.Model):
     # id_produto = models.IntegerField()
-    cod_bar = models.CharField(max_length=200, unique=True)
+    cod_bar = models.CharField(max_length=200)
     data_cadastro = models.DateField()
     descricao = models.CharField(max_length=200)
     marca = models.CharField(max_length=200)
