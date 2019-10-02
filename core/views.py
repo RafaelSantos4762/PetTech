@@ -66,6 +66,8 @@ def produtos(request):
             # pego info do form
             # id_produto = form.cleaned_data['id_produto']
             cod_bar = form.cleaned_data['cod_bar']
+            if cod_bar is None:
+                cod_bar=''
             data_cadastro = form.cleaned_data['data_cadastro']
             descricao = form.cleaned_data['descricao']
             marca = form.cleaned_data['marca']
@@ -89,11 +91,11 @@ def produtos(request):
                     )
             # em caso de erro
             except Exception as e:
-                print(e)
+                # print(e)
                 # Incluímos no contexto
                 context = {
                   "titulo":"Cadastro de Produto",
-                  'erro': e
+                  'erro': Exception
                 }
                 # retorno a pagina de cadastro com mensagem de erro
                 return render(request, "./registration/produtos.html", context)
