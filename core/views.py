@@ -65,7 +65,7 @@ def index(request):
     print("==============================================================================")
     print(request)
     print("==============================================================================")
-    return render(request,'index.html')
+    return render(request,'index.html', {'logo': True})
 
 
 @login_required(login_url='/login/')
@@ -82,8 +82,10 @@ def produtos(request):
         # se o formulario for valido
         if form.is_valid():
             # pego info do form
-            id_produto = form.cleaned_data['id_produto']
+            # id_produto = form.cleaned_data['id_produto']
             cod_bar = form.cleaned_data['cod_bar']
+            if cod_bar is None:
+                cod_bar=''
             data_cadastro = form.cleaned_data['data_cadastro']
             descricao = form.cleaned_data['descricao']
             marca = form.cleaned_data['marca']
@@ -95,7 +97,7 @@ def produtos(request):
             # persisto cliente
             try:
                 Produto.objects.create(
-                    id_produto = id_produto,
+                    # id_produto = id_produto,
                     cod_bar = cod_bar,
                     data_cadastro = data_cadastro,
                     descricao = descricao,
@@ -107,11 +109,11 @@ def produtos(request):
                     )
             # em caso de erro
             except Exception as e:
-                print(e)
+                # print(e)
                 # Incluímos no contexto
                 context = {
                   "titulo":"Cadastro de Produto",
-                  'erro': 'Dados incorretos!'
+                  'erro': Exception
                 }
                 # retorno a pagina de cadastro com mensagem de erro
                 return render(request, "./registration/produtos.html", context)
@@ -148,7 +150,7 @@ def list_produtos(request):
 
 
 @login_required(login_url='/login/')
-def prod_details(request,id_produto):
+def prod_details(request,id):
     """-------------------------------------------------------------------------
     View que mostra detalhes de produto.
     -------------------------------------------------------------------------"""
@@ -157,14 +159,15 @@ def prod_details(request,id_produto):
     #template = loader.get_template('details/produtos.html')
 
     # Primeiro, buscamos o produto
-    produto = Produto.objects.get(id_produto=int(id_produto))
+    produto = Produto.objects.get(id=int(id))
 
     # Incluímos no contexto
     context = {
       "produto": produto,
     }
     if request.method == 'POST':
-       Produto.objects.get(id_produto=int(id_produto)).delete()
+       Produto.objects.get(id=int(id)).delete()
+       return HttpResponseRedirect("/produtos/")
 
     # Retornamos o template no qual o cliente será disposto
     return render(request, "./details/produtos.html", context)
@@ -276,8 +279,10 @@ def client_details(request, id_cliente):
     context = {
       'cliente': cliente
     }
-    if request.method == 'DELETE':
-        Cliente.objects.get(id=id_cliente).delete()
+    print(cliente)
+    if request.method == 'POST':
+        print('\n entriuee')
+        cliente.delete()
         return HttpResponseRedirect("/clientes/")
 
     # Retornamos o template no qual o cliente será disposto
@@ -347,6 +352,7 @@ def fornecedores(request):
             return HttpResponseRedirect("/fornecedores/")
         else:
             # se for um get, renderizo a pagina de cadastro de fornecedor
+            print(form.cleaned_data)
             return render(request, "./registration/fornecedores.html", {"form": form})
 
     # se nenhuma informacao for passada, exibe a pagina de cadastro com o formulario

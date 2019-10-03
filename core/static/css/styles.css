@@ -13,3 +13,27 @@ footer {
   width: 100%; */
   margin-top: auto;
 }
+
+.logo {
+  background-image: url("../img/PetShopLogo.jpg");
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  background-position: center;
+}
+
+.form-group {
+  margin-bottom: 0 !important;
+}
+
+.alert ul {
+  padding: 0 0 0 5px !important;
+  list-style: none !important;
+}
+
+.alert-danger {
+  background-color: transparent !important;
+  border-color: transparent !important;
+  padding: 10px 0 0 0 !important;
+  max-height: 50px !important;
+  color: #F00 !important;
+}

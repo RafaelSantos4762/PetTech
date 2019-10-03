@@ -5,99 +5,107 @@
 {% endblock  %}
 
 {% block content %}
-    <div class="container">
-      <center>
-          <h1>Detalhes de Cliente</h1>
-            <form method="POST">
-              {% csrf_token %}
-              <button type="submit" class="btn text-white bg-danger col-7" name="button">
-                Deletar Cliente
-              </button>
-            </form>
-            <br><br>
+<div class="container">
+  <center>
+      <h1>Detalhes de Cliente</h1>
+  </center>
+  <br>
+  <br>
+  <center>
+  <div class="form-row container w-50">
+    <table class="table container">
+        <tbody>
+            <tr>
+              <td>ID</td>
+              <td>{{ cliente.id }}</td>
+            </tr>
+            <tr>
+              <td>Nome</td>
+              <td>{{ cliente.nome }}</td>
+            </tr>
+            <tr>
+              <td>Tipo Pessoa</td>
+              <td>{{ cliente.tipo_pessoa }}</td>
+            </tr>
+            <tr>
+              <td>CPF/CNPJ</td>
+              <td>{{ cliente.cpf_cnpj }}</td>
+            </tr>
+            <tr>
+              <td>Sexo</td>
+              <td>{{ cliente.sexo }}</td>
+            </tr>
+            <tr>
+              <td>Estado Civil</td>
+              <td>{{ cliente.estado_civil }}</td>
+            </tr>
+            <tr>
+              <td>RG</td>
+              <td>{{ cliente.rg }}</td>
+            </tr>
+            <tr>
+              <td>Data de Nascimento</td>
+              <td>{{ cliente.data_nasc }}</td>
+            </tr>
+            <tr>
+              <td>CEP</td>
+              <td>{{ cliente.cep }}</td>
+            </tr>
+            <tr>
+              <td>Rua</td>
+              <td>{{ cliente.endereco }}</td>
+            </tr>
+            <tr>
+              <td>Número</td>
+              <td>{{ cliente.numero }}</td>
+            </tr>
+            <tr>
+              <td>Complemento</td>
+              <td>{{ cliente.complemento }}</td>
+            </tr>
+            <tr>
+              <td>Bairro</td>
+              <td>{{ cliente.bairro }}</td>
+            </tr>
+            <tr>
+              <td>Cidade</td>
+              <td>{{ cliente.cidade }}</td>
+            </tr>
+            <tr>
+              <td>Estado</td>
+              <td>{{ cliente.estado }}</td>
+            </tr>
+            <tr>
+              <td>Tipo de telefone</td>
+              <td>{{ cliente.tipo_tel }}</td>
+            </tr>
+            <tr>
+              <td>Telefone</td>
+              <td>{{ cliente.tel }}</td>
+            </tr>
+            <tr>
+              <td>E-mail</td>
+              <td>{{ cliente.email }}</td>
+            </tr>
+        </tbody>
+      </table>
+  </center>
+  </div>
+  <br>
+  <br>
+  <div class="d-flex justify-content-center w-100">
+
+      <form method="POST" class="w-50 d-flex justify-content-around">
+        <div class="col-5">
+          <a href="/clientes">
+            <button type="button" class="btn btn-outline-secondary col-12">Cancelar</button>
+          </a>
         </div>
-      </center>
-      <br>
-      <br>
-      <center>
-      <div class="form-row container">
-        <table class="table container">
-            <tbody>
-                <tr>
-                  <td>ID</td>
-                  <td>{{ cliente.id }}</td>
-                </tr>
-                <tr>
-                  <td>Nome</td>
-                  <td>{{ cliente.nome }}</td>
-                </tr>
-                <tr>
-                  <td>Tipo Pessoa</td>
-                  <td>{{ cliente.tipo_pessoa }}</td>
-                </tr>
-                <tr>
-                  <td>CPF/CNPJ</td>
-                  <td>{{ cliente.cpf_cnpj }}</td>
-                </tr>
-                <tr>
-                  <td>Sexo</td>
-                  <td>{{ cliente.sexo }}</td>
-                </tr>
-                <tr>
-                  <td>Estado Civil</td>
-                  <td>{{ cliente.estado_civil }}</td>
-                </tr>
-                <tr>
-                  <td>RG</td>
-                  <td>{{ cliente.rg }}</td>
-                </tr>
-                <tr>
-                  <td>Data de Nascimento</td>
-                  <td>{{ cliente.data_nasc }}</td>
-                </tr>
-                <tr>
-                  <td>CEP</td>
-                  <td>{{ cliente.cep }}</td>
-                </tr>
-                <tr>
-                  <td>Rua</td>
-                  <td>{{ cliente.endereco }}</td>
-                </tr>
-                <tr>
-                  <td>Número</td>
-                  <td>{{ cliente.numero }}</td>
-                </tr>
-                <tr>
-                  <td>Complemento</td>
-                  <td>{{ cliente.complemento }}</td>
-                </tr>
-                <tr>
-                  <td>Bairro</td>
-                  <td>{{ cliente.bairro }}</td>
-                </tr>
-                <tr>
-                  <td>Cidade</td>
-                  <td>{{ cliente.cidade }}</td>
-                </tr>
-                <tr>
-                  <td>Estado</td>
-                  <td>{{ cliente.estado }}</td>
-                </tr>
-                <tr>
-                  <td>Tipo de telefone</td>
-                  <td>{{ cliente.tipo_tel }}</td>
-                </tr>
-                <tr>
-                  <td>Telefone</td>
-                  <td>{{ cliente.tel }}</td>
-                </tr>
-                <tr>
-                  <td>E-mail</td>
-                  <td>{{ cliente.email }}</td>
-                </tr>
-            </tbody>
-          </table>
-      </center>
+        <div class="col-5">
+          {% csrf_token %}
+          <button type="submit" class="btn text-white bg-danger col-12" name="button">
+            Deletar Cliente
+          </button>
       </div>
       <br>
       <br>
