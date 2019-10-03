@@ -614,24 +614,20 @@ def servicos(request):
     }
 
     if request.method == 'POST':
-
         descricao  = request.POST.get("descricao")
         disponivel = request.POST.get("disponibilidade")
-
         try:
-            servico = Servico(
+            servico = Servicos(
                 descricao = descricao,
                 disponivel= True
                 )
-            
             servico.save()
         except Exception as e:
             # Incluímos no contexto
             context['erro'] = e
             # retorno a pagina de cadastro com mensagem de erro
             return render(request,'registration/servicos.html',context)
-    else :
-        return render(request,'registration/servicos.html',context)
+    return render(request,'registration/servicos.html',context)
 
 
 @login_required(login_url='/login/')
