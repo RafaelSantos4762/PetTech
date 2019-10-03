@@ -619,7 +619,7 @@ def servicos(request):
         disponivel = request.POST.get("disponibilidade")
 
         try:
-            servico = Pedido(
+            servico = Servico(
                 descricao = descricao,
                 disponivel= True
                 )
@@ -630,8 +630,8 @@ def servicos(request):
             context['erro'] = e
             # retorno a pagina de cadastro com mensagem de erro
             return render(request,'registration/servicos.html',context)
-
-        return render(request,'.registration/servicos.html',context)
+    else :
+        return render(request,'registration/servicos.html',context)
 
 
 @login_required(login_url='/login/')
