@@ -16,7 +16,7 @@
             <select name="id_cliente" id="id_cliente" class="form-control">
                 <option selected></option>
                 {% for cliente in clientes %}
-                    <option>{{ cliente.id }}</option>
+                    <option>{{ cliente.nome }}</option>
                 {% endfor %}
             </select>
         </div>
