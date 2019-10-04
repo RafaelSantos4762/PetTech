@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block titulo %}
+   {{titulo}}
+{% endblock  %}
+
+{% block content %}
+    <div class="container">
+      <center>
+          <h1>Deletar servico</h1>
+            <form method="POST">
+              {% csrf_token %}
+              <button type="submit" class="btn text-white bg-danger col-7" name="button">
+                Deletar Serviço
+              </button>
+            </form>
+            <br><br>
+        </div>
+      </center>
+      <br>
+      <br>
+      <center>
+      <div class="form-row container">
+        <table class="table container">
+            <tbody>
+                <tr>
+                  <td>ID</td>
+                  <td>Serviços</td>
+                  <td>Ativo</td>
+                </tr>
+                <tr>
+                  <td>{{servico.id}}</td>
+                  <td>{{servico.descricao}}</td>
+
+                  {% if servico.disponivel %}
+                    <td>Sim</td>
+                  {% else %}
+                    <td>Não</td>
+                  {% endif %}
+                </tr>
+            </tbody>
+          </table>
+      </center>
+      </div>
+      <br>
+      <br>
+{% endblock  %}

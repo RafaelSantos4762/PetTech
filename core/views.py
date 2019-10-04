@@ -7,7 +7,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
 
 from .models import Cliente, Fornecedor, Produto,Pedido,Itens_pedido,Servicos,Agendamentos
-
+from .validations import validaitem
 from .forms import ClienteForm, FornecedorForm, ProdutoForm,PedidoForm
 
 #from rest_framework import viewsets
@@ -147,6 +147,7 @@ def list_produtos(request):
     return render(request, "produtos.html", context)
 
 
+
 @login_required(login_url='/login/')
 def prod_details(request,id_produto):
     """-------------------------------------------------------------------------
@@ -169,7 +170,6 @@ def prod_details(request,id_produto):
     # Retornamos o template no qual o cliente será disposto
     return render(request, "./details/produtos.html", context)
     #return HttpResponse(template.render(context, request))
-
 
 @login_required(login_url='/login/')
 def clientes(request):
@@ -394,6 +394,7 @@ def forn_details(request, id_fornecedor):
 def pedidos(request):
 
     clientes = Cliente.objects.all()
+    itens_list = []
     """-------------------------------------------------------------------------
     View para cadastro de pedidos.
     -------------------------------------------------------------------------"""
@@ -414,11 +415,15 @@ def pedidos(request):
         vendedor  	=  request.POST.get('vendedor')
         observacao 	=  request.POST.get('observacao')
         
-        tipo_prod   =  request.POST.get('tipo_prod')
-        descricao 	=  request.POST.get('descricao')
-        quantidade 	=  request.POST.get('quantidade')
-        unitario = request.POST.get('unitario')
-        total    = request.POST.get('total')
+        for i in range(1,11):
+            tipo_prod   =  request.POST.get('tipo_prod'+str(i))
+            descricao 	=  request.POST.get('descricao'+str(i))
+            quantidade 	=  request.POST.get('quantidade'+str(i))
+            unitario = request.POST.get('unitario'+str(i))
+            total    = request.POST.get('total')
+
+            if validaitem(tipo_prod,descricao,quantidade,unitario):
+                itens_list.append([tipo_prod,descricao,quantidade,unitario])
 
         # persisto Pedido
         try:
@@ -432,34 +437,19 @@ def pedidos(request):
                 )
             
             P.save()
+                
+            for item in itens_list:
 
-            I = Itens_pedido(
-                tipo = tipo_prod,
-                descricao = descricao,
-                quantidade = int(quantidade),
-                valor_unitario = float(unitario),
-                valor_total = float(total),
-                pedido = P
-            )
-
-            I.save()
-            '''
-            Pedido.objects.create(
-                cliente = id_cli,
-                cpf_cnpj = cpf_cnpj,
-                tipo = tipo,
-                pagamento = pagamento,
-                vendedor = vendedor,
-                observacao = observacao,
+                I = Itens_pedido(
+                    tipo = item[0],
+                    descricao = item[1],
+                    quantidade = int(item[2]),
+                    valor_unitario = float(item[3]),
+                    valor_total =  int(item[2]) * float(float(item[3])),
+                    pedido = P
                 )
-            
-            Itens_pedido.objects.create(
-                descricao = descricao,
-                quantidade = quantidade,
-                valor_unitario = valor_unitario,
-                valor_total = valor_total,
-                pedido = 1 #Todo : Alterar pedido
-            )  '''    
+
+                I.save()
 
         except Exception as e:
             print(e)
@@ -612,10 +602,13 @@ def servicos(request):
         descricao  = request.POST.get("descricao")
         disponivel = request.POST.get("disponibilidade")
 
+        if disponivel == None:
+            disponivel = True
+
         try:
-            servico = Pedido(
+            servico = Servicos(
                 descricao = descricao,
-                disponivel= True
+                disponivel= disponivel
                 )
             
             servico.save()
@@ -625,7 +618,7 @@ def servicos(request):
             # retorno a pagina de cadastro com mensagem de erro
             return render(request,'registration/servicos.html',context)
 
-        return render(request,'.registration/servicos.html',context)
+    return render(request,'registration/servicos.html',context)
 
 
 @login_required(login_url='/login/')
@@ -643,3 +636,38 @@ def list_servicos(request):
 
     # Retornamos o template no qual os fornecedores serão dispostos
     return render(request, "servicos.html", context)
+
+
+
+@login_required(login_url='/login/')
+def deleteservico(request,id_servico):
+
+    servico = Servicos.objects.get(id=id_servico)
+    context = {
+     "titulo":"Deletar servico",
+     "servico":servico,
+    }
+
+    if request.method == 'POST':
+
+        descricao  = request.POST.get("descricao")
+        disponivel = request.POST.get("disponibilidade")
+
+        if disponivel == None:
+            disponivel = True
+            
+        try:
+            servico = Servicos(
+                descricao = descricao,
+                disponivel= disponivel
+                )
+            
+            servico.save()
+        except Exception as e:
+            # Incluímos no contexto
+            context['erro'] = e
+            # retorno a pagina de cadastro com mensagem de erro
+            return render(request,'registration/servicos.html',context)
+
+    return render(request,'registration/servicedel.html',context)
+

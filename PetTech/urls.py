@@ -50,9 +50,10 @@ urlpatterns = [
     path('agendamentos/',views.list_agendamentos,name='agendamentos'),
     path('servicos/',views.list_servicos,name='listservicos'),
     path('registerservicos/',views.servicos,name='registerservicos'),
+    path('servicos/servicedel/<str:id_servico>',views.deleteservico,name='deleteservico'),
     path('clientes/details/<str:id_cliente>/', views.client_details, name='detailsclientes'),
     path('fornecedores/details/<str:id_fornecedor>/', views.forn_details, name='detailsfornecedores'),
-    path('produtos/details/<str:id_produto>/', views.prod_details, name='detailsprodutos'),
+    path('produtos/details/<str:id_produto>', views.prod_details, name='detailsprodutos'),
     path('pedidos/details/<str:id_pedido>/', views.ped_details, name='detailspedidos'),
     path('agendamentos/details/<str:id_servico>/', views.agendamento_details, name='detailsagendamentos'),
 ]

@@ -1,5 +1,46 @@
 {% extends "base.html" %}
 
-{% block titulo %}
-    Serviços
-{% endblock  %}
+<!-- Title -->
+{% block titulo %} Serviços {% endblock %}
+
+<!-- Main -->
+{% block content%}
+<center>
+  <br /><br />
+  <h1>Serviços disponíveis</h1>
+</center>
+<br /><br />
+<table class="table container">
+  <tbody>
+    <tr class="text-primary">
+      <td>Descricao do Serviço</td>
+      <td>Ativo ?</td>
+      <td>
+        <a href="{% url 'registerservicos' %}">
+          <button type="button" class="btn btn-success col-8" name="button">
+            Cadastrar servico
+          </button>
+        </a>
+      </td>
+    </tr>
+    {% for servico in servicos %}
+    <tr>
+      <td>{{ servico.descricao }}</td>
+          {% if servico.disponivel %}
+            <td>Sim</td>
+          {% else %}
+            <td>Sim</td>
+          {% endif %}
+      <td>
+        <a href="servicedel/{{ servico.id }} ">
+          <button class="btn btn-outline-primary col-8" type="button" name="button">
+            Detalhes
+          </button>
+        </a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<br /><br />
+{% endblock %}
