@@ -16,17 +16,35 @@
       </div>
       <div class="col-7">
         <label>Número do Documento</label>
-        <input type="text" name="cpf_cnpj" value="{% if form.cpf_cnpj.value %}{{form.cpf_cnpj.value}}{% endif %}" class="form-control" placeholder="CPF/CNPJ" />
+        <input
+          type="text"
+          name="cpf_cnpj"
+          value="{% if form.cpf_cnpj.value %}{{ form.cpf_cnpj.value }}{% endif %}"
+          class="form-control"
+          placeholder="CPF/CNPJ"
+        />
       </div>
       <div class="col-3">
         <label>RG</label>
-        <input type="text" name="rg" value="{% if form.rg.value %}{{form.rg.value}}{% endif %}" class="form-control" placeholder="RG" />
+        <input
+          type="text"
+          name="rg"
+          value="{% if form.rg.value %}{{ form.rg.value }}{% endif %}"
+          class="form-control"
+          placeholder="RG"
+        />
       </div>
     </div>
     <div class="form-row">
       <div class="col-10">
         <label>Nome</label>
-        <input type="text" name="nome" value="{% if form.nome.value %}{{form.nome.value}}{% endif %}" class="form-control" placeholder="Nome" />
+        <input
+          type="text"
+          name="nome"
+          value="{% if form.nome.value %}{{ form.nome.value }}{% endif %}"
+          class="form-control"
+          placeholder="Nome"
+        />
       </div>
       <div class="form-group col-2">
         <label for="sexo">Sexo</label>
@@ -45,7 +63,7 @@
           max="3000-12-31"
           min="1000-01-01"
           class="form-control"
-          value="{% if form.data_nasc.value %}{{form.data_nasc.value}}{% endif %}"
+          value="{% if form.data_nasc.value %}{{ form.data_nasc.value }}{% endif %}"
         />
       </div>
       <div class="form-group col-4">
@@ -66,40 +84,105 @@
     <div class="form-row mb-3">
       <div class="col-5">
         <label>Endereço</label>
-        <input type="text" name="endereco" value="{% if form.endereco.value %}{{form.endereco.value}}{% endif %}" class="form-control" placeholder="Endereço" />
+        <input
+          type="text"
+          name="endereco"
+          value="{% if form.endereco.value %}{{ form.endereco.value }}{% endif %}"
+          class="form-control"
+          placeholder="Endereço"
+        />
       </div>
       <div class="col-5">
         <label>Complemento</label>
-        <input type="text" name="complemento" value="{% if form.complemento.value %}{{form.complemento.value}}{% endif %}" class="form-control" placeholder="Complemento" />
+        <input
+          type="text"
+          name="complemento"
+          value="{% if form.complemento.value %}{{ form.complemento.value }}{% endif %}"
+          class="form-control"
+          placeholder="Complemento"
+        />
       </div>
       <div class="col-2">
         <label>Número</label>
-        <input type="number" name="numero" value="{% if form.numero.value %}{{form.numero.value}}{% endif %}" class="form-control" placeholder="Número" />
+        <input
+          type="number"
+          name="numero"
+          value="{% if form.numero.value %}{{ form.numero.value }}{% endif %}"
+          class="form-control"
+          placeholder="Número"
+        />
       </div>
     </div>
     <div class="form-row">
       <div class="col-5">
         <label>Bairro</label>
-        <input type="text" name="bairro" value="{% if form.bairro.value %}{{form.bairro.value}}{% endif %}" class="form-control" placeholder="Bairro" />
+        <input
+          type="text"
+          name="bairro"
+          value="{% if form.bairro.value %}{{ form.bairro.value }}{% endif %}"
+          class="form-control"
+          placeholder="Bairro"
+        />
       </div>
       <div class="col-4">
         <label>Cidade</label>
-        <input type="text" name="cidade" value="{% if form.cidade.value %}{{form.cidade.value}}{% endif %}" class="form-control" placeholder="Cidade" />
+        <input
+          type="text"
+          name="cidade"
+          value="{% if form.cidade.value %}{{ form.cidade.value }}{% endif %}"
+          class="form-control"
+          placeholder="Cidade"
+        />
       </div>
       <div class="form-group col">
         <label for="state">Estado</label>
-        <select name="estado" id="estado" class="form-control">
+        <select
+          name="estado"
+          id="estado"
+          value="{% if form.estado.value %}{{ form.estado.value }}{% endif %}"
+          class="form-control"
+        >
           <option selected></option>
-          {% for estado in estados %}
-          <option>{{ estado }}</option>
-          {% endfor %}
+          <option>AC</option>
+          <option>AL</option>
+          <option>AP</option>
+          <option>AM</option>
+          <option>BA</option>
+          <option>CE</option>
+          <option>DF</option>
+          <option>ES</option>
+          <option>GO</option>
+          <option>MA</option>
+          <option>MT</option>
+          <option>MS</option>
+          <option>MG</option>
+          <option>PA</option>
+          <option>PB</option>
+          <option>PR</option>
+          <option>PE</option>
+          <option>PI</option>
+          <option>RJ</option>
+          <option>RN</option>
+          <option>RS</option>
+          <option>RO</option>
+          <option>RR</option>
+          <option>SC</option>
+          <option>SP</option>
+          <option>SE</option>
+          <option>TO</option>
         </select>
       </div>
     </div>
     <div class="form-row">
       <div class="col-4">
         <label>Telefone</label>
-        <input type="tel" name="tel" value="{% if form.tel.value %}{{form.tel.value}}{% endif %}" class="form-control" placeholder="Telefone" />
+        <input
+          type="tel"
+          name="tel"
+          value="{% if form.tel.value %}{{ form.tel.value }}{% endif %}"
+          class="form-control"
+          placeholder="Telefone"
+        />
       </div>
 
       <div class="form-group col-2">
@@ -114,7 +197,13 @@
 
       <div class="col-6">
         <label>E-mail</label>
-        <input type="email" name="email" value="{% if form.email.value %}{{form.email.value}}{% endif %}" class="form-control" placeholder="E-mail" />
+        <input
+          type="email"
+          name="email"
+          value="{% if form.email.value %}{{ form.email.value }}{% endif %}"
+          class="form-control"
+          placeholder="E-mail"
+        />
       </div>
     </div>
     <br />
