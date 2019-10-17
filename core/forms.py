@@ -27,30 +27,30 @@ class ClienteForm(forms.Form):
 
 class FornecedorForm(forms.Form):
     tipo_pessoa = forms.CharField(required=True)
-    data_cadastro = forms.DateField()
+    data_cadastro = forms.DateField(required=True)
     nome_fantasia = forms.CharField(required=True)
     razao_social = forms.CharField(required=True)
-    cpf_cnpj = forms.CharField(required=True)
-    rg_ie = forms.CharField(required=True)
-    cep = forms.CharField(required=True)
+    cpf_cnpj = forms.CharField(required=True, min_length=11, max_length=14)
+    rg_ie = forms.CharField(required=True, min_length=9, max_length=9 )
+    cep = forms.CharField(required=True,min_length=8, max_length=8)
     endereco = forms.CharField(required=True)
     numero = forms.CharField(required=True)
     cidade = forms.CharField(required=True)
     bairro = forms.CharField(required=True)
     estado = forms.CharField(required=True)
     fax = forms.CharField(required=False)
-    tel = forms.CharField(required=True)
+    tel = forms.CharField(required=True, min_length=10, max_length=11)
     email = forms.EmailField(required=True)
 
 
 class ProdutoForm(forms.Form):
-    id_produto = forms.IntegerField(required=True)
-    cod_bar = forms.CharField(required=True)
-    data_cadastro = forms.DateField()
+    # id_produto = forms.IntegerField(required=True)
+    cod_bar = forms.IntegerField(required=False,min_value=1, max_value=9999999999999)
+    data_cadastro = forms.DateField(required=True)
     descricao = forms.CharField(required=True)
     marca = forms.CharField(required=True)
-    custo = forms.DecimalField(max_digits=12, decimal_places=2, required=True)
-    venda = forms.DecimalField(max_digits=12, decimal_places=2, required=True)
+    custo = forms.DecimalField(max_digits=12, decimal_places=2, min_value=0, required=True)
+    venda = forms.DecimalField(max_digits=12, decimal_places=2, min_value=0, required=True)
     estoque = forms.IntegerField()
 
 
@@ -67,4 +67,3 @@ class PedidoForm(forms.Form):
     quantidade = forms.IntegerField()
     valor_unitario = forms.DecimalField(max_digits=12, decimal_places=2,required=True)
     valor_total = forms.DecimalField(max_digits=12, decimal_places=2,required=True)
-

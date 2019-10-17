@@ -1,11 +1,8 @@
-{% extends "base.html" %}
-
-{% block titulo %}
-    Serviços
-{% endblock  %}
-
-{% block content %}
-    <h2 class="container">{{ titulo }}</h2>
+{% extends "base.html" %} {% block titulo %} Serviços {% endblock %} {% block content %}
+<h2 class="container">{{ titulo }}</h2>
+<div class="container">
+  <form action="/registerservicos/" method="POST">
+    {% csrf_token %}
     <div class="container">
         <form action="/registerservicos/" method="POST">
             {% csrf_token %}
@@ -29,4 +26,14 @@
             </center>
       </form>
     </div>
-{% endblock  %}
+    <center class="text-danger">
+      {% if erro %}
+      <h5>{{ erro }}</h5>
+      {% endif %}
+    </center>
+    <center>
+      <input type="submit" class="btn text-white bg-primary" value="Cadastrar" />
+    </center>
+  </form>
+</div>
+{% endblock %}
