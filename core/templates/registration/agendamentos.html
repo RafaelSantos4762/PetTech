@@ -1,68 +1,58 @@
-{% extends "base.html" %}
-
-{% block titulo %}
-Agendamentos
-{% endblock  %}
-
-{% block content %}
-    <h2 class="container">{{ titulo }}</h2>
-    <br>
-    <br>
-    <div class="container">
-      <form action="/registeragenda/" method="POST" class="text-primary">
-        {% csrf_token %}
-        <div class="form-group col">
-            <div class="container">
-                <div class="col-8">
-                    <label>Dono</label>
-                    <input type="text" name="dono" class="form-control" placeholder="Dono">
-                </div>
-                <div class="col-8">
-                    <label>Nome Animal</label>
-                    <input type="text" name="pet" class="form-control" placeholder="Nome do animal">
-                </div>
-            </div>
-            <br/>
-            <div id="servicos">
-            
-                <label for="servicos">Selecione o serviço</label>
-                <select name="servico" id="servico" class="form-control">
-                    <option selected></option>
-                    {% for servico in servicos %}
-                        <option>{{ servico.descricao }}</option>
-                    {% endfor %}
-                </select>            
-                <!--
-                {% for servico in servicos %}
-                <div class="form-check form-check-inline">
-                    <input class="form-check-input" type="checkbox" id={{servico.descricao}} value="option1">
-                    <label class="form-check-label" for="banho">{{servico.descricao}}</label>
-                </div>
-                {% endfor %}
-                  -->        
-            </div>
+{% extends "base.html" %} {% block titulo %} Agendamentos {% endblock %} {% block content %}
+<h2 class="container text-align-center">Cadastro de Agendamentos</h2>
+<br />
+<br />
+<div class="container">
+  <form action="/registeragenda/" method="POST" class="text-primary">
+    {% csrf_token %}
+    <div class="form-group col">
+      <div class="container d-flex flex-column align-items-center ">
+        <div class="form-row">
+          <div class="col-12">
+            <label>Dono</label>
+            <input type="text" name="dono" class="form-control" placeholder="Dono" />
+          </div>
+          <div class="col-12">
+            <label>Nome Animal</label>
+            <input type="text" name="pet" class="form-control" placeholder="Nome do animal" />
+          </div>
         </div>
+        <br />
+        <div class="form-row">
+          <div id="servicos" class="col-12">
+            <label for="servicos">Selecione o serviço</label>
+            <select name="servico" id="servico" class="form-control">
+              <option selected></option>
+              {% for servico in servicos %}
+              <option>{{ servico.descricao }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+
         <h4>Selecione a data e hora:</h4>
         <div id="agendamentos">
-            <div class="col-8">
-                <label>Data</label>
-                <input type="date" id="data" name="data"  placeholder="Dono">
-            </div>
-            <div class="col-8">
-                <label>Hora</label>
-                <input type="time" id="hora" name="hora" placeholder="Nome do animal">
-            </div>
-        </div>        
-        <br>
-        <br>
-        <center class="text-danger">
-        {% if erro %}
-            <h5>{{ erro }}</h5>
-        {% endif %}
-        </center>
-        <center>
-          <input type='submit' class="btn text-white bg-primary" value='Agendar'/>
-        </center>
-      </form>
+          <div class="col-12">
+            <label>Data</label>
+            <input type="date" id="data" name="data" class="form-control" />
+          </div>
+          <div class="col-12">
+            <label>Hora</label>
+            <input type="time" id="hora" name="hora" class="form-control" />
+          </div>
+        </div>
+      </div>
     </div>
-{% endblock  %}
+    <br />
+    <br />
+    <center class="text-danger">
+      {% if erro %}
+      <h5>{{ erro }}</h5>
+      {% endif %}
+    </center>
+    <center>
+      <input type="submit" class="btn text-white bg-primary" value="Agendar" />
+    </center>
+  </form>
+</div>
+{% endblock %}
