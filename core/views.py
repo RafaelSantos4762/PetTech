@@ -8,7 +8,7 @@ from django.contrib import messages
 
 from .models import Cliente, Fornecedor, Produto,Pedido,Itens_pedido,Servicos,Agendamentos
 from .validations import validaitem
-from .forms import ClienteForm, FornecedorForm, ProdutoForm,PedidoForm
+from .forms import ClienteForm, FornecedorForm, ProdutoForm,PedidoForm, AgendamentoForm
 
 #from rest_framework import viewsets
 #from .serializers import ProductSerializer
@@ -525,29 +525,35 @@ def agendamentos(request):
         data = request.POST.get("data")
         hora = request.POST.get("hora")
         servico = request.POST.get("servico")
-        serv_id = Servicos.objects.get(descricao=servico)
+        print(request.POST)
+        form = AgendamentoForm(request.POST)
 
-        try:
-            Agenda = Agendamentos(
-                proprietario = dono,
-                animal= pet,
-                telefone = '964354314',
-                email = 'rafael.ssilva134@hotmail.com',
-                data = data,
-                hora = hora,
-                servico = serv_id,
-                serv_desc = servico
-                )
-            
-            Agenda.save()
+        if form.is_valid() and hora != '' :
+            try:
+                serv_id = Servicos.objects.get(descricao=servico)
+                Agenda = Agendamentos(
+                    proprietario = dono,
+                    animal= pet,
+                    telefone = '964354314',
+                    email = 'rafael.ssilva134@hotmail.com',
+                    data = data,
+                    hora = hora,
+                    servico = serv_id,
+                    serv_desc = servico
+                    )
+                
+                Agenda.save()
 
-        except Exception as e:
-            # Incluímos no contexto
-            context['erro'] = e
-            # retorno a pagina de cadastro com mensagem de erro
-            return render(request,'registration/agendamentos.html',context)
+            except Exception as e:
+                # Incluímos no contexto
+                context['erro'] = e
+                # retorno a pagina de cadastro com mensagem de erro
+                return render(request,'registration/agendamentos.html',context)
 
-        return HttpResponseRedirect("/agendamentos/")
+            return HttpResponseRedirect("/agendamentos/")
+        else: 
+            context['form'] = form
+            return render(request, 'registration/agendamentos.html', context )
 
 
     return render(request,'registration/agendamentos.html',context)
