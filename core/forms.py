@@ -67,3 +67,10 @@ class PedidoForm(forms.Form):
     quantidade = forms.IntegerField()
     valor_unitario = forms.DecimalField(max_digits=12, decimal_places=2,required=True)
     valor_total = forms.DecimalField(max_digits=12, decimal_places=2,required=True)
+
+class AgendamentoForm(forms.Form):
+    dono = forms.CharField(required=True)
+    pet = forms.CharField(required=True)
+    data = forms.DateField(required=True)
+    hora = forms.TimeField(required=True)
+    servico = forms.CharField(required=True)
