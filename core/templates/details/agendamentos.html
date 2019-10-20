@@ -1,67 +1,68 @@
-{% extends "base.html" %}
-
-{% block titulo %}
-   Agendamento
-{% endblock  %}
-
-{% block content %}
-    <div class="container">
-      <center>
-          <h1>Detalhes do agendamento</h1>
-            <form method="POST" >
-              {% csrf_token %}
-              <button type="submit" class="btn text-white bg-danger col-7" name="button" id=pedido_del>
-                Deletar Agendamento
-              </button>
-            </form>
-            <br><br>
-        </div>
-      </center>
-      <br>
-      <br>
-      <center>
-      <div class="form-row container">
-        <table class="table container">
-          <tbody>
-              <tr>
-                <td>ID do agendamento</td>
-                <td>{{ agendamento.id }}</td>
-              </tr>  
-              <tr>
-                <td>Dono</td>
-                <td>{{ agendamento.proprietario }}</td>
-              </tr>
-              <tr>
-                <td>Animal</td>
-                <td>{{ agendamento.animal }}</td>
-              </tr>
-              <tr>
-                <td>Data</td>
-                <td>{{ agendamento.data }}</td>
-              </tr>
-              <tr>
-                <td>Hora</td>
-                <td>{{ agendamento.hora }}</td>
-              </tr>
-
-          </tbody>
+{% extends "base.html" %} {% block titulo %} Agendamento {% endblock %} {% block content %}
+<div class="container">
+  <center>
+    <h1>Detalhes do agendamento</h1>
+    <br /><br />
+    <br />
+    <br />
+    <div class="form-row container">
+      <table class="table container w-50">
+        <tbody>
+          <tr>
+            <td>ID do agendamento</td>
+            <td>{{ agendamento.id }}</td>
+          </tr>
+          <tr>
+            <td>Dono</td>
+            <td>{{ agendamento.proprietario }}</td>
+          </tr>
+          <tr>
+            <td>Animal</td>
+            <td>{{ agendamento.animal }}</td>
+          </tr>
+          <tr>
+            <td>Data</td>
+            <td>{{ agendamento.data }}</td>
+          </tr>
+          <tr>
+            <td>Hora</td>
+            <td>{{ agendamento.hora }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="container">
+        <h2 class="container">Descrição</h2>
+        <table class="table container w-50">
+          <tr>
+            <td>Código do serviço</td>
+            <td>Descrição</td>
+          </tr>
+          <tr>
+            <td>{{ agendamento.servico_id }}</td>
+            <td>{{ agendamento.serv_desc }}</td>
+          </tr>
         </table>
-        <div class=container>
-          <h2 class=container>Descrição</h2>
-          <table class="table container">
-                <tr>
-                  <td>Código do serviço</td>
-                  <td>Descrição</td>
-                </tr>
-                  <tr>
-                      <td>{{ agendamento.servico_id}}</td>
-                    <td>{{ agendamento.serv_desc}}</td>
-                  </tr>
-          </table>
-        </div>
-      </center>
       </div>
-      <br>
-      <br>
     </div>
-{% endblock  %}
+    <br />
+    <br />
+    <div class="d-flex justify-content-center w-100">
+      <form method="POST" class="w-50 d-flex justify-content-around">
+        <div class="col-5">
+          <a href="/agendamentos/">
+            <button type="button" class="btn btn-outline-secondary col-12">Cancelar</button>
+          </a>
+        </div>
+        <div class="col-5">
+          {% csrf_token %}
+          <button type="submit" class="btn text-white bg-danger col-12" name="button">
+            Deletar Agendamento
+          </button>
+        </div>
+      </form>
+      <br />
+      <br />
+    </div>
+  </center>
+</div>
+{% endblock %}
