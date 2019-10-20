@@ -6,22 +6,55 @@
   <form action="/registeragenda/" method="POST" class="text-primary">
     {% csrf_token %}
     <div class="form-group col">
-      <div class="container d-flex flex-column align-items-center ">
+      <div class="container">
         <div class="form-row">
           <div class="col-12">
             <label>Dono</label>
-            <input type="text" name="dono" class="form-control" placeholder="Dono" />
+            <input
+              type="text"
+              name="dono"
+              value="{% if form.dono.value %}{{ form.dono.value }}{% endif %}"
+              class="form-control"
+              placeholder="Dono"
+            />
           </div>
+        </div>
+        <div class="form-row">
+          <div class="alert alert-danger col-12">
+            {% if form.dono.errors %}
+            <strong>{{ form.dono.errors | escape }}</strong>
+            {% endif %}
+          </div>
+        </div>
+        <div class="form-row">
           <div class="col-12">
             <label>Nome Animal</label>
-            <input type="text" name="pet" class="form-control" placeholder="Nome do animal" />
+            <input
+              type="text"
+              name="pet"
+              value="{% if form.pet.value %}{{ form.pet.value }}{% endif %}"
+              class="form-control"
+              placeholder="Nome do animal"
+            />
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="alert alert-danger col-12">
+            {% if form.pet.errors %}
+            <strong>{{ form.pet.errors | escape }}</strong>
+            {% endif %}
           </div>
         </div>
         <br />
         <div class="form-row">
           <div id="servicos" class="col-12">
             <label for="servicos">Selecione o serviço</label>
-            <select name="servico" id="servico" class="form-control">
+            <select
+              name="servico"
+              id="servico"
+              value="{% if form.servico.value %}{{ form.servico.value }}{% endif %}"
+              class="form-control"
+            >
               <option selected></option>
               {% for servico in servicos %}
               <option>{{ servico.descricao }}</option>
@@ -29,16 +62,54 @@
             </select>
           </div>
         </div>
+        <div class="form-row">
+          <div class="alert alert-danger col-12">
+            {% if form.servico.errors %}
+            <strong>{{ form.servico.errors | escape }}</strong>
+            {% endif %}
+          </div>
+        </div>
 
         <h4>Selecione a data e hora:</h4>
         <div id="agendamentos">
-          <div class="col-12">
-            <label>Data</label>
-            <input type="date" id="data" name="data" class="form-control" />
+          <div class="form-row">
+            <div class="col-12">
+              <label>Data</label>
+              <input
+                type="date"
+                id="data"
+                name="data"
+                value="{% if form.data.value %}{{ form.data.value }}{% endif %}"
+                class="form-control"
+              />
+            </div>
           </div>
-          <div class="col-12">
-            <label>Hora</label>
-            <input type="time" id="hora" name="hora" class="form-control" />
+          <div class="form-row">
+            <div class="alert alert-danger col-12">
+              {% if form.data.errors %}
+              <strong>{{ form.data.errors | escape }}</strong>
+              {% endif %}
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="col-12">
+              <label>Hora</label>
+              <input
+                type="time"
+                id="hora"
+                name="hora"
+                value="{% if form.hora.value %}{{ form.hora.value }}{% endif %}"
+                class="form-control"
+              />
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="alert alert-danger col-12">
+              {% if form.hora.errors %}
+              <strong>{{ form.hora.errors | escape }}</strong>
+              {% endif %}
+            </div>
           </div>
         </div>
       </div>
