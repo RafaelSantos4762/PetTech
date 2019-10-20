@@ -591,7 +591,7 @@ def agendamento_details(request, id_servico):
         return HttpResponseRedirect("/agendamentos/")
 
     # Retornamos o template no qual o pedido será disposto
-    return render(request, "./details/Agendamentos.html", context)
+    return render(request, "./details/agendamentos.html", context)
 
 '''
 class getProdutos(viewsets.ModelViewSet):
