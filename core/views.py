@@ -400,13 +400,15 @@ def forn_details(request, id_fornecedor):
 def pedidos(request):
 
     clientes = Cliente.objects.all()
+    produtos = Produto.objects.all()
     itens_list = []
     """-------------------------------------------------------------------------
     View para cadastro de pedidos.
     -------------------------------------------------------------------------"""
     context = {
             "titulo":"Cadastro de Pedido",
-            'clientes': clientes
+            'clientes': clientes,
+            'produtos':produtos,
         }    
     # Se dados forem passados via POST
     if request.method == 'POST':
@@ -415,8 +417,7 @@ def pedidos(request):
         #if form.is_valid():
         # pego info do form
         id_cli 	=  request.POST.get('id_cliente')
-        cpf_cnpj 	=  request.POST.get('cpf_cnpj')
-        tipo  		=  request.POST.get('tipo_pessoa')
+        id_cli  = id_cli.split('-')[0].split(' ')[0]
         pagamento 	=  request.POST.get('pagamento')
         vendedor  	=  request.POST.get('vendedor')
         observacao 	=  request.POST.get('observacao')
@@ -480,11 +481,13 @@ def ped_details(request, id_pedido):
     -------------------------------------------------------------------------"""
     # Primeiro, buscamos o fornecedor
     pedido = Pedido.objects.get(id=id_pedido)
+    cliente = Cliente.objects.get(id=pedido.cliente)
     itens_pedido = Itens_pedido.objects.filter(pedido=pedido)
     # Incluímos no contexto
     context = {
       'pedido': pedido,
-      'itens_pedido' :itens_pedido
+      'itens_pedido' :itens_pedido,
+      'cliente' : cliente
     }
     if request.method == 'POST':
         Pedido.objects.get(id=id_pedido).delete()
