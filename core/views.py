@@ -416,60 +416,67 @@ def pedidos(request):
         # se o formulario for valido
         #if form.is_valid():
         # pego info do form
-        id_cli 	=  request.POST.get('id_cliente')
+        print(request.POST)
+        id_cli 	=  request.POST.get('cliente')
         id_cli  = id_cli.split('-')[0].split(' ')[0]
         pagamento 	=  request.POST.get('pagamento')
         vendedor  	=  request.POST.get('vendedor')
         observacao 	=  request.POST.get('observacao')
+
+        form = PedidoForm(initial={'cliente':id_cli, 'pagamento': pagamento, 'vendedor': vendedor, 'observacao': observacao })
+
+        print(form.is_valid())
+
+        if form.is_valid():
         
-        for i in range(1,11):
-            tipo_prod   =  request.POST.get('tipo_prod'+str(i))
-            descricao 	=  request.POST.get('descricao'+str(i))
-            quantidade 	=  request.POST.get('quantidade'+str(i))
-            unitario = request.POST.get('unitario'+str(i))
-            total    = request.POST.get('total')
+            for i in range(1,11):
+                tipo_prod   =  request.POST.get('tipo_prod'+str(i))
+                descricao 	=  request.POST.get('descricao'+str(i))
+                quantidade 	=  request.POST.get('quantidade'+str(i))
+                unitario = request.POST.get('unitario'+str(i))
+                total    = request.POST.get('total')
 
-            if validaitem(tipo_prod,descricao,quantidade,unitario):
-                itens_list.append([tipo_prod,descricao,quantidade,unitario])
+                if validaitem(tipo_prod,descricao,quantidade,unitario):
+                    itens_list.append([tipo_prod,descricao,quantidade,unitario])
 
-        # persisto Pedido
-        try:
-            P = Pedido(
-                cliente = id_cli,
-                cpf_cnpj=cpf_cnpj,
-                tipo=tipo,
-                pagamento=pagamento,
-                vendedor=vendedor,
-                observacao=observacao
-                )
-            
-            P.save()
+            # persisto Pedido
+            try:
+                P = Pedido(
+                    cliente = id_cli,
+                    cpf_cnpj='44444444444',
+                    tipo='tipo',
+                    pagamento=pagamento,
+                    vendedor=vendedor,
+                    observacao=observacao
+                    )
                 
-            for item in itens_list:
+                P.save()
+                    
+                for item in itens_list:
 
-                I = Itens_pedido(
-                    tipo = item[0],
-                    descricao = item[1],
-                    quantidade = int(item[2]),
-                    valor_unitario = float(item[3]),
-                    valor_total =  int(item[2]) * float(float(item[3])),
-                    pedido = P
-                )
+                    I = Itens_pedido(
+                        tipo = item[0],
+                        descricao = item[1],
+                        quantidade = int(item[2]),
+                        valor_unitario = float(item[3]),
+                        valor_total =  int(item[2]) * float(float(item[3])),
+                        pedido = P
+                    )
 
-                I.save()
+                    I.save()
 
-        except Exception as e:
-            print(e)
-            # Incluímos no contexto
-            context['erro'] = e
-            # retorno a pagina de cadastro com mensagem de erro
-            return render(request, "./registration/pedidos.html", context)
+            except Exception as e:
+                print(e)
+                # Incluímos no contexto
+                context['erro'] = e
+                # retorno a pagina de cadastro com mensagem de erro
+                return render(request, "./registration/pedidos.html", context)
 
-        # se não houver erros redireciono para a lista de fornecedores
-        return HttpResponseRedirect("/pedidos/")
-    else:
-        # se for um get, renderizo a pagina de cadastro de fornecedor
-        return render(request, "./registration/pedidos.html", context)
+            # se não houver erros redireciono para a lista de fornecedores
+            return HttpResponseRedirect("/pedidos/")
+        else: 
+            context['form'] = form
+            return render(request, "./registration/pedidos.html", context) 
     # se nenhuma informacao for passada, exibe a pagina de cadastro com o formulario
     return render(request, "./registration/pedidos.html", context)
 
