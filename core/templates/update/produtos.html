@@ -1,19 +1,15 @@
 {% extends "base.html" %} 
 {% block titulo %} 
-  Produtos 
+  {{ titulo }} 
 {% endblock %}
 {% block content %}
-<h2 class="h2 d-flex justify-content-center">Cadastro de Produtos</h2>
+<h2 class="h2 d-flex justify-content-center">Atualizar produto</h2>
 <br />
 <br />
 <div class="h-100 d-flex justify-content-center align-items-center">
-  <form action="/registerprodutos/" method="POST" class="text-primary">
+  <form action="" method="POST" class="text-primary">
     {% csrf_token %}
     <div class="form-row">
-      <!-- <div class="col-8">
-            <label>ID Produto</label>
-            <input type="number" name="id_produto" class="form-control" placeholder="ID Produto">
-          </div> -->
       <div class="col-8">
         <label>Código de Barras</label>
         <input
@@ -22,7 +18,7 @@
           class="form-control"
           placeholder="EAN-13"
           maxlength="13"
-          value="{% if form.cod_bar.value %}{{ form.cod_bar.value }}{%else%}''{% endif %}"
+          value="%{{ produto.cod_bar }}%"
         />
       </div>
       <div class="form-group col-4">
@@ -33,7 +29,7 @@
           max="3000-12-31"
           min="1000-01-01"
           class="form-control"
-          value="{% if form.data_cadastro.value %}{{ form.data_cadastro.value }}{% endif %}"
+          value="{{ produto.data_cadastro }}"
         />
       </div>
     </div>
@@ -59,7 +55,7 @@
           name="descricao"
           class="form-control"
           placeholder="Descrição"
-          value="{% if form.descricao.value %}{{ form.descricao.value }}{% endif %}"
+          value="{{ produto.descricao }}"
         />
       </div>
     </div>
@@ -78,7 +74,7 @@
           name="marca"
           class="form-control"
           placeholder="Marca"
-          value="{% if form.marca.value %}{{ form.marca.value }}{% endif %}"
+          value="{{ produto.marca }}"
         />
       </div>
     </div>
@@ -96,7 +92,7 @@
           type="number"
           step="any"
           name="custo"
-          value="{% if form.custo.value %}{{ form.custo.value }}{% endif %}"
+          value="{{ produto.custo }}"
           class="form-control"
           placeholder="Custo"
         />
@@ -107,7 +103,7 @@
           type="number"
           step="any"
           name="venda"
-          value="{% if form.venda.value %}{{ form.venda.value }}{% endif %}"
+          value="{{ produto.venda }}"
           class="form-control"
           placeholder="Venda"
         />
@@ -117,7 +113,7 @@
         <input
           type="number"
           name="estoque"
-          value="{% if form.estoque.value %}{{ form.estoque.value }}{% endif %}"
+          value="{{ produto.estoque }}"
           class="form-control"
           placeholder="Estoque"
         />
@@ -143,11 +139,13 @@
     <br />
     <br />
     <center class="text-danger">
+      {% if erro  %}
       <h5>{{ erro }}</h5>
+      {% endif %}
     </center>
     <div class="d-flex justify-content-around">
       <div class="col-5">
-        <a href="/produtos">
+        <a href="/produtos/">
           <button type="button" class="btn btn-outline-danger col-12">Cancelar</button>
         </a>
       </div>

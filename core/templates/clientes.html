@@ -19,10 +19,12 @@
       <td>Bairro</td>
       <td>
         <a href="{% url 'registerclientes' %}">
-          <button type="button" class="btn btn-success col-8" name="button">
+          <button type="button" class="btn btn-success col-5" name="button">
             Novo
           </button>
         </a>
+      </td>
+      <td>
       </td>
     </tr>
     {% for cliente in clientes %}
@@ -33,10 +35,17 @@
       <td>{{ cliente.bairro }}</td>
       <td>
         <a href="details/{{ cliente.id }}/ ">
-          <button class="btn btn-outline-primary col-8" type="button" name="button">
+          <button class="btn btn-outline-primary col-5" type="button" name="button">
             Detalhes
           </button>
-        </a>
+        </a>      
+      </td>
+      <td>
+        <a href="updatecliente/{{ cliente.id }} ">
+          <button class="btn btn-primary col-5" type="button" name="button">
+            Alterar
+          </button>
+        </a>          
       </td>
     </tr>
     {% endfor %}

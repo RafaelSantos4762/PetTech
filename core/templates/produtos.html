@@ -30,7 +30,6 @@
     {% for produto in produtos %}
     <tr>
       <td>{{ produto.id }}</td>
-      <!-- <td>{{ produto.id_produto }}</td> -->
       <td>{{ produto.descricao }}</td>
       <td>{{ produto.cod_bar }}</td>
       <td>{{ produto.estoque }}</td>
@@ -42,6 +41,13 @@
           </button>
         </a>
       </td>
+      <td>
+        <a href="updateproduto/{{ produto.id }} ">
+          <button class="btn btn-outline-primary col-8" type="button" name="button">
+            Alterar
+          </button>
+        </a>
+      </td>      
     </tr>
     {% endfor %}
   </tbody>

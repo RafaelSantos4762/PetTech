@@ -127,6 +127,58 @@ def produtos(request):
     return render(request, "./registration/produtos.html", {"form": ProdutoForm()})
 
 @login_required(login_url='/login/')
+def updateproduto(request,id):
+
+    produto = Produto.objects.get(id=id)
+    produto.custo = str(produto.custo)
+    produto.venda = str(produto.venda)
+    produto.data_cadastro = str(produto.data_cadastro.year) +'-'+ str(produto.data_cadastro.month) +'-'+ str(produto.data_cadastro.day)
+
+    context = {
+     "titulo":"Atualizacao de Produto",
+     'produto':produto
+
+    }
+    # Se dados forem passados via POST
+    if request.method == 'POST':
+        form = ProdutoForm(request.POST)
+        # se o formulario for valido
+        if form.is_valid():
+            # pego info do form
+            # id_produto = form.cleaned_data['id_produto']
+            cod_bar = form.cleaned_data['cod_bar']
+            if cod_bar is None:
+                cod_bar=''
+            data_cadastro = form.cleaned_data['data_cadastro']
+            descricao = form.cleaned_data['descricao']
+            marca = form.cleaned_data['marca']
+            custo = form.cleaned_data['custo']
+            venda = form.cleaned_data['venda']
+            estoque = form.cleaned_data['estoque']
+
+            try:
+                produto.cod_bar = cod_bar
+                produto.descricao = descricao
+                produto.marca = marca
+                produto.custo = custo
+                produto.venda = venda
+                produto.estoque = estoque
+
+                produto.save()
+            except Exception as e:
+
+                context['erro'] = e
+                # retorno a pagina de cadastro com mensagem de erro
+                return render(request, "./update/produtos.html", context)
+            # se não houver erros redireciono para a lista de fornecedores
+            return HttpResponseRedirect("/produtos/")
+    
+    form = ProdutoForm()
+    
+    # se nenhuma informacao for passada, exibe a pagina de cadastro com o formulario
+    return render(request, "./update/produtos.html", context)
+
+@login_required(login_url='/login/')
 def list_produtos(request):
     """-------------------------------------------------------------------------
     View que lista produtos.
@@ -248,6 +300,78 @@ def clientes(request):
 
     # se nenhuma informacao for passada, exibe a pagina de cadastro com o formulario
     return render(request, "./registration/clientes.html", {"form": ClienteForm()})
+
+
+@login_required(login_url='/login/')
+def updatecliente(request, id):
+
+    cliente = Cliente.objects.get(pk=id)
+    cliente.data_nasc = str(cliente.data_nasc.year) +'-'+ str(cliente.data_nasc.month) +'-'+ str(cliente.data_nasc.day)
+
+    print(cliente)
+    context = {
+     "titulo":"Alteração de Clientes",
+     'cliente': cliente,
+     "estados":['SP','SC']
+    }
+    # Se dados forem passados via POST
+    if request.method == 'POST':
+        form = ClienteForm(request.POST)
+        # se o formulario for valido
+        if form.is_valid():
+            # pego info do form
+            tipo_pessoa = form.cleaned_data['tipo_pessoa']
+            nome = form.cleaned_data['nome']
+            sexo = form.cleaned_data['sexo']
+            cpf_cnpj = form.cleaned_data['cpf_cnpj']
+            rg = form.cleaned_data['rg']
+            email = form.cleaned_data['email']
+            estado_civil = form.cleaned_data['estado_civil']
+            data_nasc = form.cleaned_data['data_nasc']
+            cep = form.cleaned_data['cep']
+            endereco = form.cleaned_data['endereco']
+            complemento = form.cleaned_data['complemento']
+            numero = form.cleaned_data['numero']
+            cidade = form.cleaned_data['cidade']
+            bairro = form.cleaned_data['bairro']
+            estado = form.cleaned_data['estado']
+            tipo_tel = form.cleaned_data['tipo_tel']
+            tel = form.cleaned_data['tel']
+            # gero codigo uuid para a criação da url de detalhes
+            #cod = uuid.uuid4().hex
+            # persisto cliente
+            try:
+                
+                cliente.tipo_pessoa = tipo_pessoa
+                cliente.nome = nome
+                cliente.sexo = sexo
+                cliente.cpf_cnpj = cpf_cnpj
+                cliente.rg = rg
+                cliente.email = email
+                cliente.estado_civil = estado_civil
+                cliente.data_nasc = data_nasc
+                cliente.cep = cep
+                cliente.endereco = endereco
+                cliente.complemento = complemento
+                cliente.numero = numero
+                cliente.cidade = cidade
+                cliente.bairro = bairro
+                cliente.estado = estado
+                cliente.tipo_tel = tipo_tel
+                cliente.tel = tel
+
+                cliente.save()    
+            # em caso de erro
+            except Exception as e:
+                print(e)
+                # Incluímos no contexto
+                context['erro'] = e
+                # retorno a pagina de cadastro com mensagem de erro
+                return render(request, "./update/clientes.html", context)
+            # se não houver erros redireciono para a lista de clientes
+            return HttpResponseRedirect("/clientes/")
+    # se nenhuma informacao for passada, exibe a pagina de cadastro com o formulario
+    return render(request, "./update/clientes.html",context)
 
 
 @login_required(login_url='/login/')

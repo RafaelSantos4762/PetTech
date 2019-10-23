@@ -14,10 +14,6 @@
             <td>ID</td>
             <td>{{ produto.id }}</td>
           </tr>
-          <!-- <tr>
-            <td>ID fornecedor</td>
-            <td>{{ produto.id_produto }}</td>
-          </tr> -->
           <tr>
             <td>Barcode</td>
             <td>{{ produto.cod_bar }}</td>
@@ -58,11 +54,9 @@
   <br />
   <div class="d-flex justify-content-center w-100">
     <form method="POST" class="w-50 d-flex justify-content-around">
-      <div class="col-5">
-        <a href="/produtos/">
-          <button type="button" class="btn btn-outline-secondary col-12">Cancelar</button>
-        </a>
-      </div>
+      <a href="/produtos/">
+        <button type="button" class="btn btn-outline-secondary col-12">Cancelar</button>
+      </a>      
       <div class="col-5">
         {% csrf_token %}
         <button type="submit" class="btn text-white bg-danger col-12" name="button">

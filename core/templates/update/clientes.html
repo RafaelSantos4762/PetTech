@@ -1,0 +1,323 @@
+{% extends "base.html" %} {% block titulo %} Clientes {% endblock %} {% block content %}
+<h2 class="container">Cadastro de Clientes</h2>
+<br />
+<br />
+<div class="d-flex justify-content-center align-items-center">
+  <form action=" " method="POST" class="text-primary">
+    {% csrf_token %}
+    <div class="form-row">
+      <div class="form-group col-2">
+        <label for="tipo_pessoa">Tipo</label>
+        <select name="tipo_pessoa" id="tipo_pessoa" class="form-control">
+          <option selected>{{ cliente.tipo_pessoa }}</option>
+          <option>Fisica</option>
+          <option>Juridica</option>
+        </select>
+      </div>
+      <div class="col-7">
+        <label>Número do Documento</label>
+        <input
+          type="text"
+          name="cpf_cnpj"
+          value="{{ cliente.cpf_cnpj }}"    
+          class="form-control"
+          placeholder="CPF/CNPJ"
+        />
+      </div>
+      <div class="col-3">
+        <label>RG</label>
+        <input
+          type="text"
+          name="rg"
+          value="{{ cliente.rg }}"
+          class="form-control"
+          placeholder="RG"
+        />
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="alert alert-danger col-2">
+        {% if form.tipo_pessoa.errors %}
+        <strong>{{ form.tipo_pessoa.errors | escape }}</strong>
+        {% endif %}
+      </div>
+      <div class="alert alert-danger col-7">
+        {% if form.cpf_cnpj.errors %}
+        <strong>{{ form.cpf_cnpj.errors | escape }}</strong>
+        {% endif %}
+      </div>
+      <div class="alert alert-danger col-3">
+        {% if form.rg.errors %}
+        <strong>{{ form.rg.errors | escape }}</strong>
+        {% endif %}
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="col-10">
+        <label>Nome</label>
+        <input
+          type="text"
+          name="nome"
+          value="{{ cliente.nome }}"
+          class="form-control"
+          placeholder="Nome"
+        >
+      </div>
+      <div class="form-group col-2">
+        <label for="sexo">Sexo</label>
+        <select name="sexo" id="sexo" class="form-control">
+          <option selected>{{ cliente.sexo }}</option>
+          <option>Masculino</option>
+          <option>Feminino</option>
+          <option>Não se aplica</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="alert alert-danger col-10">
+        {% if form.nome.errors %}
+        <strong>{{ form.nome.errors | escape }}</strong>
+        {% endif %}
+      </div>
+      <div class="alert alert-danger col-2">
+        {% if form.sexo.errors %}
+        <strong>{{ form.sexo.errors | escape }}</strong>
+        {% endif %}
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-4">
+        <label>Data de nascimento</label>
+        <input
+          type="date"
+          name="data_nasc"
+          max="3000-12-31"
+          min="1000-01-01"
+          class="form-control"
+          value="{{ cliente.data_nasc }}"
+        />
+      </div>
+      <div class="form-group col-4">
+        <label for="estado_civil">Estado Civil</label>
+        <select name="estado_civil" id="estado_civil" class="form-control">
+          <option selected>{{cliente.estado_civil}}</option>
+          <option>Solteiro(a)</option>
+          <option>Casado(a)</option>
+          <option>Divorciado(a)</option>
+          <option>Viúvo(a)</option>
+          <option>Não se aplica</option>
+        </select>
+      </div>
+      <div class="col-4">
+        <label>CEP</label>
+        <input type="text" name="cep" class="form-control" placeholder="CEP" value="{{ cliente.cep }}" />
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="alert alert-danger col-4">
+        {% if form.data_nasc.errors %}
+        <strong>{{ form.data_nasc.errors | escape }}</strong>
+        {% endif %}
+      </div>
+      <div class="alert alert-danger col-4">
+        {% if form.estado_civil.errors %}
+        <strong>{{ form.estado_civil.errors | escape }}</strong>
+        {% endif %}
+      </div>
+      <div class="alert alert-danger col-4">
+        {% if form.cep.errors %}
+        <strong>{{ form.cep.errors | escape }}</strong>
+        {% endif %}
+      </div>
+    </div>
+    <div class="form-row mb-3">
+      <div class="col-5">
+        <label>Endereço</label>
+        <input
+          type="text"
+          name="endereco"
+          value="{{ cliente.endereco }}"
+          class="form-control"
+          placeholder="Endereço"
+        />
+      </div>
+      <div class="col-5">
+        <label>Complemento</label>
+        <input
+          type="text"
+          name="complemento"
+          value="{{ cliente.endereco }}"
+          class="form-control"
+          placeholder="Complemento"
+        />
+      </div>
+      <div class="col-2">
+        <label>Número</label>
+        <input
+          type="number"
+          name="numero"
+          value="{{ cliente.numero }}"
+          class="form-control"
+          placeholder="Número"
+        />
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="alert alert-danger col-5">
+        {% if form.endereco.errors %}
+        <strong>{{ form.endereco.errors | escape }}</strong>
+        {% endif %}
+      </div>
+      <div class="alert alert-danger col-5">
+        {% if form.complemento.errors %}
+        <strong>{{ form.complemento.errors | escape }}</strong>
+        {% endif %}
+      </div>
+      <div class="alert alert-danger col-2">
+        {% if form.numero.errors %}
+        <strong>{{ form.numero.errors | escape }}</strong>
+        {% endif %}
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="col-5">
+        <label>Bairro</label>
+        <input
+          type="text"
+          name="bairro"
+          value="{{ cliente.bairro }}"
+          class="form-control"
+          placeholder="Bairro"
+        />
+      </div>
+      <div class="col-4">
+        <label>Cidade</label>
+        <input
+          type="text"
+          name="cidade"
+          value="{{ cliente.cidade }}"
+          class="form-control"
+          placeholder="Cidade"
+        />
+      </div>
+      <div class="form-group col">
+        <label for="state">Estado</label>
+        <select
+          name="estado"
+          id="estado"
+          value="{% if form.estado.value %}{{ form.estado.value }}{% endif %}"
+          class="form-control"
+        >
+          <option selected>{{ cliente.estado }}</option>
+          <option>AC</option>
+          <option>AL</option>
+          <option>AP</option>
+          <option>AM</option>
+          <option>BA</option>
+          <option>CE</option>
+          <option>DF</option>
+          <option>ES</option>
+          <option>GO</option>
+          <option>MA</option>
+          <option>MT</option>
+          <option>MS</option>
+          <option>MG</option>
+          <option>PA</option>
+          <option>PB</option>
+          <option>PR</option>
+          <option>PE</option>
+          <option>PI</option>
+          <option>RJ</option>
+          <option>RN</option>
+          <option>RS</option>
+          <option>RO</option>
+          <option>RR</option>
+          <option>SC</option>
+          <option>SE</option>
+          <option>TO</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="alert alert-danger col-5">
+        {% if form.bairro.errors %}
+        <strong>{{ form.bairro.errors | escape }}</strong>
+        {% endif %}
+      </div>
+      <div class="alert alert-danger col-4">
+        {% if form.cidade.errors %}
+        <strong>{{ form.cidade.errors | escape }}</strong>
+        {% endif %}
+      </div>
+      <div class="alert alert-danger col">
+        {% if form.estado.errors %}
+        <strong>{{ form.estado.errors | escape }}</strong>
+        {% endif %}
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="col-4">
+        <label>Telefone</label>
+        <input
+          type="tel"
+          name="tel"
+          value="{{ cliente.tel }}"
+          class="form-control"
+          placeholder="Telefone"
+        />
+      </div>
+
+      <div class="form-group col-2">
+        <label for="tipo_tel">Tipo</label>
+        <select name="tipo_tel" id="tipo_tel" class="form-control">
+          <option selected>{{ cliente.tipo_tel }}</option>
+          <option>Residencial</option>
+          <option>Celular</option>
+          <option>Comercial</option>
+        </select>
+      </div>
+
+      <div class="col-6">
+        <label>E-mail</label>
+        <input
+          type="email"
+          name="email"
+          value="{{ cliente.email }}"
+          class="form-control"
+          placeholder="E-mail"
+        />
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="alert alert-danger col-4">
+        {% if form.tel.errors %}
+        <strong>{{ form.tel.errors | escape }}</strong>
+        {% endif %}
+      </div>
+      <div class="alert alert-danger col-2">
+        {% if form.tipo_tel.errors %}
+        <strong>{{ form.tipo_tel.errors | escape }}</strong>
+        {% endif %}
+      </div>
+      <div class="alert alert-danger col-6">
+        {% if form.email.errors %}
+        <strong>{{ form.email.errors | escape }}</strong>
+        {% endif %}
+      </div>
+    </div>
+    <br />
+    <br />
+    <center class="text-danger">
+      <h5>{{ erro }}</h5>
+    </center>
+    <div class="d-flex justify-content-around">
+      <div class="col-5">
+        <a href="/clientes/">
+          <button type="button" class="btn btn-outline-danger col-12">Cancelar</button>
+        </a>
+      </div>
+      <button type="submit" class="btn btn-outline-primary col-5">Cadastrar</button>
+    </div>
+  </form>
+</div>
+{% endblock %}
