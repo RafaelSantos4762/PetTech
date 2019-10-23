@@ -55,18 +55,11 @@ class ProdutoForm(forms.Form):
 
 
 class PedidoForm(forms.Form):
-
     cliente = forms.IntegerField()
-    cpf_cnpj = forms.CharField(max_length=14,required=True)
-    tipo  = forms.CharField(max_length=20,required=True)
     pagamento = forms.CharField(max_length=20,required=True)
     vendedor  = forms.CharField(max_length=150,required=True)
     observacao = forms.CharField(max_length=200,required=True) 
-    tipo = forms.CharField(max_length=14,required=True)
-    descricao = forms.CharField(max_length=150,required=True) 
-    quantidade = forms.IntegerField()
-    valor_unitario = forms.DecimalField(max_digits=12, decimal_places=2,required=True)
-    valor_total = forms.DecimalField(max_digits=12, decimal_places=2,required=True)
+
 
 class AgendamentoForm(forms.Form):
     dono = forms.CharField(required=True)
