@@ -1,190 +1,232 @@
-{% extends "base.html" %}
-
-{% block titulo %}
- Pedidos
-{% endblock  %}
-
-{% block content %}
-    <h2 class="container">{{ titulo }}</h2>
-    <br>
-    <br>
+{% extends "base.html" %} {% block titulo %} Pedidos {% endblock %} {% block content %}
+<div class="h-100 d-flex flex-column justify-content-center align-items-center">
+  <h2>{{ titulo }}</h2>
+  <br />
+  <br />
+  <form
+    action="/registerpedidos/"
+    method="POST"
+    class="text-primary d-flex flex-column align-items-center"
+  >
+    {% csrf_token %}
     <div class="container">
-      <form action="/registerpedidos/" method="POST" class="text-primary">
-        {% csrf_token %}
+      <div class="form-row">
         <div class="col-6">
-            <label for="id_clientes">ID cliente</label>
-            <select name="descricao" id="descricao" class="form-control">
-                <option selected></option>
-                {% for produto in produtos %}
-                    <option>{{produto.id}} - {{produto.descricao}}</option>
-                {% endfor %}
-            </select>
+          <label for="id_clientes">ID cliente</label>
+          <select name="descricao" id="descricao" class="form-control">
+            <option selected></option>
+            {% for produto in produtos %}
+            <option>{{ produto.id }} - {{ produto.descricao }}</option>
+            {% endfor %}
+          </select>
         </div>
-          <div class="col-6">
-            <label>Pagamento</label>
-            <input type="date" name="pagamento" max="3000-12-31" min="1000-01-01" class="form-control">
-          </div>
-          <div class="col-6">
-            <label>Observações</label>
-            <input type="text" name="observacao" class="form-control" placeholder="observacao">
-          </div>
-          <div class="col-6">
-            <label>Vendedor</label>
-            <input type="text" name="vendedor" class="form-control" placeholder="Vendedor">
-          </div>
+        <div class="col-6">
+          <label>Pagamento</label>
+          <input
+            type="date"
+            name="pagamento"
+            max="3000-12-31"
+            min="1000-01-01"
+            class="form-control"
+          />
         </div>
-        <br>
-        <br>
-        <h2 class="container" >Itens do Pedido</h2>
-        <br>
-        <br>
-        <div class="container">
-          <table id="tb_items" class="table table-striped">
-              <thead>
-                <tr>
-                  <th>Produto/Serviço</th>
-                  <th>Quantidade</th>
-                  <th>Valor unitário</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr id="tritem1" class="tritems" >
-                  <td>
-                    <select name="descricao1" id="descricao1" class="form-control">
-                      <option selected></option>
-                      {% for produto in produtos %}
-                          <option>{{produto.id}} - {{produto.descricao}}</option>
-                      {% endfor %}
-                    </select>
-                  </td>
-                  <td><input type="text" id="quantidade1" name="quantidade1" placeholder="Quantidade"></td>
-                  <td><input type="text" id="unitario1" name="unitario1" placeholder="Unitário">
-                </tr>
-                <tr id="tritem2" class="tritems" style="display: none">
-                  <td>
-                    <select name="descricao2" id="descricao2" class="form-control">
-                        <option selected></option>
-                        {% for produto in produtos %}
-                            <option>{{produto.id}} - {{produto.descricao}}</option>
-                        {% endfor %}
-                    </select>
-                  </td>
-                  <td><input type="text" id="quantidade2" name="quantidade2" placeholder="Quantidade"></td>
-                  <td><input type="text" id="unitario2" name="unitario2" placeholder="Unitário">
-                </tr>
-                <tr id="tritem3" class="tritems" style="display: none">
-                  <td>
-                    <select name="descricao3" id="descricao3" class="form-control">
-                <option selected></option>
-                {% for produto in produtos %}
-                    <option>{{produto.id}} - {{produto.descricao}}</option>
-                {% endfor %}
-            </select>
-                  </td>
-                  <td><input type="text" id="quantidade3" name="quantidade3" placeholder="Quantidade"></td>
-                  <td><input type="text" id="unitario3" name="unitario3" placeholder="Unitário">
-                </tr>
-                <tr id="tritem4" class="tritems" style="display: none">
-                  <td>
-                    <select name="descricao4" id="descricao4" class="form-control">
-                <option selected></option>
-                {% for produto in produtos %}
-                    <option>{{produto.id}} - {{produto.descricao}}</option>
-                {% endfor %}
-            </select>
-                  </td>
-                  <td><input type="text" id="quantidade4" name="quantidade4" placeholder="Quantidade"></td>
-                  <td><input type="text" id="unitario4" name="unitario4" placeholder="Unitário">
-                </tr>
-                <tr id="tritem5" class="tritems" style="display: none">
-                  <td>
-                    <select name="descricao5" id="descricao5" class="form-control">
-                        <option selected></option>
-                        {% for produto in produtos %}
-                            <option>{{produto.id}} - {{produto.descricao}}</option>
-                        {% endfor %}
-                    </select>
-                  </td>
-                  <td><input type="text" id="quantidade5" name="quantidade5" placeholder="Quantidade"></td>
-                  <td><input type="text" id="unitario5" name="unitario5" placeholder="Unitário">
-                </tr>
-                <tr id="tritem6" class="tritems" style="display: none">
-                  <td>
-                    <select name="descricao6" id="descricao6" class="form-control">
-                <option selected></option>
-                {% for produto in produtos %}
-                    <option>{{produto.id}} - {{produto.descricao}}</option>
-                {% endfor %}
-            </select>
-                  </td>
-                  <td><input type="text" id="quantidade6" name="quantidade6" placeholder="Quantidade"></td>
-                  <td><input type="text" id="unitario6" name="unitario6" placeholder="Unitário">
-                </tr>
-                <tr id="tritem7" class="tritems" style="display: none">
-                  <td>
-                    <select name="descricao7" id="descricao7" class="form-control">
-                <option selected></option>
-                {% for produto in produtos %}
-                    <option>{{produto.id}} - {{produto.descricao}}</option>
-                {% endfor %}
-            </select>
-                  </td>
-                  <td><input type="text" id="quantidade7" name="quantidade7" placeholder="Quantidade"></td>
-                  <td><input type="text" id="unitario7" name="unitario7" placeholder="Unitário">
-                </tr>
-                <tr id="tritem8" class="tritems" style="display: none">
-                  <td>
-                    <select name="descricao8" id="descricao8" class="form-control">
-                <option selected></option>
-                {% for produto in produtos %}
-                    <option>{{produto.id}} - {{produto.descricao}}</option>
-                {% endfor %}
-            </select>
-                  </td>
-                  <td><input type="text" id="quantidade8" name="quantidade8" placeholder="Quantidade"></td>
-                  <td><input type="text" id="unitario8" name="unitario8" placeholder="Unitário">
-                </tr>
-                <tr id="tritem9" class="tritems" style="display: none">
-                  <td>
-                    <select name="descricao9" id="descricao9" class="form-control">
-                        <option selected></option>
-                        {% for produto in produtos %}
-                            <option>{{produto.id}} - {{produto.descricao}}</option>
-                        {% endfor %}
-                    </select>
-                  </td>
-                  <td><input type="text" id="quantidade9" name="quantidade9" placeholder="Quantidade"></td>
-                  <td><input type="text" id="unitario9" name="unitario9" placeholder="Unitário">
-                </tr>
-                <tr id="tritem10" class="tritems" style="display: none">
-                  <td>
-                    <select name="descricao10" id="descricao10" class="form-control">
-                <option selected></option>
-                {% for produto in produtos %}
-                    <option>{{produto.id}} - {{produto.descricao}}</option>
-                {% endfor %}
-            </select>
-                  </td>
-                  <td><input type="text" id="quantidade10" name="quantidade10" placeholder="Quantidade"></td>
-                  <td><input type="text" id="unitario10" name="unitario10" placeholder="Unitário">
-                </tr>              
-              <br/>
-              <br/>
-              <button type="button" onclick="CreateItem()">Add Item</button>
-              </tbody>
-              </table>      
+      </div>
+      <div class="form-row">
+        <div class="col-6">
+          <label>Observações</label>
+          <input type="text" name="observacao" class="form-control" placeholder="observacao" />
         </div>
-        <br>
-        <br>
-        <br>
-        <center class="text-danger">
-        {% if erro %}
-            <h5>{{ erro }}</h5>
-        {% endif %}
-        </center>
-        <center>
-          <input type='submit' class="btn text-white bg-primary" value='Cadastrar'/>
-        </center>
-      </form>
+        <div class="col-6">
+          <label>Vendedor</label>
+          <input type="text" name="vendedor" class="form-control" placeholder="Vendedor" />
+        </div>
+      </div>
     </div>
-{% endblock  %}
+
+    <br />
+    <h2>Itens do Pedido</h2>
+    <br />
+    <div class="container">
+      <table id="tb_items" class="table table-striped">
+        <thead>
+          <tr>
+            <th>Produto/Serviço</th>
+            <th>Quantidade</th>
+            <th>Valor unitário</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr id="tritem1" class="tritems">
+            <td>
+              <select name="descricao1" id="descricao1" class="form-control">
+                <option selected></option>
+                {% for produto in produtos %}
+                <option>{{ produto.id }} - {{ produto.descricao }}</option>
+                {% endfor %}
+              </select>
+            </td>
+            <td>
+              <input class="form-control" type="text" id="quantidade1" name="quantidade1" placeholder="Quantidade" />
+            </td>
+            <td><input class="form-control" type="text" id="unitario1" name="unitario1" placeholder="Unitário" /></td>
+          </tr>
+
+          <tr id="tritem2" class="tritems" style="display: none">
+            <td>
+              <select name="descricao2" id="descricao2" class="form-control">
+                <option selected></option>
+                {% for produto in produtos %}
+                <option>{{ produto.id }} - {{ produto.descricao }}</option>
+                {% endfor %}
+              </select>
+            </td>
+            <td>
+              <input class="form-control" type="text" id="quantidade2" name="quantidade2" placeholder="Quantidade" />
+            </td>
+            <td><input class="form-control" type="text" id="unitario2" name="unitario2" placeholder="Unitário" /></td>
+          </tr>
+
+          <tr id="tritem3" class="tritems" style="display: none">
+            <td>
+              <select name="descricao3" id="descricao3" class="form-control">
+                <option selected></option>
+                {% for produto in produtos %}
+                <option>{{ produto.id }} - {{ produto.descricao }}</option>
+                {% endfor %}
+              </select>
+            </td>
+            <td>
+              <input class="form-control" type="text" id="quantidade3" name="quantidade3" placeholder="Quantidade" />
+            </td>
+            <td><input class="form-control" type="text" id="unitario3" name="unitario3" placeholder="Unitário" /></td>
+          </tr>
+
+          <tr id="tritem4" class="tritems" style="display: none">
+            <td>
+              <select name="descricao4" id="descricao4" class="form-control">
+                <option selected></option>
+                {% for produto in produtos %}
+                <option>{{ produto.id }} - {{ produto.descricao }}</option>
+                {% endfor %}
+              </select>
+            </td>
+            <td>
+              <input class="form-control" type="text" id="quantidade4" name="quantidade4" placeholder="Quantidade" />
+            </td>
+            <td><input class="form-control" type="text" id="unitario4" name="unitario4" placeholder="Unitário" /></td>
+          </tr>
+
+          <tr id="tritem5" class="tritems" style="display: none">
+            <td>
+              <select name="descricao5" id="descricao5" class="form-control">
+                <option selected></option>
+                {% for produto in produtos %}
+                <option>{{ produto.id }} - {{ produto.descricao }}</option>
+                {% endfor %}
+              </select>
+            </td>
+            <td>
+              <input class="form-control" type="text" id="quantidade5" name="quantidade5" placeholder="Quantidade" />
+            </td>
+            <td><input class="form-control" type="text" id="unitario5" name="unitario5" placeholder="Unitário" /></td>
+          </tr>
+
+          <tr id="tritem6" class="tritems" style="display: none">
+            <td>
+              <select name="descricao6" id="descricao6" class="form-control">
+                <option selected></option>
+                {% for produto in produtos %}
+                <option>{{ produto.id }} - {{ produto.descricao }}</option>
+                {% endfor %}
+              </select>
+            </td>
+            <td>
+              <input class="form-control" type="text" id="quantidade6" name="quantidade6" placeholder="Quantidade" />
+            </td>
+            <td><input class="form-control" type="text" id="unitario6" name="unitario6" placeholder="Unitário" /></td>
+          </tr>
+
+          <tr id="tritem7" class="tritems" style="display: none">
+            <td>
+              <select name="descricao7" id="descricao7" class="form-control">
+                <option selected></option>
+                {% for produto in produtos %}
+                <option>{{ produto.id }} - {{ produto.descricao }}</option>
+                {% endfor %}
+              </select>
+            </td>
+            <td>
+              <input class="form-control" type="text" id="quantidade7" name="quantidade7" placeholder="Quantidade" />
+            </td>
+            <td><input class="form-control" type="text" id="unitario7" name="unitario7" placeholder="Unitário" /></td>
+          </tr>
+
+          <tr id="tritem8" class="tritems" style="display: none">
+            <td>
+              <select name="descricao8" id="descricao8" class="form-control">
+                <option selected></option>
+                {% for produto in produtos %}
+                <option>{{ produto.id }} - {{ produto.descricao }}</option>
+                {% endfor %}
+              </select>
+            </td>
+            <td>
+              <input class="form-control" type="text" id="quantidade8" name="quantidade8" placeholder="Quantidade" />
+            </td>
+            <td><input class="form-control" type="text" id="unitario8" name="unitario8" placeholder="Unitário" /></td>
+          </tr>
+
+          <tr id="tritem9" class="tritems" style="display: none">
+            <td>
+              <select name="descricao9" id="descricao9" class="form-control">
+                <option selected></option>
+                {% for produto in produtos %}
+                <option>{{ produto.id }} - {{ produto.descricao }}</option>
+                {% endfor %}
+              </select>
+            </td>
+            <td>
+              <input class="form-control" type="text" id="quantidade9" name="quantidade9" placeholder="Quantidade" />
+            </td>
+            <td><input class="form-control" type="text" id="unitario9" name="unitario9" placeholder="Unitário" /></td>
+          </tr>
+
+          <tr id="tritem10" class="tritems" style="display: none">
+            <td>
+              <select name="descricao10" id="descricao10" class="form-control">
+                <option selected></option>
+                {% for produto in produtos %}
+                <option>{{ produto.id }} - {{ produto.descricao }}</option>
+                {% endfor %}
+              </select>
+            </td>
+            <td>
+              <input class="form-control" type="text" id="quantidade10" name="quantidade10" placeholder="Quantidade" />
+            </td>
+            <td><input class="form-control" type="text" id="unitario10" name="unitario10" placeholder="Unitário" /></td>
+          </tr>
+
+          <br />
+          <br />
+        </tbody>
+      </table>
+    </div>
+    <button type="button" class="btn btn-primary col-5" onclick="CreateItem()">
+      Add Item
+    </button>
+    <br />
+    <br />
+    {% if erro %}
+    <h5>{{ erro }}</h5>
+    {% endif %}
+    <div class="d-flex justify-content-around w-50">
+      <div class="col-6">
+        <a href="/pedidos/">
+          <button type="button" class="btn btn-outline-danger col-12">Cancelar</button>
+        </a>
+      </div>
+      <button type="submit" class="btn btn-outline-primary col-5">Cadastrar</button>
+    </div>
+  </form>
+</div>
+{% endblock %}
