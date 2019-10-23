@@ -1,77 +1,86 @@
-{% extends "base.html" %}
-
-{% block titulo %}
-   Pedido
-{% endblock  %}
-
-{% block content %}
-    <div class="container">
-      <center>
-          <h1>Detalhes de Pedido</h1>
-            <form method="POST" onclick='confirm_del()'>
-              {% csrf_token %}
-              <button type="submit" class="btn text-white bg-danger col-7" name="button" id=pedido_del>
-                Deletar Pedido
-              </button>
-            </form>
-            <br><br>
-        </div>
-      </center>
-      <br>
-      <br>
-      <center>
-      <div class="form-row container">
+{% extends "base.html" %} {% block titulo %} Pedido {% endblock %} {% block content %}
+<center>
+  <div class="container">
+    <br />
+    <br />
+    <h2>Detalhe do Pedido</h2>
+    <br />
+    <br />
+    <div class="form-row container">
+      <table class="table container w-50">
+        <tbody>
+          <tr>
+            <td>ID Pedido</td>
+            <td>{{ pedido.id }}</td>
+          </tr>
+          <tr>
+            <td>CPF/CNPJ</td>
+            <td>{{ pedido.cpf_cnpj }}</td>
+          </tr>
+          <tr>
+            <td>Cliente</td>
+            <td>{{ cliente.nome }}</td>
+          </tr>
+          <tr>
+            <td>Pagamento</td>
+            <td>{{ pedido.pagamento }}</td>
+          </tr>
+          <tr>
+            <td>Observacao</td>
+            <td>{{ pedido.observacao }}</td>
+          </tr>
+          <tr>
+            <td>vendedor</td>
+            <td>{{ pedido.vendedor }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="container">
+        <h2 class="container">Itens do Pedido</h2>
         <table class="table container">
-          <tbody>
-              <tr>
-                <td>ID Pedido</td>
-                <td>{{ pedido.id }}</td>
-              </tr>
-              <tr>
-                <td>CPF/CNPJ</td>
-                <td>{{ pedido.cpf_cnpj }}</td>
-              </tr>
-              <tr>
-                <td>Cliente</td>
-                <td>{{ cliente.nome }}</td>
-              </tr>              
-              <tr>
-                <td>Pagamento</td>
-                <td>{{ pedido.pagamento }}</td>
-              </tr>
-              <tr>
-                <td>Observacao</td>
-                <td>{{ pedido.observacao }}</td>
-              </tr>
-              <tr>
-                <td>vendedor</td>
-                <td>{{ pedido.vendedor }}</td>
-              </tr>
-          </tbody>
+          <tr>
+            <td>Tipo</td>
+            <td>Descricao</td>
+            <td>Quantidade</td>
+            <td>valor unitário</td>
+            <td>valor Total</td>
+          </tr>
+          {% for item in itens_pedido %}
+          <tr>
+            <td>{{ item.tipo }}</td>
+            <td>{{ item.descricao }}</td>
+            <td>{{ item.quantidade }}</td>
+            <td>{{ item.valor_unitario }}</td>
+            <td>{{ item.valor_total }}</td>
+          </tr>
+          {% endfor %}
         </table>
-        <div class=container>
-          <h2 class=container> Itens do Pedido</h2>
-          <table class="table container">
-                <tr>
-                  <td>Tipo</td>
-                  <td>Descricao</td>
-                  <td>Quantidade</td>
-                  <td>valor unitário</td>
-                  <td>valor Total</td>
-                </tr>
-                {% for item in itens_pedido %}
-                  <tr>
-                    <td>{{ item.tipo }}</td>
-                    <td>{{ item.descricao}}</td>
-                    <td>{{ item.quantidade }}</td>
-                    <td>{{ item.valor_unitario }}</td>
-                    <td>{{ item.valor_total }}</td>
-                  </tr>
-                {% endfor %}
-          </table>
-        </div>
-      </center>
       </div>
-      <br>
-      <br>
-{% endblock  %}
+    </div>
+    <br />
+    <br />
+    <div class="d-flex justify-content-center w-100">
+      <form method="POST" class="w-50 d-flex justify-content-around" onclick="confirm_del()">
+        <div class="col-5">
+          <a href="/pedidos/">
+            <button type="button" class="btn btn-outline-secondary col-12">Cancelar</button>
+          </a>
+        </div>
+        <div class="col-5">
+          {% csrf_token %}
+          <button
+            type="submit"
+            class="btn text-white bg-danger col-12"
+            name="button"
+            id="pedido_del"
+          >
+            Deletar Pedido
+          </button>
+        </div>
+      </form>
+      <br />
+      <br />
+    </div>
+  </div>
+</center>
+{% endblock %}
