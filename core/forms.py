@@ -58,7 +58,7 @@ class PedidoForm(forms.Form):
     cliente = forms.IntegerField()
     pagamento = forms.CharField(max_length=20,required=True)
     vendedor  = forms.CharField(max_length=150,required=True)
-    observacao = forms.CharField(max_length=200,required=True) 
+    observacao = forms.CharField(max_length=200,required=False) 
 
 
 class AgendamentoForm(forms.Form):
