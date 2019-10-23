@@ -12,8 +12,8 @@
     <div class="container">
       <div class="form-row">
         <div class="col-6">
-          <label for="id_clientes">ID cliente</label>
-          <select name="descricao" id="descricao" class="form-control">
+          <label for="id_cliente">ID cliente</label>
+          <select name="id_cliente" id="descricao" class="form-control">
             <option selected></option>
             {% for produto in produtos %}
             <option>{{ produto.id }} - {{ produto.descricao }}</option>
