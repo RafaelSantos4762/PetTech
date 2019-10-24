@@ -457,7 +457,6 @@ def pedidos(request):
                 for item in itens_list:
 
                     I = Itens_pedido(
-                        tipo = item[0],
                         descricao = item[1],
                         quantidade = int(item[2]),
                         valor_unitario = float(item[3]),
