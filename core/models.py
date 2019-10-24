@@ -128,7 +128,6 @@ class Itens_pedido(models.Model):
     
     TIPOS = [('P','S')]
 
-    tipo = models.CharField(max_length=14, choices=TIPOS, blank=False)
     descricao = models.CharField(max_length=150, blank=False) 
     quantidade = models.IntegerField()
     valor_unitario = models.DecimalField(max_digits=12, decimal_places=2,blank=False)
