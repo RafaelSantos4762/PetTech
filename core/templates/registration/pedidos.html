@@ -16,7 +16,7 @@
           <select name="cliente" id="descricao" class="form-control">
             <option selected></option>
             {% for produto in produtos %}
-            <option>{{ produto.id }} - {{ produto.descricao }}</option>
+            <option value="{{ produto.id }}">{{ produto.id }} - {{ produto.descricao }}</option>
             {% endfor %}
           </select>
         </div>
@@ -32,13 +32,38 @@
         </div>
       </div>
       <div class="form-row">
+        <div class="alert alert-danger col-6">
+          {% if form.cliente.errors %}
+          <strong>{{ form.cliente.errors | escape }}</strong>
+          {% endif %}
+        </div>
+        <div class="alert alert-danger col-6">
+          {% if form.pagamento.errors %}
+          <strong>{{ form.pagamento.errors | escape }}</strong>
+          {% endif %}
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="col-6">
+          <label>Vendedor</label>
+          <input type="text" name="vendedor" class="form-control" placeholder="Vendedor" />
+        </div>
         <div class="col-6">
           <label>Observações</label>
           <input type="text" name="observacao" class="form-control" placeholder="observacao" />
         </div>
-        <div class="col-6">
-          <label>Vendedor</label>
-          <input type="text" name="vendedor" class="form-control" placeholder="Vendedor" />
+      </div>
+      <div class="form-row">
+        <div class="alert alert-danger col-6">
+          {% if form.vendedor.errors %}
+          <strong>{{ form.vendedor.errors | escape }}</strong>
+          {% endif %}
+        </div>
+
+        <div class="alert alert-danger col-6">
+          {% if form.observacoes.errors %}
+          <strong>{{ form.email.errors | escape }}</strong>
+          {% endif %}
         </div>
       </div>
     </div>
@@ -46,6 +71,13 @@
     <br />
     <h2>Itens do Pedido</h2>
     <br />
+    <div class="alert alert-danger col-12">
+      <center>
+        {% if item_error %}
+        <strong>{{ item_error | escape }}</strong>
+        {% endif %}
+      </center>
+    </div>
     <div class="container">
       <table id="tb_items" class="table table-striped">
         <thead>

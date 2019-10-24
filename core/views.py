@@ -395,6 +395,12 @@ def forn_details(request, id_fornecedor):
     # Retornamos o template no qual o fornecedor será disposto
     return render(request, "./details/fornecedores.html", context)
 
+def verifica_item_pedido(request):
+    descricao 	=  request.POST.get('descricao1')
+    quantidade 	=  request.POST.get('quantidade1')
+    unitario = request.POST.get('unitario1')
+    return (descricao != None and descricao != '') and (quantidade != None and quantidade != '') and (unitario != None and unitario != '')
+
 
 @login_required(login_url='/login/')
 def pedidos(request):
@@ -416,18 +422,14 @@ def pedidos(request):
         # se o formulario for valido
         #if form.is_valid():
         # pego info do form
-        print(request.POST)
-        id_cli 	=  request.POST.get('cliente')
-        id_cli  = id_cli.split('-')[0].split(' ')[0]
+        id_cli 	=  request.POST.get('cliente').split('-')[0].split(' ')[0]
         pagamento 	=  request.POST.get('pagamento')
         vendedor  	=  request.POST.get('vendedor')
         observacao 	=  request.POST.get('observacao')
 
-        form = PedidoForm(initial={'cliente':id_cli, 'pagamento': pagamento, 'vendedor': vendedor, 'observacao': observacao })
+        form = PedidoForm(request.POST)
 
-        print(form.is_valid())
-
-        if form.is_valid():
+        if form.is_valid() and verifica_item_pedido(request):
         
             for i in range(1,11):
                 tipo_prod   =  request.POST.get('tipo_prod'+str(i))
@@ -476,6 +478,8 @@ def pedidos(request):
             return HttpResponseRedirect("/pedidos/")
         else: 
             context['form'] = form
+            if not(verifica_item_pedido(request)):
+                context['item_error'] = 'Obrigatório pelo menos 1 item!'
             return render(request, "./registration/pedidos.html", context) 
     # se nenhuma informacao for passada, exibe a pagina de cadastro com o formulario
     return render(request, "./registration/pedidos.html", context)
