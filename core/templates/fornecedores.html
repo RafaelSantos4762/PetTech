@@ -33,13 +33,27 @@
       <td>{{ fornecedor.bairro }}</td>
       <td>
         <a href="details/{{ fornecedor.id }}/">
-          <button class="btn btn-outline-primary col-8" type="button" name="button">
+          <button class="btn btn-outline-primary col-6" type="button" name="button">
             Detalhes
           </button>
         </a>
       </td>
+      <td>
+          <a href="updatefornecedor/{{ fornecedor.id }}">
+            <button class="btn btn-outline-primary col-6" type="button" name="button">
+              Alterar
+            </button>
+          </a>
+        </td>      
     </tr>
     {% endfor %}
+    <br />
+    <br />
+    {% if erro %}
+    <center class="text-danger">
+      <h5>{{ erro }}</h5>
+    </center>
+    {% endif %}    
   </tbody>
 </table>
 <br /><br />
