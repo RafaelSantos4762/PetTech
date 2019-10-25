@@ -33,7 +33,7 @@
           max="3000-12-31"
           min="1000-01-01"
           class="form-control"
-          value="{% if form.data_cadastro.value %}{{ form.data_cadastro.value }}{% endif %}"
+          value="{{ data_cadastro }}"
         />
       </div>
     </div>
@@ -147,7 +147,7 @@
     </center>
     <div class="d-flex justify-content-around">
       <div class="col-5">
-        <a href="/produtos">
+        <a href="/produtos/">
           <button type="button" class="btn btn-outline-danger col-12">Cancelar</button>
         </a>
       </div>
