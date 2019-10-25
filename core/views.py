@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
+from datetime import date
 
 from .models import Cliente, Fornecedor, Produto,Pedido,Itens_pedido,Servicos,Agendamentos
 from .validations import validaitem
@@ -74,7 +75,9 @@ def produtos(request):
     View para cadastro de produto.
     -------------------------------------------------------------------------"""
     context = {
-     "titulo":"Cadastro de Produto"
+     'form': ProdutoForm(),
+     "titulo":"Cadastro de Produto",
+     'data_cadastro': date.today().strftime('%Y-%m-%d')
     }
     # Se dados forem passados via POST
     if request.method == 'POST':
@@ -119,12 +122,10 @@ def produtos(request):
                 return render(request, "./registration/produtos.html", context)
             # se não houver erros redireciono para a lista de fornecedores
             return HttpResponseRedirect("/produtos/")
-        else:
-            # se for um get, renderizo a pagina de cadastro de fornecedor
-            return render(request, "./registration/produtos.html", {"form": form})
-
+    
+    context['form'] = form
     # se nenhuma informacao for passada, exibe a pagina de cadastro com o formulario
-    return render(request, "./registration/produtos.html", {"form": ProdutoForm()})
+    return render(request, "./registration/produtos.html", context)
 
 @login_required(login_url='/login/')
 def updateproduto(request,id):
@@ -172,7 +173,6 @@ def updateproduto(request,id):
                 return render(request, "./update/produtos.html", context)
             # se não houver erros redireciono para a lista de fornecedores
             return HttpResponseRedirect("/produtos/")
-    
     form = ProdutoForm()
     
     # se nenhuma informacao for passada, exibe a pagina de cadastro com o formulario
@@ -429,7 +429,7 @@ def fornecedores(request):
             # pego info do form
             tipo_pessoa = form.cleaned_data['tipo_pessoa']
             nome_fantasia = form.cleaned_data['nome_fantasia']
-            nome_fantasia = form.cleaned_data['nome_fantasia']
+            razao_social = form.cleaned_data['razao_social']
             cpf_cnpj = form.cleaned_data['cpf_cnpj']
             rg_ie = form.cleaned_data['rg_ie']
             email = form.cleaned_data['email']
@@ -448,6 +448,7 @@ def fornecedores(request):
             try:
                 Fornecedor.objects.create(
                     tipo_pessoa = tipo_pessoa,
+                    razao_social = razao_social,
                     nome_fantasia = nome_fantasia,
                     cpf_cnpj = cpf_cnpj,
                     rg_ie = rg_ie,
@@ -481,6 +482,100 @@ def fornecedores(request):
 
     # se nenhuma informacao for passada, exibe a pagina de cadastro com o formulario
     return render(request, "./registration/fornecedores.html", {"form": FornecedorForm()})
+
+@login_required(login_url='/login/')
+def updatefornecedor(request,id):
+
+    estados = []
+    fornecedor = Fornecedor.objects.get(pk=id)
+    fornecedor.data_cadastro = str(fornecedor.data_cadastro.year) +'-'+ str(fornecedor.data_cadastro.month) +'-'+ str(fornecedor.data_cadastro.day)
+    cgc_bkp = fornecedor.cpf_cnpj
+    #fornecedor.cpf_cnpj = fornecedor.cpf_cnpj[:2] + '.' + fornecedor.cpf_cnpj[2:5] + '.' + fornecedor.cpf_cnpj[5:8] + '/' + fornecedor.cpf_cnpj[8:12] + '-' + fornecedor.cpf_cnpj[12:14]
+    
+    estados.append('AC')
+    estados.append('AL')
+    estados.append('AP')
+    estados.append('AM')
+    estados.append('BA')
+    estados.append('CE')
+    estados.append('DF')
+    estados.append('ES')
+    estados.append('GO')
+    estados.append('MA')
+    estados.append('MT')
+    estados.append('MS')
+    estados.append('MG')
+    estados.append('PA')
+    estados.append('PB')
+    estados.append('PR')
+    estados.append('PE')
+    estados.append('PI')
+    estados.append('RJ')
+    estados.append('RN')
+    estados.append('RS')
+    estados.append('RO')
+    estados.append('RR')
+    estados.append('SC')
+    estados.append('SP')
+    estados.append('SE')
+    estados.append('TO')
+
+    context = {
+     "titulo":"Atualização de Fornecedor",
+     'fornecedor' : fornecedor,
+     'estados' : estados
+    }
+    # Se dados forem passados via POST
+    if request.method == 'POST':
+        #fornecedor.cpf_cnpj = cgc_bkp
+        form = FornecedorForm(request.POST)
+        if form.is_valid():
+            # pego info do form
+            tipo_pessoa = form.cleaned_data['tipo_pessoa']
+            nome_fantasia = form.cleaned_data['nome_fantasia']
+            razao_social = form.cleaned_data['razao_social']
+            cpf_cnpj = form.cleaned_data['cpf_cnpj']
+            rg_ie = form.cleaned_data['rg_ie']
+            email = form.cleaned_data['email']
+            data_cadastro = form.cleaned_data['data_cadastro']
+            cep = form.cleaned_data['cep']
+            endereco = form.cleaned_data['endereco']
+            numero = form.cleaned_data['numero']
+            cidade = form.cleaned_data['cidade']
+            bairro = form.cleaned_data['bairro']
+            estado = form.cleaned_data['estado']
+            fax = form.cleaned_data['fax']
+            tel = form.cleaned_data['tel']
+
+            try:
+                
+                fornecedor.tipo_pessoa = tipo_pessoa
+                fornecedor.nome_fantasia = nome_fantasia
+                fornecedor.razao_social = razao_social
+                fornecedor.cpf_cnpj = cpf_cnpj
+                fornecedor.rg_ie = rg_ie
+                fornecedor.email = email
+                fornecedor.data_cadastro = data_cadastro
+                fornecedor.cep = cep
+                fornecedor.endereco = endereco
+                fornecedor.numero = numero
+                fornecedor.cidade = cidade
+                fornecedor.bairro = bairro
+                fornecedor.estado = estado
+                fornecedor.fax = fax
+                fornecedor.tel = tel
+
+                fornecedor.save()
+            # em caso de erro
+            except Exception as e:
+                context['erro'] = e
+                # retorno a pagina de cadastro com mensagem de erro
+                return render(request, "./update/fornecedores.html", context)
+            # se não houver erros redireciono para a lista de fornecedores
+            return HttpResponseRedirect("/fornecedores/")
+
+    # se nenhuma informacao for passada, exibe a pagina de cadastro com o formulario
+    return render(request, "./update/fornecedores.html", context)
 
 
 @login_required(login_url='/login/')
@@ -519,6 +614,12 @@ def forn_details(request, id_fornecedor):
     # Retornamos o template no qual o fornecedor será disposto
     return render(request, "./details/fornecedores.html", context)
 
+def verifica_item_pedido(request):
+    descricao 	=  request.POST.get('descricao1')
+    quantidade 	=  request.POST.get('quantidade1')
+    unitario = request.POST.get('unitario1')
+    return (descricao != None and descricao != '') and (quantidade != None and quantidade != '') and (unitario != None and unitario != '')
+
 
 @login_required(login_url='/login/')
 def pedidos(request):
@@ -540,63 +641,66 @@ def pedidos(request):
         # se o formulario for valido
         #if form.is_valid():
         # pego info do form
-        id_cli 	=  request.POST.get('id_cliente')
-        id_cli  = id_cli.split('-')[0].split(' ')[0]
+        id_cli 	=  request.POST.get('cliente').split('-')[0].split(' ')[0]
         pagamento 	=  request.POST.get('pagamento')
         vendedor  	=  request.POST.get('vendedor')
         observacao 	=  request.POST.get('observacao')
+        cgc = Cliente.objects.get(pk=id_cli)
+        form = PedidoForm(request.POST)
+
+        if form.is_valid() and verifica_item_pedido(request):
         
-        for i in range(1,11):
-            tipo_prod   =  request.POST.get('tipo_prod'+str(i))
-            descricao 	=  request.POST.get('descricao'+str(i))
-            quantidade 	=  request.POST.get('quantidade'+str(i))
-            unitario = request.POST.get('unitario'+str(i))
-            total    = request.POST.get('total')
+            for i in range(1,11):
+                tipo_prod   =  request.POST.get('tipo_prod'+str(i))
+                descricao 	=  request.POST.get('descricao'+str(i))
+                quantidade 	=  request.POST.get('quantidade'+str(i))
+                unitario = request.POST.get('unitario'+str(i))
+                total    = request.POST.get('total')
 
-            if validaitem(tipo_prod,descricao,quantidade,unitario):
-                itens_list.append([tipo_prod,descricao,quantidade,unitario])
+                if validaitem(tipo_prod,descricao,quantidade,unitario):
+                    itens_list.append([tipo_prod,descricao,quantidade,unitario])
 
-        # persisto Pedido
-        try:
-            P = Pedido(
-                cliente = id_cli,
-                cpf_cnpj=cpf_cnpj,
-                tipo=tipo,
-                pagamento=pagamento,
-                vendedor=vendedor,
-                observacao=observacao
-                )
-            
-            P.save()
+            # persisto Pedido
+            try:
+                P = Pedido(
+                    cliente = id_cli,
+                    cpf_cnpj = cgc,
+                    tipo='tipo',
+                    pagamento=pagamento,
+                    vendedor=vendedor,
+                    observacao=observacao
+                    )
                 
-            for item in itens_list:
+                P.save()
+                    
+                for item in itens_list:
 
-                I = Itens_pedido(
-                    tipo = item[0],
-                    descricao = item[1],
-                    quantidade = int(item[2]),
-                    valor_unitario = float(item[3]),
-                    valor_total =  int(item[2]) * float(float(item[3])),
-                    pedido = P
-                )
+                    I = Itens_pedido(
+                        descricao = item[1],
+                        quantidade = int(item[2]),
+                        valor_unitario = float(item[3]),
+                        valor_total =  int(item[2]) * float(float(item[3])),
+                        pedido = P
+                    )
 
-                I.save()
+                    I.save()
 
-        except Exception as e:
-            print(e)
-            # Incluímos no contexto
-            context['erro'] = e
-            # retorno a pagina de cadastro com mensagem de erro
-            return render(request, "./registration/pedidos.html", context)
+            except Exception as e:
+                print(e)
+                # Incluímos no contexto
+                context['erro'] = e
+                # retorno a pagina de cadastro com mensagem de erro
+                return render(request, "./registration/pedidos.html", context)
 
-        # se não houver erros redireciono para a lista de fornecedores
-        return HttpResponseRedirect("/pedidos/")
-    else:
-        # se for um get, renderizo a pagina de cadastro de fornecedor
-        return render(request, "./registration/pedidos.html", context)
+            # se não houver erros redireciono para a lista de fornecedores
+            return HttpResponseRedirect("/pedidos/")
+        else: 
+            context['form'] = form
+            if not(verifica_item_pedido(request)):
+                context['item_error'] = 'Obrigatório pelo menos 1 item!'
+            return render(request, "./registration/pedidos.html", context) 
     # se nenhuma informacao for passada, exibe a pagina de cadastro com o formulario
     return render(request, "./registration/pedidos.html", context)
-
 
 @login_required(login_url='/login/')
 def ped_details(request, id_pedido):

@@ -1,0 +1,202 @@
+{% extends "base.html" %} {% block titulo %} Fornecedores {% endblock %} {% block content %}
+<h2 class="h2 d-flex justify-content-center">{{ titulo}}</h2>
+<br />
+<br />
+<div class="h-100 d-flex justify-content-center align-items-center">
+  <form action="" method="POST" class="text-primary">
+    {% csrf_token %}
+    <div class="form-row">
+      <div class="col-9">
+        <label>Nome Fantasia \ Nome Reduzido</label>
+        <input type="text" name="nome_fantasia" value="{{ fornecedor.nome_fantasia }}" class="form-control" placeholder="Nome Fantasia" />
+      </div>
+      <div class="form-group col">
+        <label for="tipo_pessoa">Tipo Pessoa</label>
+        <input type="text" name="tipo_pessoa" value="{{ fornecedor.tipo_pessoa }}" id="id_tipo_pessoa" class="form-control" readonly/>
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="alert alert-danger col-9">
+        {% if form.nome_fantasia.errors %}
+        <strong>{{ form.nome_fantasia.errors | escape }}</strong>
+        {% endif %}
+      </div>
+      <div class="alert alert-danger col-3">
+        {% if form.tipo_pessoa.errors %}
+        <strong>{{ form.tipo_pessoa.errors | escape }}</strong>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="col-9">
+        <label>Razão Social \ Nome Completo</label>
+        <input type="text" name="razao_social"  value="{{ fornecedor.razao_social }}" class="form-control" placeholder="Razão Social" />
+      </div>
+      <div class="form-group">
+        <label>Data Cadastro</label>
+        <input
+          type="date"
+          name="data_cadastro"
+          value="{{ fornecedor.data_cadastro }}"
+          max="3000-12-31"
+          min="1000-01-01"
+          class="form-control"
+          readonly
+        />
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="alert alert-danger col-9">
+        {% if form.razao_social.errors %}
+        <strong>{{ form.razao_social.errors | escape }}</strong>
+        {% endif %}
+      </div>
+      <div class="alert alert-danger col-3">
+        {% if form.data_cadastro.errors %}
+        <strong>{{ form.data_cadastro.errors | escape }}</strong>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="col-6">
+        <label>CPF/CNPJ</label>
+        <input type="text" name="cpf_cnpj"  value="{{ fornecedor.cpf_cnpj }}" class="form-control" placeholder="CPF/CNPJ" readonly/>
+      </div>
+      <div class="col-6">
+        <label>RG/IE</label>
+        <input type="text" name="rg_ie"  value="{{ fornecedor.rg_ie }}" class="form-control" placeholder="RG/IE" />
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="alert alert-danger col-6">
+        {% if form.cpf_cnpj.errors %}
+        <strong>{{ form.cpf_cnpj.errors | escape }}</strong>
+        {% endif %}
+      </div>
+      <div class="alert alert-danger col-6">
+        {% if form.rg_ie.errors %}
+        <strong>{{ form.rg_ie.errors | escape }}</strong>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="col-2">
+        <label>CEP</label>
+        <input type="number" name="cep"  value="{{ fornecedor.cep }}" class="form-control" placeholder="CEP" />
+      </div>
+      <div class="col-10">
+        <label>Endereço</label>
+        <input type="text" name="endereco"  value="{{ fornecedor.endereco }}" class="form-control" placeholder="Endereço" />
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="alert alert-danger col-2">
+        {% if form.cep.errors %}
+        <strong>{{ form.cep.errors | escape }}</strong>
+        {% endif %}
+      </div>
+      <div class="alert alert-danger col-10">
+        {% if form.endereco.errors %}
+        <strong>{{ form.endereco.errors | escape }}</strong>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="col-2">
+        <label>Número</label>
+        <input type="number" name="numero"  value="{{ fornecedor.numero }}" class="form-control" placeholder="Número" />
+      </div>
+
+      <div class="col-4">
+        <label>Bairro</label>
+        <input type="text" name="bairro"  value="{{ fornecedor.bairro }}" class="form-control" placeholder="Bairro" />
+      </div>
+      <div class="col-4">
+        <label>Cidade</label>
+        <input type="text" name="cidade"  value="{{ fornecedor.cidade }}" class="form-control" placeholder="Cidade" />
+      </div>
+      <div class="form-group col">
+        <label for="state">Estado</label>
+          <input type="text" name="estado" value="{{ fornecedor.estado }}" id="estado" class="form-control" readonly/>
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="alert alert-danger col-2">
+        {% if form.numero.errors %}
+        <strong>{{ form.numero.errors | escape }}</strong>
+        {% endif %}
+      </div>
+      <div class="alert alert-danger col-4">
+        {% if form.bairro.errors %}
+        <strong>{{ form.bairro.errors | escape }}</strong>
+        {% endif %}
+      </div>
+      <div class="alert alert-danger col-4">
+        {% if form.cidade.errors %}
+        <strong>{{ form.cidade.errors | escape }}</strong>
+        {% endif %}
+      </div>
+      <div class="alert alert-danger col-2">
+        {% if form.estado.errors %}
+        <strong>{{ form.estado.errors | escape }}</strong>
+        {% endif %}
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="col-4">
+        <label>Telefone</label>
+        <input type="number" name="tel"  value="{{ fornecedor.tel }}" class="form-control" placeholder="ex: (99)9999-9999" />
+      </div>
+      <div class="col-4">
+        <label>Fax</label>
+        <input type="tel" name="fax"  value="{{ fornecedor.fax }}" class="form-control" placeholder="Fax" />
+      </div>
+      <div class="col-4">
+        <label>E-mail</label>
+        <input type="email" name="email"  value="{{ fornecedor.email }}" class="form-control" placeholder="E-mail" />
+      </div>
+    </div>
+
+    <div class="form-row">
+      <div class="alert alert-danger col-4">
+        {% if form.tel.errors %}
+        <strong>{{ form.tel.errors | escape }}</strong>
+        {% endif %}
+      </div>
+      <div class="alert alert-danger col-4">
+        {% if form.fax.errors %}
+        <strong>{{ form.fax.errors | escape }}</strong>
+        {% endif %}
+      </div>
+      <div class="alert alert-danger col-4">
+        {% if form.email.errors %}
+        <strong>{{ form.email.errors | escape }}</strong>
+        {% endif %}
+      </div>
+    </div>
+
+    <br />
+    <br />
+    <center class="text-danger">
+      <h5>{{ erro }}</h5>
+    </center>
+    <div class="d-flex justify-content-around">
+      <div class="col-5">
+        <a href="/fornecedores/">
+          <button type="button" class="btn btn-outline-danger col-12">Cancelar</button>
+        </a>
+      </div>
+      <button type="submit" class="btn btn-outline-primary col-5">Salvar</button>
+    </div>
+  </form>
+</div>
+{% endblock %}
