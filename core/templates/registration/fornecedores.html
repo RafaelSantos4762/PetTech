@@ -8,7 +8,13 @@
     <div class="form-row">
       <div class="col-9">
         <label>Nome Fantasia \ Nome Reduzido</label>
-        <input type="text" name="nome_fantasia" value="{% if form.nome_fantasia.value %}{{form.nome_fantasia.value}}{% endif %}" class="form-control" placeholder="Nome Fantasia" />
+        <input
+          type="text"
+          name="nome_fantasia"
+          value="{% if form.nome_fantasia.value %}{{ form.nome_fantasia.value }}{% endif %}"
+          class="form-control"
+          placeholder="Nome Fantasia"
+        />
       </div>
       <div class="form-group col">
         <label for="tipo_pessoa">Tipo Pessoa</label>
@@ -35,14 +41,20 @@
     <div class="form-row">
       <div class="col-9">
         <label>Razão Social \ Nome Completo</label>
-        <input type="text" name="razao_social"  value="{% if form.razao_social.value %}{{form.razao_social.value}}{% endif %}" class="form-control" placeholder="Razão Social" />
+        <input
+          type="text"
+          name="razao_social"
+          value="{% if form.razao_social.value %}{{ form.razao_social.value }}{% endif %}"
+          class="form-control"
+          placeholder="Razão Social"
+        />
       </div>
       <div class="form-group">
         <label>Data Cadastro</label>
         <input
           type="date"
           name="data_cadastro"
-          value="{% if form.data_cadastro.value %}{{form.data_cadastro.value}}{% endif %}"
+          value="{% if form.data_cadastro.value %}{{ form.data_cadastro.value }}{% endif %}"
           max="3000-12-31"
           min="1000-01-01"
           class="form-control"
@@ -66,11 +78,23 @@
     <div class="form-row">
       <div class="col-6">
         <label>CPF/CNPJ</label>
-        <input type="text" name="cpf_cnpj"  value="{% if form.cpf_cnpj.value %}{{form.cpf_cnpj.value}}{% endif %}" class="form-control" placeholder="CPF/CNPJ" />
+        <input
+          type="text"
+          name="cpf_cnpj"
+          value="{% if form.cpf_cnpj.value %}{{ form.cpf_cnpj.value }}{% endif %}"
+          class="form-control"
+          placeholder="CPF/CNPJ"
+        />
       </div>
       <div class="col-6">
         <label>RG/IE</label>
-        <input type="text" name="rg_ie"  value="{% if form.rg_ie.value %}{{form.rg_ie.value}}{% endif %}" class="form-control" placeholder="RG/IE" />
+        <input
+          type="text"
+          name="rg_ie"
+          value="{% if form.rg_ie.value %}{{ form.rg_ie.value }}{% endif %}"
+          class="form-control"
+          placeholder="RG/IE"
+        />
       </div>
     </div>
 
@@ -90,11 +114,23 @@
     <div class="form-row">
       <div class="col-2">
         <label>CEP</label>
-        <input type="number" name="cep"  value="{% if form.cep.value %}{{form.cep.value}}{% endif %}" class="form-control" placeholder="CEP" />
+        <input
+          type="number"
+          name="cep"
+          value="{% if form.cep.value %}{{ form.cep.value }}{% endif %}"
+          class="form-control"
+          placeholder="CEP"
+        />
       </div>
       <div class="col-10">
         <label>Endereço</label>
-        <input type="text" name="endereco"  value="{% if form.endereco.value %}{{form.endereco.value}}{% endif %}" class="form-control" placeholder="Endereço" />
+        <input
+          type="text"
+          name="endereco"
+          value="{% if form.endereco.value %}{{ form.endereco.value }}{% endif %}"
+          class="form-control"
+          placeholder="Endereço"
+        />
       </div>
     </div>
 
@@ -114,21 +150,44 @@
     <div class="form-row">
       <div class="col-2">
         <label>Número</label>
-        <input type="number" name="numero"  value="{% if form.numero.value %}{{form.numero.value}}{% endif %}" class="form-control" placeholder="Número" />
+        <input
+          type="number"
+          name="numero"
+          value="{% if form.numero.value %}{{ form.numero.value }}{% endif %}"
+          class="form-control"
+          placeholder="Número"
+        />
       </div>
 
       <div class="col-4">
         <label>Bairro</label>
-        <input type="text" name="bairro"  value="{% if form.bairro.value %}{{form.bairro.value}}{% endif %}" class="form-control" placeholder="Bairro" />
+        <input
+          type="text"
+          name="bairro"
+          value="{% if form.bairro.value %}{{ form.bairro.value }}{% endif %}"
+          class="form-control"
+          placeholder="Bairro"
+        />
       </div>
       <div class="col-4">
         <label>Cidade</label>
-        <input type="text" name="cidade"  value="{% if form.cidade.value %}{{form.cidade.value}}{% endif %}" class="form-control" placeholder="Cidade" />
+        <input
+          type="text"
+          name="cidade"
+          value="{% if form.cidade.value %}{{ form.cidade.value }}{% endif %}"
+          class="form-control"
+          placeholder="Cidade"
+        />
       </div>
       <div class="form-group col">
         <label for="state">Estado</label>
-        <select name="estado" id="estado"  value="{% if form.estado.value %}{{form.estado.value}}{% endif %}" class="form-control">
-          <option selected></option>
+        <select
+          name="estado"
+          id="estado"
+          value="{% if form.estado.value %}{{ form.estado.value }}{% endif %}"
+          class="form-control"
+        >
+          <option selected>SP</option>
           <option>AC</option>
           <option>AL</option>
           <option>AP</option>
@@ -153,7 +212,6 @@
           <option>RO</option>
           <option>RR</option>
           <option>SC</option>
-          <option>SP</option>
           <option>SE</option>
           <option>TO</option>
         </select>
@@ -186,15 +244,33 @@
     <div class="form-row">
       <div class="col-4">
         <label>Telefone</label>
-        <input type="number" name="tel"  value="{% if form.tel.value %}{{form.tel.value}}{% endif %}" class="form-control" placeholder="ex: (99)9999-9999" />
+        <input
+          type="number"
+          name="tel"
+          value="{% if form.tel.value %}{{ form.tel.value }}{% endif %}"
+          class="form-control"
+          placeholder="ex: (99)9999-9999"
+        />
       </div>
       <div class="col-4">
         <label>Fax</label>
-        <input type="tel" name="fax"  value="{% if form.fax.value %}{{form.fax.value}}{% endif %}" class="form-control" placeholder="Fax" />
+        <input
+          type="tel"
+          name="fax"
+          value="{% if form.fax.value %}{{ form.fax.value }}{% endif %}"
+          class="form-control"
+          placeholder="Fax"
+        />
       </div>
       <div class="col-4">
         <label>E-mail</label>
-        <input type="email" name="email"  value="{% if form.email.value %}{{form.email.value}}{% endif %}" class="form-control" placeholder="E-mail" />
+        <input
+          type="email"
+          name="email"
+          value="{% if form.email.value %}{{ form.email.value }}{% endif %}"
+          class="form-control"
+          placeholder="E-mail"
+        />
       </div>
     </div>
 
@@ -223,7 +299,7 @@
     </center>
     <div class="d-flex justify-content-around">
       <div class="col-5">
-        <a href="/fornecedores">
+        <a href="/fornecedores/">
           <button type="button" class="btn btn-outline-danger col-12">Cancelar</button>
         </a>
       </div>
