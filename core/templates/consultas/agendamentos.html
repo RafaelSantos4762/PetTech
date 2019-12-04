@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+<!-- Title -->
+{% block titulo %}
+    Pedidos
+{% endblock  %}
+
+<!-- Main -->
+{% block content%}
+    <center>
+      <br><br>
+      <h1>Agendamentos da semana</h1>
+    </center>
+    <br><br>
+    <form
+      method="GET"
+      class="text-primary d-flex flex-column align-items-center registerpedidos"
+      id="table-data"
+    >
+    {% csrf_token %}
+    <table class="table container">
+        <Thead>     
+          <tr  class="text dias-semana">
+              <td>{{ primeiro }} </td>
+              <td>{{ segundo }} </td>
+              <td>{{ terceiro }} </td>
+              <td>{{ quarto }} </td>
+              <td>{{ quinto }} </td>
+              <td>{{ sexto }} </td>
+              <td>{{ setimo }} </td>   
+          </tr>
+        </Thead>
+        <tbody>
+          <tr>>
+            <td>
+            {% for agendamento in agendamentos %}
+              {% if agendamento.data.day == dia1 %}
+                <a  href="details/{{ agendamento.id }}/ "><a  href="details/{{ agendamento.id }}/ ">{{agendamento.proprietario}} <br/> {{ agendamento.animal}} <br/> {{agendamento.hora}} <br/></a></a> 
+                <hr/>
+              {% endif %}
+            {% endfor %}
+          </td>
+          <td>
+            {% for agendamento in agendamentos %}
+              {% if agendamento.data.day == dia2 %}
+                <a  href="details/{{ agendamento.id }}/ ">{{agendamento.proprietario}} <br/> {{ agendamento.animal}} <br/> {{agendamento.hora}} <br/></a> 
+                <hr/>
+              {% endif %}
+            {% endfor %}          
+          </td>
+          <td>
+            {% for agendamento in agendamentos %}
+              {% if agendamento.data.day == dia3 %}
+                <a  href="details/{{ agendamento.id }}/ ">{{agendamento.proprietario}} <br/> {{ agendamento.animal}} <br/> {{agendamento.hora}} <br/></a> 
+                <hr/>
+              {% endif %}
+            {% endfor %}          
+          </td>
+          <td>
+            {% for agendamento in agendamentos %}
+              {% if agendamento.data.day == dia4 %}
+                <a  href="details/{{ agendamento.id }}/ ">{{agendamento.proprietario}} <br/> {{ agendamento.animal}} <br/> {{agendamento.hora}} <br/></a> 
+                <hr/>
+              {% endif %}
+            {% endfor %}          
+          </td>
+          <td>
+            {% for agendamento in agendamentos %}
+              {% if agendamento.data.day == dia5 %}
+                <a  href="details/{{ agendamento.id }}/ ">{{agendamento.proprietario}} <br/> {{ agendamento.animal}} <br/> {{agendamento.hora}} <br/></a> 
+                <hr/>
+              {% endif %}
+            {% endfor %}          
+          </td>
+          <td>
+            {% for agendamento in agendamentos %}
+              {% if agendamento.data.day == dia6 %}
+                <a  href="details/{{ agendamento.id }}/ ">{{agendamento.proprietario}} <br/> {{ agendamento.animal}} <br/> {{agendamento.hora}} <br/></a> 
+                <hr/>
+              {% endif %}
+            {% endfor %}          
+          </td>                    
+          <td>
+            {% for agendamento in agendamentos %}
+              {% if agendamento.data.day == dia7 %}
+                <a  href="details/{{ agendamento.id }}/ ">{{agendamento.proprietario}} <br/> {{ agendamento.animal}} <br/> {{agendamento.hora}} <br/></a> 
+                <hr/>
+              {% endif %}
+            {% endfor %}          
+          </td>   
+        </tr>
+        </tbody>
+      </table>
+    </form>
+    <br><br>
+{% endblock %}

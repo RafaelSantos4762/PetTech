@@ -1,0 +1,29 @@
+{% extends "base.html" %} {% block titulo %} Pagamentos {% endblock %} {% block content %}
+<h2 class="main-title">{{ titulo }}</h2>
+<br/>
+<br/>
+<div class="container">
+  {% csrf_token %}
+  <div class="container">
+    <form method="POST">
+        {% csrf_token %}
+        <div class="container">
+            <div class="col-8">
+                <label>Descrição do pagamento</label>
+                <input id="descricao" name="descricao" type="text" class="form-control" placeholder="Descrição da forma de pagamento">
+            </div>
+            <br/>
+            <br/> 
+            <center>
+              <input type="submit" class="btn text-white bg-primary" value="Cadastrar" />
+            </center>
+        </div>
+        <center class="text-danger">
+        {% if erro %}
+            <h5>{{ erro }}</h5>
+        {% endif %}
+        </center>
+    </form>
+  </div>
+</div>
+{% endblock %}

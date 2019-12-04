@@ -3,10 +3,15 @@
   <h2>{{ titulo }}</h2>
   <br />
   <br />
+  {% for message in mensagens %}
+    <label for="message">{{ message }}</label>
+  {% endfor %}
   <form
     action="/registerpedidos/"
     method="POST"
-    class="text-primary d-flex flex-column align-items-center"
+    class="text-primary d-flex flex-column align-items-center registerpedidos"
+    id=registerpedidos
+    name=registerpedidos
   >
     {% csrf_token %}
     <div class="container">
@@ -26,15 +31,17 @@
           </select>
         </div>
         <div class="col-6">
-          <label>Pagamento</label>
-          <input
-            type="date"
+          <label for="pagamento">Forma de pagamento</label>          
+          <select
             name="pagamento"
-            value="{% if form.pagamento.value %}{{ form.pagamento.value }}{% endif %}"
-            max="3000-12-31"
-            min="1000-01-01"
+            id="pagamento"
             class="form-control"
-          />
+            >
+            <option selected></option>
+            {% for forma in formas %}
+            <option value="{{ forma.id }}">{{ forma.descricao }}</option>
+            {% endfor %}
+          </select>
         </div>
       </div>
       <div class="form-row">
@@ -52,7 +59,7 @@
       <div class="form-row">
         <div class="col-6">
           <label>Vendedor</label>
-          <input type="text" name="vendedor" value="{% if form.vendedor.value %}{{ form.vendedor.value }}{% endif %}" class="form-control" placeholder="Vendedor" />
+          <input type="text" name="vendedor" value="{{ user.username }}" class="form-control" placeholder="Vendedor" readonly/>
         </div>
         <div class="col-6">
           <label>Observações</label>
@@ -74,17 +81,10 @@
       </div>
       <div class="form-row">
         <div class="col-6">
-          <label for="cliente">ID cliente</label>
-          <select
-            name="tipo"
-            id="tipo"
-            class="form-control"
-            >
-            <option selected>Venda</option>
-            <option>Compra</option>
-          </select>
+            <label>Tipo</label>
+            <input type="text" name="tipo" value="Venda" class="form-control" readonly/>
         </div>
-      </div>
+      </div
     </div>
 
     <br />
@@ -412,11 +412,11 @@
     {% endif %}
     <div class="d-flex justify-content-around w-50">
       <div class="col-6">
-        <a href="/pedidos/">
+        <a href="/pedidos/pendentes/">
           <button type="button" class="btn btn-outline-danger col-12">Cancelar</button>
         </a>
       </div>
-      <button type="submit" class="btn btn-outline-primary col-5">Cadastrar</button>
+      <button name="pedidoBtn" type="submit" class="btn btn-outline-primary col-5">Cadastrar</button>
     </div>
   </form>
 </div>

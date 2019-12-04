@@ -1,0 +1,169 @@
+{% extends "base.html" %} {% block titulo %} Pedidos {% endblock %} {% block content %}
+<br />
+<h2 class="main-title">{{ titulo }}</h2>
+<br />
+<div class="h-100 d-flex flex-column justify-content-center align-items-center">
+  {% for message in mensagens %}
+    <label for="message">{{ message }}</label>
+  {% endfor %}
+  <form
+    method="POST"
+    class="text-primary d-flex flex-column align-items-center registerpedidos"
+    id=register-form
+    name=register-form>
+    {% csrf_token %}
+    <div class="container">
+      <div class="form-row">
+        <div class="col-6">
+          <label for="cliente">Cliente</label>
+          <select
+            name="cliente"
+            value="{% if form.cliente.value %}{{ form.cliente.value }}{% endif %}"
+            id="descricao"
+            class="form-control"
+            >
+            <option selected></option>
+            {% for cliente in clientes %}
+            <option value="{{ cliente.id }}">{{ cliente.nome }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-6">
+          <label for="pagamento">Forma de pagamento</label>          
+          <select
+            name="pagamento"
+            id="pagamento"
+            class="form-control"
+            >
+            <option selected></option>
+            {% for forma in formas %}
+            <option value="{{ forma.id }}">{{ forma.descricao }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="alert alert-danger col-6">
+          {% if form.cliente.errors %}
+          <strong>{{ form.cliente.errors | escape }}</strong>
+          {% endif %}
+        </div>
+        <div class="alert alert-danger col-6">
+          {% if form.pagamento.errors %}
+          <strong>{{ form.pagamento.errors | escape }}</strong>
+          {% endif %}
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="col-6">
+          <label>Vendedor</label>
+          <input type="text" name="vendedor" value="{{ user.username }}" class="form-control" placeholder="Vendedor" readonly/>
+        </div>
+        <div class="col-6">
+          <label>Observações</label>
+          <input type="text" name="observacao" value="{% if form.observacao.value %}{{ form.observacao.value }}{% endif %}" class="form-control" placeholder="observacao" />
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="alert alert-danger col-6">
+          {% if form.vendedor.errors %}
+          <strong>{{ form.vendedor.errors | escape }}</strong>
+          {% endif %}
+        </div>
+
+        <div class="alert alert-danger col-6">
+          {% if form.observacoes.errors %}
+          <strong>{{ form.email.errors | escape }}</strong>
+          {% endif %}
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="col-6">
+            <label>Tipo</label>
+            <input type="text" name="tipo" value="Venda" class="form-control" readonly/>
+        </div>
+      </div
+    </div>
+
+    <br />
+    <h2>Itens do Pedido</h2>
+    <br />
+    <div class="alert alert-danger col-12">
+      <center>
+        {% if item_error %}
+        <strong>{{ item_error | escape }}</strong>
+        {% endif %}
+      </center>
+    </div>
+    <div class="container">
+      <table id="tb_items" class="table table-striped">
+        <thead>
+          <tr>
+            <th>Produto/Serviço</th>
+            <th>Quantidade</th>
+            <th>Valor unitário</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr id="tritem1" class="tritems">
+            <td>
+              <select name="descricao" id="descricao" class="form-control">
+                <option selected></option>
+                {% for produto in produtos %}
+                <option value="{{produto.id}}">{{ produto.descricao }}</option>
+                {% endfor %}
+              </select>
+            </td>
+            <td>
+              <input
+                class="form-control"
+                type="number"
+                id="quantidade"
+                name="quantidade"
+                placeholder="Quantidade"
+              />
+            </td>
+            <td>
+              <input
+                class="form-control money"
+                type="text"
+                id="unitario"
+                name="unitario"
+                placeholder="Unitário"
+                
+              />
+            </td>
+            <td  onclick="RemoveItem(this)">
+              <button type="button" class="btn btn-danger">
+                <i class="material-icons arrows-style" >remove</i>
+              </button>
+            </td>
+            <td  onclick="CreateItem(this)">
+              <button type="button" class="btn btn-success">
+                <i class="material-icons arrows-style" >add</i>
+              </button>
+            </td>
+          </tr>
+          <br />
+          <br />
+        </tbody>
+      </table>
+    </div>
+    <br />
+    <br />
+    {% if erro %}
+    <h5>{{ erro }}</h5>
+    {% endif %}
+    <div class="d-flex justify-content-around w-50">
+      <div class="col-6">
+        <a href="/pedidos/pendentes/">
+          <button type="button" class="btn btn-outline-danger col-12">Cancelar</button>
+        </a>
+      </div>
+      <button name="pedidoBtn" type="submit" class="btn btn-outline-primary col-5">Cadastrar</button>
+    </div>
+  </form>
+</div>
+{% endblock %}
+{% block javascript %}
+{% endblock %}

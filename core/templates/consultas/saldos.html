@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+<!-- Title -->
+{% block titulo %} Estoque {% endblock %}
+
+<!-- Main -->
+{% block content%}
+<center>
+  <br /><br />
+  <h1 class="main-title">{{ titulo }}</h1>
+</center>
+<br /><br />
+<div class="col-9 search-div">
+  <form method="GET" id="search-form" class="form-inline md-form form-sm active-pink active-pink-2 mt-2">
+    <input class="form-control form-control-sm ml-3 w-75" type="text" placeholder="{{ placehld }}" id="search" name="search" value="{{request.GET.search}}" >
+    <i class="material-icons search-btnx" aria-hidden="true" id="search-btn">search</i>
+    <div class="btn-group dropright">
+        <button type="button" class="btn  dropdown-toggle drop-style" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Ordenar por
+        </button>
+        <div class="dropdown-menu">
+          <!-- put the dropdown itens here-->
+          </tr>
+        </div>
+    </div>
+  </form>
+</div>
+<table class="table container">
+  <tbody>
+    <tr class="table-text-header">
+      <td>ID</td>
+      <td>Código do produto</td>
+      <td>Descrição do produto</td>
+      <td>Saldo disponível</td>
+    </tr>
+    {% for saldo in saldos %}
+    <tr>
+      <td>{{ saldo.id }}</td>
+      <td>{{ saldo.produto.id }}</td>
+      <td>{{ saldo.produto.descricao }}</td>
+      <td>{{ saldo.quantidade }}</td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<div class="pagination">
+  <span class="step-links">
+    {% if saldos.has_previous %}
+        <a href="?page={{saldos.previous_page_number }}"><i class="material-icons" id="arrow-style" >keyboard_arrow_left</i></a>
+    {% endif %}
+
+    {% if saldos.has_previous or saldos.has_next %}
+    <span class="current">
+      {{ saldos.number }} de {{ saldos.paginator.num_pages }}
+    </span>
+    {% endif %}
+
+    {% if saldos.has_next %}
+        <a href="?page={{saldos.next_page_number }}"><i class="material-icons" id="arrow-style" >keyboard_arrow_right</i></a>
+    {% endif %}
+  </span>
+</div>
+<br /><br />
+{% endblock %}

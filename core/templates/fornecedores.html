@@ -7,21 +7,33 @@
 {% block content%}
 <center>
   <br /><br />
-  <h1>Lista de Fornecedores</h1>
+  <h1 class="main-title">{{ titulo }}</h1>
 </center>
 <br /><br />
+<div class="col-9 search-div">
+  <form method="GET" id="search-form" class="form-inline md-form form-sm active-pink active-pink-2 mt-2">
+      <input class="form-control form-control-sm ml-3 w-75" type="text" placeholder="{{ placehld }}" id="search" name="search" value="{{request.GET.search}}" >
+      <i class="material-icons search-btnx" aria-hidden="true" id="search-btn">search</i>
+      <div class="btn-group dropright">
+          <button type="button" class="btn  dropdown-toggle drop-style" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Ordenar por
+          </button>
+          <div class="dropdown-menu">
+            <!-- put the dropdown itens here-->
+            </tr>
+          </div>
+      </div>        
+    </form>      
+</div>
 <table class="table container">
   <tbody>
-    <tr class="text-primary">
+    <tr class="table-text-header">
       <td>ID</td>
       <td>Nome Fantasia</td>
       <td>CPF/CNPJ</td>
       <td>Bairro</td>
       <td>
-        <a href="{% url 'registerfornecedores' %}">
-          <button type="button" class="btn btn-success col-8" name="button">
-            Novo
-          </button>
+        <a href="{% url 'registerfornecedores' %}" ><i class="material-icons" id="add-icon">add_box</i></a>
         </a>
       </td>
     </tr>
@@ -32,29 +44,32 @@
       <td>{{ fornecedor.cpf_cnpj }}</td>
       <td>{{ fornecedor.bairro }}</td>
       <td>
-        <a href="details/{{ fornecedor.id }}/">
-          <button class="btn btn-outline-primary col-6" type="button" name="button">
-            Detalhes
-          </button>
-        </a>
+        <a href="details/{{ fornecedor.id }} "><i class="material-icons" id="detail-icon">view_headline</i></a>        
       </td>
       <td>
-          <a href="updatefornecedor/{{ fornecedor.id }}">
-            <button class="btn btn-outline-primary col-6" type="button" name="button">
-              Alterar
-            </button>
-          </a>
-        </td>      
+        <a href="updatefornecedor/{{ fornecedor.id }} "><i class="material-icons" id="create-icon" >create</i></a>            
+      </td>      
     </tr>
     {% endfor %}
     <br />
-    <br />
-    {% if erro %}
-    <center class="text-danger">
-      <h5>{{ erro }}</h5>
-    </center>
-    {% endif %}    
+    <br /> 
   </tbody>
 </table>
-<br /><br />
+<div class="pagination">
+  <span class="step-links">
+    {% if fornecedores.has_previous %}
+        <a href="?page={{fornecedores.previous_page_number }}"><i class="material-icons arrows-style" >keyboard_arrow_left</i></a>
+    {% endif %}
+
+    {% if fornecedores.has_previous or fornecedores.has_next %}
+    <span class="current">
+      {{ fornecedores.number }} de {{ fornecedores.paginator.num_pages }}
+    </span>
+    {% endif %}
+
+    {% if fornecedores.has_next %}
+        <a href="?page={{fornecedores.next_page_number }}"><i class="material-icons arrows-style" >keyboard_arrow_right</i></a>
+    {% endif %}
+  </span>
+</div>
 {% endblock %}

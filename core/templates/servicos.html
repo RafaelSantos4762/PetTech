@@ -8,35 +8,43 @@
 <center>
   <br /><br />
   <h1>Serviços disponíveis</h1>
+  <br/>
+  {% for message in messages %}
+    <label for="message">{{message}}</label>
+  {% endfor %}
 </center>
 <br /><br />
 <table class="table container">
   <tbody>
     <tr class="text-primary">
+      <td>ID</td>
       <td>Descricao do Serviço</td>
       <td>Ativo ?</td>
       <td>
         <a href="{% url 'registerservicos' %}">
-          <button type="button" class="btn btn-success col-8" name="button">
-            Cadastrar servico
+          <button type="button" class="btn btn-success col-4" name="button">
+            Novo
           </button>
         </a>
       </td>
+      <td></td>
     </tr>
     {% for servico in servicos %}
     <tr>
+      <td>{{ servico.id }}</td>
       <td>{{ servico.descricao }}</td>
-          {% if servico.disponivel %}
-            <td>Sim</td>
-          {% else %}
-            <td>Sim</td>
-          {% endif %}
+        {% if servico.disponivel %}
+          <td>Sim</td>
+        {% else %}
+          <td>Não</td>
+        {% endif %}
       <td>
-        <a href="servicedel/{{ servico.id }} ">
-          <button class="btn btn-outline-primary col-8" type="button" name="button">
-            Detalhes
+        <form method="POST" action="servicedel/{{ servico.id }} ">
+          {% csrf_token %}
+          <button type="submit" class="btn text-white bg-danger col-4" name="button">
+            Deletar
           </button>
-        </a>
+      </form>
       </td>
     </tr>
     {% endfor %}

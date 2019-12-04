@@ -6,41 +6,76 @@
 <!-- Main -->
 {% block content%}
 <center>
-  <br /><br />
-  <h1>Lista de Pedidos</h1>
-  <br /><br />
-  <table class="table container">
-    <tbody>
-      <tr class="text-primary">
-        <td>ID</td>
-        <td>Cliente</td>
-        <td>Vendedor</td>
-        <td>Observações</td>
+<br /><br />
+<h1 class="main-title">{{ titulo }}</h1>
+<br />
+<div class="col-9 search-div">
+  <form method="GET" id="search-form" class="form-inline md-form form-sm active-pink active-pink-2 mt-2">
+      <input class="form-control form-control-sm ml-3 w-75" type="text" placeholder="{{ placehld }}" id="search" name="search" value="{{request.GET.search}}" >
+      <i class="material-icons search-btnx" aria-hidden="true" id="search-btn">search</i>
+      <div class="btn-group dropright">
+          <button type="button" class="btn  dropdown-toggle drop-style" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Ordenar por
+          </button>
+          <div class="dropdown-menu">
+            <!-- put the dropdown itens here-->
+            </tr>
+          </div>
+      </div>        
+    </form>      
+</div>
+<table class="table container">
+  <tbody>
+    <tr class="table-text-header">
+      <td>Pedido</td>
+      <td>Cliente/Fornecedor</td>
+      <td>Vendedor/Comprador</td>
+      <td>Tipo</td>
+      <td>Emissao</td>
+      <td>Detalhes</td>
+      {% if not aprovado %}
+        <td>Aprovar</td>
+      {% endif %}
+    </tr>
+    {% for pedido in pedidos %}
+    <tr>
+      <td>{{ pedido.id }}</td>
+      <td>{{ pedido.cliente }}</td>
+      <td>{{ pedido.vendedor }}</td>
+      <td>{{ pedido.tipo }}</td>
+      <td>{{ pedido.emissao }}</td>
+      <td>
+        <a href="details/{{ pedido.id }} "><i class="material-icons" id="detail-icon">view_headline</i></a>
+      </td>
+      {% if not pedido.efetivado %}
+      <td>
+        <a href="efetivar/{{ pedido.id }} "><i class="material-icons" id="detail-icon">check</i></a>
+      </td>
+      {% else %}
         <td>
-          <a href="{% url 'registerpedidos' %}">
-            <button type="button" class="btn btn-success col-6" name="button">
-              Novo
-            </button>
-          </a>
         </td>
-      </tr>
-      {% for pedido in pedidos %}
-      <tr>
-        <td>{{ pedido.id }}</td>
-        <td>{{ pedido.cliente }}</td>
-        <td>{{ pedido.vendedor }}</td>
-        <td>{{ pedido.observacao }}</td>
-        <td>
-          <a href="details/{{ pedido.id }}/ ">
-            <button class="btn btn-outline-primary col-6" type="button" name="button">
-              Detalhes
-            </button>
-          </a>
-        </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
-  <br /><br />
+      {% endif %}
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+<div class="pagination">
+  <span class="step-links">
+    {% if pedidos.has_previous %}
+        <a href="?page={{pedidos.previous_page_number }}"><i class="material-icons arrows-style" >keyboard_arrow_left</i></a>
+    {% endif %}
+
+    {% if pedidos.has_previous or pedidos.has_next %}
+    <span class="current">
+      {{ pedidos.number }} de {{ pedidos.paginator.num_pages }}
+    </span>
+    {% endif %}
+
+    {% if pedidos.has_next %}
+        <a href="?page={{pedidos.next_page_number }}"><i class="material-icons arrows-style" >keyboard_arrow_right</i></a>
+    {% endif %}
+  </span>
+</div>  
+  <br />
 </center>
 {% endblock %}

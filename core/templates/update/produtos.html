@@ -86,40 +86,6 @@
       {% endif %}
     </div>
     <div class="form-row">
-      <div class="col-4">
-        <label>Custo</label>
-        <input
-          type="number"
-          step="any"
-          name="custo"
-          value="{{ produto.custo }}"
-          class="form-control"
-          placeholder="Custo"
-        />
-      </div>
-      <div class="col-4">
-        <label>Venda</label>
-        <input
-          type="number"
-          step="any"
-          name="venda"
-          value="{{ produto.venda }}"
-          class="form-control"
-          placeholder="Venda"
-        />
-      </div>
-      <div class="col-4">
-        <label>Estoque</label>
-        <input
-          type="number"
-          name="estoque"
-          value="{{ produto.estoque }}"
-          class="form-control"
-          placeholder="Estoque"
-        />
-      </div>
-    </div>
-    <div class="form-row">
       <div class="alert alert-danger col-4">
         {% if form.custo.errors %}
         <strong>{{ form.custo.errors | escape }}</strong>

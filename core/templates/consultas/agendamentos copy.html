@@ -28,16 +28,16 @@
                 </button>
             </td>
           </tr>
-          {% for servico in servicos %}
+          {% for agendamento in agendamentos %}
             <tr>
-              <td>{{ servico.id }}</td>
-              <td>{{ servico.animal }}</td>
-              <td>{{ servico.proprietario }}</td>
-              <td>{{ servico.serv_desc }}</td>
-              <td>{{ servico.data }}</td>
-              <td>{{ servico.hora }}</td>
+              <td>{{ agendamento.id }}</td>
+              <td>{{ agendamento.animal }}</td>
+              <td>{{ agendamento.proprietario }}</td>
+              <td>{{ agendamento.serv_desc }}</td>
+              <td>{{ agendamento.data }}</td>
+              <td>{{ agendamento.hora }}</td>
               <td>
-                <a href="details/{{ servico.id }}/ ">
+                <a href="details/{{ agendamento.id }}/ ">
                   <button class="btn btn-outline-primary col-8" type="button" name="button">
                     Detalhes
                   </button>

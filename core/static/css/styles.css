@@ -37,3 +37,88 @@ footer {
   max-height: 50px !important;
   color: #F00 !important;
 }
+
+.main-title {
+  font:normal 50px Arial;
+  color:rgb(212, 96, 61);
+  text-shadow: 0 1px 0 #ccc,
+  0 2px 0 #c9c9c9,
+  0 3px 0 #bbb;
+   text-align:center; 
+}
+
+.search-btnx {
+  margin-left: 20px;
+  top: 12px;
+  right: 10px;
+  cursor: pointer;
+  color: rgb(20, 20, 20);
+}
+
+/* Paginação */
+
+.pagination {
+    margin-bottom: 5px;
+
+}
+
+.step-links {
+    
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 15px;
+
+}
+
+.step-links .current {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+
+.table-text-header {
+  font-style: italic;
+  font-size: 17px;
+  color: rgba(243, 54, 7, 0.87);
+  border-block-end-color: #F00;
+
+}
+
+#arrow-style {
+  margin-top: 15px;
+  color: rgb(163, 65, 29);
+
+}
+
+#create-icon, #detail-icon, #add-icon {
+  color: rgba(199, 80, 24, 0.932);
+
+}
+
+.drop-style {
+  margin-left: 20px;
+  margin-bottom: 10px;
+
+}
+
+
+.search-div {
+  margin-left: 80px;
+
+}
+
+.search-icon {
+  margin-left: 120px;
+  align-items: baseline;
+  color: rgb(10, 10, 10);
+}
+
+.error-message {
+  font-size: 20px;
+  margin-bottom: 20px;
+  font-family: Arial;
+  color: #F00;
+
+}
+
+
+

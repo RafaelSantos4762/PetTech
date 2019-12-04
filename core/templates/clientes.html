@@ -7,22 +7,34 @@
 {% block content%}
 <center>
   <br /><br />
-  <h1>Lista de Clientes</h1>
+  <h1 class="main-title" >{{ titulo }}</h1>
 </center>
-<br /><br />
+<br/>
+<br/>
+<div class="col-9 search-div">
+  <form method="GET" id="search-form" class="form-inline md-form form-sm active-pink active-pink-2 mt-2">
+      <input class="form-control form-control-sm ml-3 w-75" type="text" placeholder="{{ placehld }}" id="search" name="search" value="{{request.GET.search}}" >
+      <i class="material-icons search-btnx" aria-hidden="true" id="search-btn">search</i>
+      <div class="btn-group dropright">
+          <button type="button" class="btn  dropdown-toggle drop-style" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Ordenar por
+          </button>
+          <div class="dropdown-menu">
+            <!-- put the dropdown itens here-->
+            </tr>
+          </div>
+      </div>        
+    </form>      
+</div>
 <table class="table container">
   <tbody>
-    <tr class="text-primary">
+    <tr class="table-text-header">
       <td>ID</td>
       <td>Nome</td>
       <td>CPF</td>
       <td>Bairro</td>
       <td>
-        <a href="{% url 'registerclientes' %}">
-          <button type="button" class="btn btn-success col-5" name="button">
-            Novo
-          </button>
-        </a>
+        <a href="{% url 'registerclientes' %}" ><i class="material-icons" id="add-icon">add_box</i></a>
       </td>
       <td>
       </td>
@@ -34,22 +46,31 @@
       <td>{{ cliente.cpf_cnpj }}</td>
       <td>{{ cliente.bairro }}</td>
       <td>
-        <a href="details/{{ cliente.id }}/ ">
-          <button class="btn btn-outline-primary col-5" type="button" name="button">
-            Detalhes
-          </button>
-        </a>      
+        <a href="details/{{ cliente.id }} "><i class="material-icons" id="detail-icon">view_headline</i></a>        
       </td>
-      <td>
-        <a href="updatecliente/{{ cliente.id }} ">
-          <button class="btn btn-primary col-5" type="button" name="button">
-            Alterar
-          </button>
-        </a>          
+      <td>  
+        <a href="updatecliente/{{ cliente.id }} "><i class="material-icons" id="create-icon" >create</i></a>            
       </td>
     </tr>
     {% endfor %}
   </tbody>
 </table>
+<div class="pagination">
+  <span class="step-links">
+    {% if clientes.has_previous %}
+        <a href="?page={{clientes.previous_page_number }}"><i class="material-icons arrows-style" >keyboard_arrow_left</i></a>
+    {% endif %}
+
+    {% if clientes.has_previous or clientes.has_next %}
+    <span class="current">
+      {{ clientes.number }} de {{ clientes.paginator.num_pages }}
+    </span>
+    {% endif %}
+
+    {% if clientes.has_next %}
+        <a href="?page={{clientes.next_page_number }}"><i class="material-icons arrows-style" >keyboard_arrow_right</i></a>
+    {% endif %}
+  </span>
+</div>
 <br /><br />
 {% endblock %}

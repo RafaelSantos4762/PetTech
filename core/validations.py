@@ -1,4 +1,4 @@
-def validaitem(tipo_prod,descricao,quantidade,unitario):
-    return tipo_prod != '' and descricao != '' and quantidade != '' and unitario != ''
+def validaitem(descricao,quantidade,unitario):
+    return descricao.strip() != '' and quantidade > 0 and unitario > 0
 
 

@@ -1,0 +1,82 @@
+{% extends "base.html" %} {% block titulo %} Pedido {% endblock %} {% block content %}
+<center>
+  <div class="container">
+    <br />
+    <br />
+    <div class="error-message">
+      {% for message in messages %}
+        {{ message}}
+        <br/>
+      {% endfor %}
+    </div>
+    <h2>Detalhe do Pedido</h2>
+    <br />
+    <br />
+    <div class="form-row container">
+      <table class="table container">
+        <tbody>
+          <tr>
+            <td>ID Pedido</td>
+            <td>{{ pedido.id }}</td>
+          </tr>
+          <tr>
+            <td>CPF/CNPJ</td>
+            <td>{{ cliente.cpf_cnpj }}</td>
+          </tr>
+          <tr>
+            <td>Cliente</td>
+            {% if cliente.nome %}
+            <td>{{ cliente.nome }}</td>
+            {% else %}
+            <td>{{ cliente.razao_social }}</td>
+            {% endif %}
+          </tr>
+          <tr>
+            <td>Pagamento</td>
+            <td>{{ pagamento.descricao }}</td>
+          </tr>
+          <tr>
+            <td>Observacao</td>
+            <td>{{ pedido.observacao }}</td>
+          </tr>
+          <tr>
+            <td>vendedor</td>
+            <td>{{ pedido.vendedor }}</td>
+          </tr>
+        </tbody>
+      </table>
+      <div class="container">
+        <h2 class="container">Itens do Pedido</h2>
+        <table class="table container">
+          <tr>
+            <td>Descricao</td>
+            <td>Quantidade</td>
+            <td>valor unitário</td>
+            <td>valor Total</td>
+          </tr>
+          {% for item in itens_pedido %}
+          <tr>
+            <td>{{ item.descricao }}</td>
+            <td>{{ item.quantidade }}</td>
+            <td>{{ item.valor_unitario }}</td>
+            <td>{{ item.valor_total }}</td>
+          </tr>
+          {% endfor %}
+        </table>
+      </div>
+    </div>
+    <br />
+    <br />
+    <div class="d-flex justify-content-center w-100">
+      <form method="POST" class="w-50 d-flex justify-content-around">
+        <div class="col-5">
+          {% csrf_token %}
+          <button type="submit" class="btn btn-success">Aprovar</button>
+        </div>
+      </form>
+      <br />
+      <br />
+    </div>
+  </div>
+</center>
+{% endblock %}

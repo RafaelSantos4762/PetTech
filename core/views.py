@@ -5,16 +5,19 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib import messages
-from datetime import date
+from django.core.paginator import Paginator
+from datetime import date, datetime, timedelta
+from django.utils.timezone import utc
+from django.conf import settings
+from django.db.models import Sum
 
-from .models import Cliente, Fornecedor, Produto,Pedido,Itens_pedido,Servicos,Agendamentos
+from .models import *
 from .validations import validaitem
 from .forms import ClienteForm, FornecedorForm, ProdutoForm,PedidoForm, AgendamentoForm
 
 #from rest_framework import viewsets
 #from .serializers import ProductSerializer
 
-#import uuid
 
 # Create your views here.
 
@@ -26,12 +29,12 @@ def signup(request):
                 form.save()
             except Exception as e:
                 messages.error(request,f'Erro ao criar usuário')
-                return render(request,'registration/usuario.html',{})
+                return render(request,'registration/usuarios.html',{})
                 messages.success(request,f'usuário criado com sucesso!')
-            return render(request,'registration/usuario.html',{})
+            return render(request,'registration/usuarios.html',{})
     else:
         form = UserCreationForm()
-    return render(request, 'registration/usuario.html', {'form': form})
+    return render(request, 'registration/usuarios.html', {'form': form})
 
 
 def login_user(request):
@@ -92,9 +95,7 @@ def produtos(request):
             data_cadastro = form.cleaned_data['data_cadastro']
             descricao = form.cleaned_data['descricao']
             marca = form.cleaned_data['marca']
-            custo = form.cleaned_data['custo']
-            venda = form.cleaned_data['venda']
-            estoque = form.cleaned_data['estoque']
+
             # gero codigo uuid para a criação da url de detalhes
             #cod = uuid.uuid4().hex
             # persisto cliente
@@ -104,11 +105,7 @@ def produtos(request):
                     cod_bar = cod_bar,
                     data_cadastro = data_cadastro,
                     descricao = descricao,
-                    marca = marca,
-                    custo = custo,
-                    venda = venda,
-                    estoque = estoque,
-                    #uuid = cod
+                    marca = marca
                     )
             # em caso de erro
             except Exception as e:
@@ -123,7 +120,7 @@ def produtos(request):
             # se não houver erros redireciono para a lista de fornecedores
             return HttpResponseRedirect("/produtos/")
     
-    context['form'] = form
+    context['form'] = ProdutoForm()
     # se nenhuma informacao for passada, exibe a pagina de cadastro com o formulario
     return render(request, "./registration/produtos.html", context)
 
@@ -131,8 +128,8 @@ def produtos(request):
 def updateproduto(request,id):
 
     produto = Produto.objects.get(id=id)
-    produto.custo = str(produto.custo)
-    produto.venda = str(produto.venda)
+    #produto.custo = str(produto.custo)
+    #produto.venda = str(produto.venda)
     produto.data_cadastro = str(produto.data_cadastro.year) +'-'+ str(produto.data_cadastro.month) +'-'+ str(produto.data_cadastro.day)
 
     context = {
@@ -184,19 +181,28 @@ def list_produtos(request):
     View que lista produtos.
     -------------------------------------------------------------------------"""
     # faço um "SELECT *" ordenado pelo id
-    try:
-        produtos = Produto.objects.all().order_by('-id')
-        print(produtos)
-    except Exception as e:
-        print("-------------------------")
-        print(e)
-        print("-------------------------")
-        
-    # Incluímos no context
-    context = {
-      'produtos': produtos,
-    }
 
+    search = request.GET.get('search')
+
+    if search:
+        prods_list = Produto.objects.filter(descricao__icontains=search)
+        if len(prods_list) == 0:
+            prods_list = Produto.objects.filter(id__icontains=search)
+    else:
+
+        prods_list = Produto.objects.all().order_by('-id')
+
+    paginator = Paginator(prods_list, 5)
+
+    page = request.GET.get('page')
+
+    produtos = paginator.get_page(page)
+
+    context = {
+    'produtos': produtos,
+    'placehld': 'Digite a descrição ou ID do produto que deseja buscar...',
+    'titulo' : 'Lista de produtos',
+    }        
     # Retornamos o template no qual os produtos serão dispostos
     return render(request, "produtos.html", context)
 
@@ -379,13 +385,29 @@ def list_clientes(request):
     """-------------------------------------------------------------------------
     View que lista clientes.
     -------------------------------------------------------------------------"""
-    # faço um "SELECT *" ordenado pelo id
-    clientes = Cliente.objects.all().order_by('-id')
+    search = request.GET.get('search')
+
+    if search:
+        clientes_list = Cliente.objects.filter(nome__icontains=search) | Cliente.objects.filter(id__icontains=search)
+        clientes_list.order_by('-id')
+    else:
+        clientes_list = Cliente.objects.all().order_by('-id')
+
+    paginator = Paginator(clientes_list, 5)
+
+    page = request.GET.get('page')
+
+    clientes = paginator.get_page(page)
+
+    print('clientes recebidos',clientes)
 
     # Incluímos no context
     context = {
-      'clientes': clientes
+      'clientes': clientes,
+      'placehld': 'Digite a descrição ou ID do cliente que deseja buscar...',
+      'titulo': 'Lista de clientes',
     }
+    # Retornamos o template no qual os produtos serão dispostos
 
     # Retornamos o template no qual os clientes serão dispostos
     return render(request, "clientes.html", context)
@@ -405,7 +427,6 @@ def client_details(request, id_cliente):
     }
     print(cliente)
     if request.method == 'POST':
-        print('\n entriuee')
         cliente.delete()
         return HttpResponseRedirect("/clientes/")
 
@@ -583,14 +604,26 @@ def list_fornecedores(request):
     """-------------------------------------------------------------------------
     View que lista fornecedores.
     -------------------------------------------------------------------------"""
-    # faço um "SELECT *" ordenado pelo id
-    fornecedores = Fornecedor.objects.all().order_by('-id')
+    search = request.GET.get('search')
+
+    if search:
+        fornece_list = Fornecedor.objects.filter(razao_social__icontains=search) | Fornecedor.objects.filter(id__icontains=search)
+        fornece_list.order_by('-id')
+    else:
+        fornece_list = Fornecedor.objects.all().order_by('-id')
+
+    paginator = Paginator(fornece_list, 5)
+
+    page = request.GET.get('page')
+
+    fornecedores = paginator.get_page(page)
 
     # Incluímos no context
     context = {
-      'fornecedores': fornecedores
+      'fornecedores': fornecedores,
+      'placehld': 'Digite a descrição ou ID do fornecedor que deseja buscar...',
+      'titulo': 'Lista de Fornecedores',
     }
-
     # Retornamos o template no qual os fornecedores serão dispostos
     return render(request, "fornecedores.html", context)
 
@@ -622,11 +655,13 @@ def verifica_item_pedido(request):
 
 
 @login_required(login_url='/login/')
-def pedidos(request):
+def pedido_venda(request):
 
     clientes = Cliente.objects.all()
     produtos = Produto.objects.all()
-    itens_list = []
+    formas   = Tipos_pagamento.objects.all()
+    itens_list = {}
+    itens = []
     """-------------------------------------------------------------------------
     View para cadastro de pedidos.
     -------------------------------------------------------------------------"""
@@ -634,6 +669,100 @@ def pedidos(request):
             "titulo":"Cadastro de Pedido",
             'clientes': clientes,
             'produtos':produtos,
+            'formas': formas
+        }    
+    # Se dados forem passados via POST
+    if request.method == 'POST':
+        
+        form = PedidoForm(request.POST)
+        
+        if form.is_valid():
+
+            id_cli 	=  int(request.POST.get('cliente'))
+            tipo 	=  request.POST.get('tipo')
+            vendedor  	=  request.POST.get('vendedor')
+            observacao 	=  request.POST.get('observacao')
+            cgc = Cliente.objects.get(pk=id_cli).cpf_cnpj
+            pagamento = int(request.POST.get('pagamento'))
+            
+            itens_list['descricao'] = request.POST.getlist('descricao')
+            itens_list['quantidade'] = request.POST.getlist('quantidade')
+            itens_list['unitario'] = request.POST.getlist('unitario')
+            #itens_list['total'] = request.POST.getlist('total')
+
+            #Defino a quantidade de itens baseado no campo quantidade
+            total_itens = len(itens_list['quantidade'] )            
+
+            # persisto Pedido
+            try:
+                forma_pagamento = Tipos_pagamento.objects.get(pk=pagamento)
+                descri_pg = forma_pagamento.descricao
+                P = Pedido(
+                    cliente = id_cli,
+                    cpf_cnpj = cgc,
+                    tipo=tipo,
+                    pagamento=forma_pagamento,
+                    forma_pagamento=descri_pg,
+                    vendedor=vendedor,
+                    observacao=observacao,
+                    )
+                
+                P.save()
+                    
+                for item in range(0,total_itens):
+                    
+                    prod = Produto.objects.get(pk=int(itens_list['descricao'][item]))
+
+                    descricao = prod.descricao
+                    quantidade = int(itens_list['quantidade'][item])
+                    unitario   = float(itens_list['unitario'][item].replace(',','.'))
+
+                    if validaitem(descricao,quantidade,unitario):
+
+                        I = Itens_pedido(
+                            produto = prod,
+                            descricao = descricao,
+                            quantidade = quantidade,
+                            valor_unitario = unitario,
+                            valor_total =  quantidade * unitario,
+                            pedido = P
+                        )
+
+                        I.save()
+                    
+            except Exception as e:
+                print(e)
+                # Incluímos no contexto
+                context['erro'] = e
+                # retorno a pagina de cadastro com mensagem de erro
+                return render(request, "./registration/pedido_venda.html", context)
+
+            # se não houver erros redireciono para a lista de fornecedores
+            return HttpResponseRedirect("/pedidos/pendentes/")
+        else: 
+            context['form'] = form
+            if not(verifica_item_pedido(request)):
+                context['item_error'] = 'Obrigatório pelo menos 1 item!'
+            return render(request, "./registration/pedido_venda.html", context) 
+    # se nenhuma informacao for passada, exibe a pagina de cadastro com o formulario
+    return render(request, "./registration/pedido_venda.html", context)
+
+@login_required(login_url='/login/')
+def pedido_compra(request):
+
+    fornecedor = Fornecedor.objects.all()
+    produtos = Produto.objects.all()
+    formas   = Tipos_pagamento.objects.all()
+    itens_list = {}
+    itens = []
+    """-------------------------------------------------------------------------
+    View para cadastro de pedidos.
+    -------------------------------------------------------------------------"""
+    context = {
+            "titulo":"Cadastro de Pedido",
+            'fornecedores': fornecedor,
+            'produtos':produtos,
+            'formas': formas
         }    
     # Se dados forem passados via POST
     if request.method == 'POST':
@@ -641,133 +770,344 @@ def pedidos(request):
         # se o formulario for valido
         #if form.is_valid():
         # pego info do form
-        id_cli 	=  request.POST.get('cliente').split('-')[0].split(' ')[0]
-        pagamento 	=  request.POST.get('pagamento')
-        vendedor  	=  request.POST.get('vendedor')
-        observacao 	=  request.POST.get('observacao')
-        cgc = Cliente.objects.get(pk=id_cli)
+
         form = PedidoForm(request.POST)
 
-        if form.is_valid() and verifica_item_pedido(request):
+        if form.is_valid():
+
+            id_fornece 	=  int(request.POST.get('cliente'))
+            tipo 	=  request.POST.get('tipo')
+            vendedor  	=  request.POST.get('vendedor')
+            observacao 	=  request.POST.get('observacao')
+            cgc = Fornecedor.objects.get(pk=id_fornece).cpf_cnpj
+            pagamento = int(request.POST.get('pagamento'))
+
+            itens_list['descricao'] = request.POST.getlist('descricao')
+            itens_list['quantidade'] = request.POST.getlist('quantidade')
+            itens_list['unitario'] = request.POST.getlist('unitario')
+            #itens_list['total'] = request.POST.getlist('total')
+
+            #Defino a quantidade de itens baseado no campo quantidade
+            total_itens = len(itens_list['quantidade'] )            
         
-            for i in range(1,11):
-                tipo_prod   =  request.POST.get('tipo_prod'+str(i))
-                descricao 	=  request.POST.get('descricao'+str(i))
-                quantidade 	=  request.POST.get('quantidade'+str(i))
-                unitario = request.POST.get('unitario'+str(i))
-                total    = request.POST.get('total')
-
-                if validaitem(tipo_prod,descricao,quantidade,unitario):
-                    itens_list.append([tipo_prod,descricao,quantidade,unitario])
-
             # persisto Pedido
             try:
+                forma_pagamento = Tipos_pagamento.objects.get(pk=pagamento)
+                descri_pg = forma_pagamento.descricao
                 P = Pedido(
-                    cliente = id_cli,
+                    cliente = id_fornece,
                     cpf_cnpj = cgc,
-                    tipo='tipo',
-                    pagamento=pagamento,
+                    tipo=tipo,
+                    pagamento=forma_pagamento,
+                    forma_pagamento=descri_pg,
                     vendedor=vendedor,
-                    observacao=observacao
+                    observacao=observacao,
                     )
                 
                 P.save()
                     
-                for item in itens_list:
+                for item in range(0,total_itens):
+                    
+                    prod = Produto.objects.get(pk=int(itens_list['descricao'][item]))
+                    descricao = prod.descricao
+                    quantidade = int(itens_list['quantidade'][item])
+                    unitario   = float(itens_list['unitario'][item].replace(',','.'))
 
-                    I = Itens_pedido(
-                        descricao = item[1],
-                        quantidade = int(item[2]),
-                        valor_unitario = float(item[3]),
-                        valor_total =  int(item[2]) * float(float(item[3])),
-                        pedido = P
-                    )
+                    if validaitem(descricao,quantidade,unitario):
 
-                    I.save()
+                        I = Itens_pedido(
+                            produto = prod,
+                            descricao = descricao,
+                            quantidade = quantidade,
+                            valor_unitario = unitario,
+                            valor_total =  quantidade * unitario,
+                            pedido = P
+                        )
 
+                        I.save()
+                    
             except Exception as e:
                 print(e)
                 # Incluímos no contexto
                 context['erro'] = e
                 # retorno a pagina de cadastro com mensagem de erro
-                return render(request, "./registration/pedidos.html", context)
+                return render(request, "./registration/pedido_compra.html", context)
 
             # se não houver erros redireciono para a lista de fornecedores
-            return HttpResponseRedirect("/pedidos/")
+            return HttpResponseRedirect("/pedidos/pendentes/")
         else: 
             context['form'] = form
             if not(verifica_item_pedido(request)):
                 context['item_error'] = 'Obrigatório pelo menos 1 item!'
-            return render(request, "./registration/pedidos.html", context) 
+            return render(request, "./registration/pedido_compra.html", context) 
     # se nenhuma informacao for passada, exibe a pagina de cadastro com o formulario
-    return render(request, "./registration/pedidos.html", context)
+    return render(request, "./registration/pedido_compra.html", context)
+
 
 @login_required(login_url='/login/')
-def ped_details(request, id_pedido):
+def ped_details_aprovado(request, id_pedido):
     """-------------------------------------------------------------------------
     View que mostra detalhes de pedido.
     -------------------------------------------------------------------------"""
-    # Primeiro, buscamos o fornecedor
     pedido = Pedido.objects.get(id=id_pedido)
-    cliente = Cliente.objects.get(id=pedido.cliente)
+    venda = pedido.tipo.strip().upper() == "VENDA"
+
+    if venda:
+        cliente = Cliente.objects.get(id=pedido.cliente)
+    else:
+        cliente = Fornecedor.objects.get(id=pedido.cliente)
+    if len(cliente.cpf_cnpj.strip()) > 11:
+        cliente.cpf_cnpj = cliente.cpf_cnpj[:2] + '.' + cliente.cpf_cnpj[2:5] + '.' + cliente.cpf_cnpj[5:8] + '/' + cliente.cpf_cnpj[8:12] + '-' + cliente.cpf_cnpj[12:14]
+    else:
+        cliente.cpf_cnpj = cliente.cpf_cnpj[:3] + '.' + cliente.cpf_cnpj[3:6] + '.' + cliente.cpf_cnpj[6:9] + '-' + cliente.cpf_cnpj[9:11] 
+
     itens_pedido = Itens_pedido.objects.filter(pedido=pedido)
     # Incluímos no contexto
     context = {
       'pedido': pedido,
       'itens_pedido' :itens_pedido,
-      'cliente' : cliente
+      'cliente' : cliente,
+      'venda': venda,
     }
     if request.method == 'POST':
         Pedido.objects.get(id=id_pedido).delete()
-        return HttpResponseRedirect("/pedidos/")
+        return HttpResponseRedirect("/pedidos/pendentes/")
+
+    return render(request, "./details/pedidos.html", context)
+
+@login_required(login_url='/login/')
+def ped_details_pendente(request, id_pedido):
+    """-------------------------------------------------------------------------
+    View que mostra detalhes de pedido.
+    -------------------------------------------------------------------------"""
+    
+    pedido = Pedido.objects.get(id=id_pedido)
+    venda = pedido.tipo.strip().upper() == "VENDA"
+
+    if venda:
+        cliente = Cliente.objects.get(id=pedido.cliente)
+    else:
+        cliente = Fornecedor.objects.get(id=pedido.cliente)
+    if len(cliente.cpf_cnpj.strip()) > 11:
+        cliente.cpf_cnpj = cliente.cpf_cnpj[:2] + '.' + cliente.cpf_cnpj[2:5] + '.' + cliente.cpf_cnpj[5:8] + '/' + cliente.cpf_cnpj[8:12] + '-' + cliente.cpf_cnpj[12:14]
+    else:
+        cliente.cpf_cnpj = cliente.cpf_cnpj[:3] + '.' + cliente.cpf_cnpj[3:6] + '.' + cliente.cpf_cnpj[6:9] + '-' + cliente.cpf_cnpj[9:11] 
+
+    itens_pedido = Itens_pedido.objects.filter(pedido=pedido)
+    # Incluímos no contexto
+    context = {
+      'pedido': pedido,
+      'itens_pedido' :itens_pedido,
+      'cliente' : cliente,
+      'venda': venda,
+    }
+    if request.method == 'POST':
+        Pedido.objects.get(id=id_pedido).delete()
+        return HttpResponseRedirect("/pedidos/pendentes/")
 
     # Retornamos o template no qual o pedido será disposto
     return render(request, "./details/pedidos.html", context)
 
 @login_required(login_url='/login/')
-def list_pedidos(request):
+def pedidos_pendentes(request):
     """-------------------------------------------------------------------------
     View que lista pedidos cadastrados.
     -------------------------------------------------------------------------"""
-    # faço um "SELECT *" ordenado pelo id
-    pedidos = Pedido.objects.all().order_by('-id')
+
+    search = request.GET.get('search')
+
+    if search:
+        pedidos_ist = Pedido.objects.filter(id__icontains=search,efetivado=False)
+        pedidos_ist.order_by('-id')
+    else:
+        pedidos_ist = Pedido.objects.filter(efetivado=False).order_by('-id')
+
+    paginator = Paginator(pedidos_ist, 5)
+
+    page = request.GET.get('page')
+
+    pedidos = paginator.get_page(page)
+
+    aprovado = False
+
+    for pedido in pedidos:
+        if pedido.tipo.strip().upper() == "Venda":
+            cli_forn = Cliente.objects.get(pk=pedido.cliente)
+            pedido.cliente = cli_forn.nome
+        else:
+            cli_forn = Fornecedor.objects.get(pk=pedido.cliente)
+            pedido.cliente = cli_forn.razao_social
 
     # Incluímos no context
     context = {
-      'pedidos': pedidos
+      'pedidos': pedidos,
+      'placehld': 'Digite o nome do cliente ou ID do pedido que deseja buscar...',
+      'titulo': 'Pedidos pendentes de aprovação',
+      'aprovado' : aprovado,
+    }
+
+    # Retornamos o template no qual os fornecedores serão dispostos
+    return render(request, "pedidos.html", context)
+
+
+@login_required(login_url='/login/')
+def pedidos_aprovados(request):
+    """-------------------------------------------------------------------------
+    View que lista pedidos cadastrados.
+    -------------------------------------------------------------------------"""
+
+    search = request.GET.get('search')
+    aprovado = 'APROVADO' in request.path.upper()
+
+    if search:
+        pedidos_ist = Pedido.objects.filter(id__icontains=search,efetivado=True)
+        pedidos_ist.order_by('-id')
+    else:
+        pedidos_ist = Pedido.objects.filter(efetivado=True).order_by('-id')
+
+    paginator = Paginator(pedidos_ist, 5)
+
+    page = request.GET.get('page')
+
+    pedidos = paginator.get_page(page)
+
+    # Incluímos no context
+    context = {
+      'pedidos': pedidos,
+      'placehld': 'Digite o nome do cliente ou ID do pedido que deseja buscar...',
+      'titulo': 'Pedidos aprovados',
+      'aprovado' : aprovado,
     }
 
     # Retornamos o template no qual os fornecedores serão dispostos
     return render(request, "pedidos.html", context)
 
 @login_required(login_url='/login/')
+def efetivar_pedido(request,id):
+    pedido = Pedido.objects.get(pk=id)
+
+    if pedido.tipo.strip().upper() == "VENDA":
+        cliente = Cliente.objects.get(id=pedido.cliente)
+    else:
+        cliente = Fornecedor.objects.get(pk=pedido.cliente)
+
+    pagamento = Tipos_pagamento.objects.get(pk=pedido.pagamento_id)
+    #mensagens = message.get.messages(request)
+    if len(cliente.cpf_cnpj.strip()) > 11:
+        cliente.cpf_cnpj = cliente.cpf_cnpj[:2] + '.' + cliente.cpf_cnpj[2:5] + '.' + cliente.cpf_cnpj[5:8] + '/' + cliente.cpf_cnpj[8:12] + '-' + cliente.cpf_cnpj[12:14]
+    else:
+        cliente.cpf_cnpj = cliente.cpf_cnpj[:3] + '.' + cliente.cpf_cnpj[3:6] + '.' + cliente.cpf_cnpj[6:9] + '-' + cliente.cpf_cnpj[9:11] 
+    
+    itens_pedido = Itens_pedido.objects.filter(pedido_id=pedido.id)
+    # Incluímos no contexto
+    context = {
+      'pedido': pedido,
+      'itens_pedido' :itens_pedido,
+      'cliente' : cliente,
+      'pagamento': pagamento,  
+    }
+
+    if request.method == 'POST':
+
+        for item in itens_pedido:
+            entrada = True
+            if pedido.tipo.strip().upper() == "VENDA":
+                entrada = False
+
+            saldo = item.quantidade
+                
+            produto = Produto.objects.get(id=item.produto.id)
+   
+            try:    
+                estoque = Estoque.objects.get(produto_id=produto.id)
+            except:
+                if not entrada:#Venda
+                    messages.error(request, f'Saldo do produto "{produto.id} - {produto.descricao}" insuficiente.')
+                    messages.error(request, f'Favor verificar o estoque!')
+                    context['messagens'] = messages
+                    return redirect(request.path)                    
+                else:#Compra
+                    estoque = Estoque(produto_id = produto.id,quantidade = saldo)
+                    estoque.save()
+                    pedido.efetivado = True
+                    pedido.save()                
+
+                    entrada =  Entrada(
+                        fornecedor = cliente,
+                        fornecedor_nome = cliente.raza_social,
+                        Pedido = pedido,
+                        produto = produto,
+                        produto_descricao = produto.descricao,
+                        quantidade = item.quantidade,
+                        valor_unitario = item.valor_unitario,
+                        valor_total = item.valor_total
+                        )
+                    entrada.save()
+
+            if not entrada:#Venda
+                if item.quantidade > estoque.quantidade:
+                    messages.error(request, f'Saldo do produto "{produto.id} - {produto.descricao}" insuficiente.')
+                    messages.error(request, f'Favor verificar o estoque!')
+                    context['messagens'] = messages
+                    return redirect(request.path)
+                else:
+                    estoque.quantidade = estoque.quantidade - saldo
+                    saida =  Saida(
+                        cliente = cliente,
+                        cliente_nome = cliente.nome,
+                        Pedido = pedido,
+                        produto = produto,
+                        produto_descricao = produto.descricao,
+                        quantidade = item.quantidade,
+                        valor_unitario = item.valor_unitario,
+                        valor_total = item.valor_total
+                        )
+                    saida.save()
+                    
+            else:#Compra
+                estoque.quantidade = estoque.quantidade + saldo
+            estoque.save()
+            pedido.efetivado = True
+            pedido.save()
+        #Define pedido como efetivado e remove da lista de pendentes        
+        return redirect("/pedidos/aprovados/")
+
+    # Retornamos o template no qual o pedido será disposto
+    return render(request, 'efetivar/pedido.html', context)
+
+@login_required(login_url='/login/')
 def agendamentos(request):
 
-    servicos = Servicos.objects.all().order_by('-id')
+    servicos = Servicos.objects.filter(disponivel=1).order_by('-id')
 
     context = {
-    "titulo":"agendamentos",
+    "titulo":"Agendamentos",
     "servicos":servicos
     }
 
     if request.method == "POST":
-        dono = request.POST.get("dono")
-        pet  = request.POST.get("pet") 
-        data = request.POST.get("data")
-        hora = request.POST.get("hora")
-        servico = request.POST.get("servico")
-        print(request.POST)
+
         form = AgendamentoForm(request.POST)
 
-        if form.is_valid() and hora != '' :
+        if form.is_valid():
+
+            dono = form.cleaned_data['dono']
+            pet  = form.cleaned_data['pet']
+            data = form.cleaned_data['data']
+            hora = form.cleaned_data['hora']
+            servico = int(form.cleaned_data['servico'])
+            dia = data.strftime("%A")
+
             try:
-                serv_id = Servicos.objects.get(descricao=servico)
+                
+                serv_id = Servicos.objects.get(pk=servico)
                 Agenda = Agendamentos(
                     proprietario = dono,
                     animal= pet,
                     telefone = '964354314',
                     email = 'rafael.ssilva134@hotmail.com',
                     data = data,
+                    dia = dia,
                     hora = hora,
                     servico = serv_id,
                     serv_desc = servico
@@ -794,16 +1134,80 @@ def list_agendamentos(request):
     """-------------------------------------------------------------------------
     View que lista os serviços disponíveis.
     -------------------------------------------------------------------------"""
+    dias = {
+        "SUNDAY":"DOMINGO",
+        "MONDAY":"SEGUNDA", 
+        "TUESDAY":"TERCA",
+        "WEDNESDAY":"QUARTA",
+        "THURSDAY":"QUINTA", 
+        "FRIDAY":"SEXTA", 
+        "SATURDAY":"SABADO"
+        }
+
+    meses = {
+        'JANUARY':'JANEIRO',
+        'FEBURARY':'FEVEREIRO',
+        'MARCH':'MARÇO',
+        'APRIL':'ABRIL',
+        'MAY':'MAIO',
+        'JUNE':'JUNHO',
+        'JULY':'JULHO',
+        'AUGUST':'AGOSTO',
+        'SEPTEMBER':'SETEMBRO',
+        'OCTOBER':'OUTUBRO',
+        'NOVEMBER':'NOVEMBRO',
+        'DECEMBER':'DEZEMBRO',
+
+    }
+
+    #Monto esttutura dos dias da semana.
+    primeiro = datetime.utcnow().replace(tzinfo=utc)
+    primeiro = dias[primeiro.strftime("%A").strip().upper()].capitalize() + ' ' + primeiro.strftime("%d").strip().upper() + ' ' + meses[primeiro.strftime("%B").strip().upper()]
+    segundo =  datetime.now() + timedelta(days=1)
+    segundo = dias[segundo.strftime("%A").strip().upper()].capitalize()  + ' ' + segundo.strftime("%d").strip().upper() + ' ' + meses[segundo.strftime("%B").strip().upper()]
+    terceiro = datetime.now() + timedelta(days=2) 
+    terceiro = dias[terceiro.strftime("%A").strip().upper()].capitalize() + ' ' + terceiro.strftime("%d").strip().upper() + ' ' + meses[terceiro.strftime("%B").strip().upper()]
+    quarto =   datetime.now() + timedelta(days=3)
+    quarto = dias[quarto.strftime("%A").strip().upper()].capitalize() + ' ' + quarto.strftime("%d").strip().upper() + ' ' + meses[quarto.strftime("%B").strip().upper()]
+    quinto =   datetime.now() + timedelta(days=4)
+    quinto = dias[quinto.strftime("%A").strip().upper()].capitalize() + ' ' + quinto.strftime("%d").strip().upper() + ' ' + meses[quinto.strftime("%B").strip().upper()]
+    sexto =    datetime.now() + timedelta(days=5)
+    sexto = dias[sexto.strftime("%A").strip().upper()].capitalize() + ' ' + sexto.strftime("%d").strip().upper() + ' ' + meses[sexto.strftime("%B").strip().upper()]
+    setimo =   datetime.now() + timedelta(days=6)
+    setimo = dias[setimo.strftime("%A").strip().upper()].capitalize()  + ' ' + setimo.strftime("%d").strip().upper() + ' ' + meses[setimo.strftime("%B").strip().upper()]
+
+    dia1 = datetime.now().day
+    dia2 = (datetime.now() + timedelta(days=1)).day
+    dia3 = (datetime.now() + timedelta(days=2)).day
+    dia4 = (datetime.now() + timedelta(days=3)).day
+    dia5 = (datetime.now() + timedelta(days=4)).day
+    dia6 = (datetime.now() + timedelta(days=5)).day
+    dia7 = (datetime.now() + timedelta(days=6)).day
+
     # faço um "SELECT *" ordenado pelo id
-    agendamentos = Agendamentos.objects.all().order_by('-id')
+    agendamentos = Agendamentos.objects.filter(data__gte=datetime.now() ,data__lte=datetime.now() + timedelta(days=6)).order_by('hora')
 
     # Incluímos no context
     context = {
-      'servicos': agendamentos
+      'agendamentos': agendamentos,
+      "primeiro":primeiro,
+      "segundo":segundo,
+      "terceiro": terceiro,
+      "quarto": quarto,
+      "quinto":quinto,
+      "sexto":sexto,
+      "setimo":setimo,
+      'dia1': dia1,
+      'dia2': dia2,
+      'dia3': dia3,
+      'dia4': dia4,
+      'dia5': dia5,
+      'dia6': dia6,
+      'dia7': dia7
     }
 
     # Retornamos o template no qual os fornecedores serão dispostos
-    return render(request, "agendamentos.html", context)
+    return render(request, "consultas/agendamentos.html", context)
 
 @login_required(login_url='/login/')
 def agendamento_details(request, id_servico):
@@ -842,10 +1246,7 @@ def servicos(request):
 
     if request.method == 'POST':
         descricao  = request.POST.get("descricao")
-        disponivel = request.POST.get("disponibilidade")
-
-        if disponivel == None:
-            disponivel = True
+        disponivel = request.POST.get("ativo").upper() == "SIM"
 
         try:
             servico = Servicos(
@@ -853,6 +1254,7 @@ def servicos(request):
                 disponivel= disponivel
                 )
             servico.save()
+            return redirect("/servicos/")
         except Exception as e:
             # Incluímos no contexto
             context['erro'] = e
@@ -884,31 +1286,114 @@ def list_servicos(request):
 def deleteservico(request,id_servico):
 
     servico = Servicos.objects.get(id=id_servico)
-    context = {
-     "titulo":"Deletar servico",
-     "servico":servico,
-    }
+
+    servico_id = servico.id
+    servico_nome = servico.descricao
 
     if request.method == 'POST':
 
-        descricao  = request.POST.get("descricao")
-        disponivel = request.POST.get("disponibilidade")
+        servico.delete()
 
-        if disponivel == None:
-            disponivel = True
-            
+        messages.success(request,f'Serviço [{servico_id} - {servico_nome}] deletado com sucesso!')
+
+        # retorno a pagina de cadastro com mensagem de erro
+        return redirect('/servicos/')
+    messages.success(request,f'Foi um get')
+    return redirect('/servicos/')
+
+@login_required(login_url='/login/')
+def consultar_saldos(request):
+
+    search = request.GET.get('search')
+
+    if search:
+        saldos_list = Estoque.objects.select_related('produto').filter(produto__descricao__icontains=search) or Estoque.objects.select_related('produto').filter(produto__id__icontains=search) 
+        #fornece_list = Fornecedor.objects.filter(razao_social__icontains=search) | Fornecedor.objects.filter(id__icontains=search)
+        #fornece_list.order_by('-id')
+    else:
+        saldos_list = Estoque.objects.select_related('produto')
+
+    paginator = Paginator(saldos_list, 5)
+
+    page = request.GET.get('page')
+
+    saldos = paginator.get_page(page)    
+
+    context = {
+        'titulo': 'Saldos de produtos disponíveis',
+        'saldos': saldos,
+        'placehld': 'Digite o nome do produto ou ID para buscar.'
+    }
+
+    return render(request, 'consultas/saldos.html', context)
+
+
+@login_required(login_url='/login/')
+def consultar_saidas(request):
+
+    search = request.GET.get('search')
+
+    if search:
+        consulta_list = Itens_pedido.objects.select_related().filter(pedido__tipo="Venda", produto__descricao__icontains=search).order_by('-id')
+        #fornece_list = Fornecedor.objects.filter(razao_social__icontains=search) | Fornecedor.objects.filter(id__icontains=search)
+        #fornece_list.order_by('-id')
+    else:
+        consulta_list = Itens_pedido.objects.select_related().filter(pedido__tipo="Venda").order_by('-id')
+
+    paginator = Paginator(consulta_list, 5)
+
+    page = request.GET.get('page')
+
+    consultas = paginator.get_page(page)    
+
+    context = {
+        'titulo': 'Resumo de vendas',
+        'consultas': consultas,
+        'placehld': 'Digite o nome do produto para buscar.'
+    }
+
+    return render(request, 'consultas/saidas.html', context)
+
+
+@login_required(login_url='/login/')
+def consultar_entradas(request):
+
+    search = request.GET.get('search')
+
+    if search:
+        consulta_list = Itens_pedido.objects.select_related().filter(pedido__tipo="Compra", produto__descricao__icontains=search).order_by('-id')
+        #fornece_list = Fornecedor.objects.filter(razao_social__icontains=search) | Fornecedor.objects.filter(id__icontains=search)
+        #fornece_list.order_by('-id')
+    else:
+        consulta_list = Itens_pedido.objects.select_related().filter(pedido__tipo="Compra").order_by('-id')
+
+    paginator = Paginator(consulta_list, 5)
+
+    page = request.GET.get('page')
+
+    consultas = paginator.get_page(page)    
+
+    context = {
+        'titulo': 'Resumo de compras',
+        'consultas': consultas,
+        'placehld': 'Digite o nome do produto para buscar.'
+    }
+
+    return render(request, 'consultas/saidas.html', context)
+
+
+def register_formas(request):
+
+    context = {
+        'titulo': 'Cadastro de formas de pagamento'
+    }
+
+    if request.method == "POST":
+        descricao = request.POST.get('descricao')
         try:
-            servico = Servicos(
-                descricao = descricao,
-                disponivel= disponivel
-                )
-            
-            servico.save()
-        except Exception as e:
-            # Incluímos no contexto
-            context['erro'] = e
-            # retorno a pagina de cadastro com mensagem de erro
-            return render(request,'registration/servicos.html',context)
+            P = Tipos_pagamento(descricao=descricao)
+            P.save()
+        except Exception as erro:
+            context['erro'] = erro
 
-    return render(request,'registration/servicedel.html',context)
-
+    return render(request, 'registration/formas_pagamento.html', context)

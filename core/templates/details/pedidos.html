@@ -15,22 +15,30 @@
           </tr>
           <tr>
             <td>CPF/CNPJ</td>
-            <td>{{ pedido.cpf_cnpj }}</td>
+            <td>{{ cliente.cpf_cnpj }}</td>
           </tr>
           <tr>
             <td>Cliente</td>
+            {% if venda %}
             <td>{{ cliente.nome }}</td>
+            {% else %}
+            <td>{{ cliente.razao_social }}</td>
+            {% endif %}
           </tr>
           <tr>
             <td>Pagamento</td>
-            <td>{{ pedido.pagamento }}</td>
+            <td>{{ pedido.pagamento.descricao}}</td>
           </tr>
           <tr>
             <td>Observacao</td>
             <td>{{ pedido.observacao }}</td>
           </tr>
           <tr>
+            {% if venda %}
             <td>vendedor</td>
+            {% else %}
+            <td>Comprador</td>
+            {% endif %}
             <td>{{ pedido.vendedor }}</td>
           </tr>
         </tbody>
@@ -39,7 +47,6 @@
         <h2 class="container">Itens do Pedido</h2>
         <table class="table container">
           <tr>
-            <td>Tipo</td>
             <td>Descricao</td>
             <td>Quantidade</td>
             <td>valor unitário</td>
@@ -47,7 +54,6 @@
           </tr>
           {% for item in itens_pedido %}
           <tr>
-            <td>{{ item.tipo }}</td>
             <td>{{ item.descricao }}</td>
             <td>{{ item.quantidade }}</td>
             <td>{{ item.valor_unitario }}</td>
@@ -62,9 +68,15 @@
     <div class="d-flex justify-content-center w-100">
       <form method="POST" class="w-50 d-flex justify-content-around" onclick="confirm_del()">
         <div class="col-5">
-          <a href="/pedidos/">
-            <button type="button" class="btn btn-outline-secondary col-12">Cancelar</button>
-          </a>
+          {% if 'pendentes' in request.path %}
+            <a href="/pedidos/pendentes/">
+              <button type="button" class="btn btn-outline-secondary col-12">Cancelar</button>
+            </a>
+          {% else %}
+            <a href="/pedidos/aprovados/">
+              <button type="button" class="btn btn-outline-secondary col-12">Cancelar</button>
+            </a>
+          {% endif %}
         </div>
         <div class="col-5">
           {% csrf_token %}

@@ -12,11 +12,7 @@
       crossorigin="anonymous"
       defer
     />
-    <link
-      rel="stylesheet"
-      href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css"
-      defer
-    />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <script
       src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
       integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
@@ -34,7 +30,17 @@
       crossorigin="anonymous"
       defer
     ></script>
+    <link
+      rel="stylesheet"
+      href="/static/css/background.css"
+      defer
+    />
+    <script src="/static/scripts/scripts.js"></script>
     <script src="/static/scripts/OrderItemCreate.js"></script>
+    <script src="/static/scripts/decimalfields.js"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.1/jquery.min.js" type="text/javascript"></script>
+    <script src="/static/scripts/mask.js" type="text/javascript"></script>
+
     <title class="container">PetTech - {% block titulo %}{% endblock %}</title>
   </head>
   <body class="{% if logo %}logo{% endif %}">
@@ -56,49 +62,64 @@
           <a class=" text-primary navbar-brand" href="/">PetTech</a>
 
           <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-            <li class="nav-item {% if nbar == 'produtos' %}active{% endif %}">
-              <a class=" text-primary nav-link" href="{% url 'produtos' %}">Produtos</a>
-            </li>
-            <li class="nav-item {% if nbar == 'clientes' %}active{% endif %}">
-              <a class=" text-primary nav-link" href="{% url 'clientes' %}">Clientes</a>
-            </li>
-            <li class="nav-item {% if nbar == 'fornecedores' %}active{% endif %}">
-              <a class=" text-primary nav-link" href="{% url 'fornecedores' %}">Fornecedores</a>
-            </li>
-            <li class="nav-item {% if nbar == 'pedidos' %}active{% endif %}">
-              <a class=" text-primary nav-link" href="{% url 'pedidos' %}">Pedidos</a>
-            </li>
-            <li class="nav-item {% if nbar == 'agendamentos' %}active{% endif %}">
-              <a class=" text-primary nav-link" href="{% url 'agendamentos' %}">Agendamentos</a>
-            </li>
-          </ul>
+            <li class="nav-item {% if nbar == 'produtos' %}active{% endif %}">                        
+              <div class="dropdown  ">
+                  <a class="btn dropdown-toggle text-primary nav-item" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Cadastros
+                  </a>
+                  <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                    <a class="dropdown-item"  href="{% url 'registerprodutos' %}">Produtos</a>
+                    <a class="dropdown-item"  href="{% url 'registerclientes' %}">Clientes</a>
+                    <a class="dropdown-item" href="{% url 'registerfornecedores' %}">Fornecedores</a>
+                    <a class="dropdown-item" href="{% url 'registerpedidovenda' %}">Pedido de venda</a>
+                    <a class="dropdown-item" href="{% url 'registerpedidocompra' %}">Pedido de Compra</a>
+                    <a class="dropdown-item" href="{% url 'registerservicos' %}">Serviços</a>
+                    <a class="dropdown-item" href="{% url 'registeragenda' %}">Agendamentos</a>
+                    {% if user.is_superuser %}
+                        <a class="dropdown-item" href="{% url 'registerusers' %}">Cadastro de usuário</a>
+                    {% endif %}
 
-          <a role="button" href="{% url 'logout' %}" class="btn btn-outline-primary">Sair</a>
+                  </div>
+                </div>  
+            </li>
+            <li class="nav-item {% if nbar == 'Pedidos' %}active{% endif %}"></li>
+              <div class="dropdown  ">
+                <a class="btn dropdown-toggle text-primary nav-item" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Consultar
+                </a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                  <a class="dropdown-item"  href="{% url 'pedidos_aprovados' %}">Pedido aprovados</a>
+                  <a class="dropdown-item"  href="{% url 'pedidos_pendentes' %}">Pedidos pendentes</a>
+                  <a class="dropdown-item"  href="{% url 'consultar_saldos' %}">Estoque</a>
+                  <a class="dropdown-item"  href="{% url 'produtos' %}">Produtos</a>
+                  <a class="dropdown-item"  href="{% url 'clientes' %}">Clientes</a>
+                  <a class="dropdown-item"  href="{% url 'fornecedores' %}">Fornecedores</a>
+                  <a class="dropdown-item"  href="{% url 'agendamentos' %}">Agendamentos</a>
+                  <a class="dropdown-item"  href="{% url 'listservicos' %}">Serviços</a>
+                </div>
+              </div>            
+            </li>  
+            <li class="nav-item {% if nbar == 'Pedidos' %}active{% endif %}"></li>
+              <div class="dropdown  ">
+                <a class="btn dropdown-toggle text-primary nav-item" href="#" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  Relatórios
+                </a>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                  <a class="dropdown-item"  href="{% url 'consultar_saidas' %}">Vendas</a>
+                  <a class="dropdown-item" href="{% url 'consultar_entradas' %}">Compras</a>
+                </div>
+              </div>            
+            </li>  
+            {% if user.is_superuser %}
+            <li class="nav-item {% if nbar == 'configurações' %}active{% endif %}">
+                <a class=" text-primary nav-link" href="/admin/">Configurações</a>
+              </li>                        
+            {% endif %}
+        </ul>
+        <a role="button" href="{% url 'logout' %}" class="btn btn-outline-primary">Sair</a>
         </div>
       </nav>
-      <!-- <nav class="navbar navbar-expand-lg navbar" >
-        <a class="navbar-brand" href="{% url 'index' %}">PET</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    Cadastros
-                    </a>
-                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                    <a class="dropdown-item center" href="{% url 'produtos' %}">Produtos</a>
-                    <a class="dropdown-item" href="{% url 'clientes' %}">Clientes</a>
-                    <a class="dropdown-item" href="{% url 'fornecedores' %}">Fornecedores</a>
-                    <a class="dropdown-item" href="{% url 'pedidos' %}">Pedidos</a>
-                    <a class="dropdown-item" href="#">Agendamentos</a>
-                </li>
-            </ul>
-            <a role="button" href="{% url 'logout' %}" class="btn btn-outline-primary">Sair</a>
-        </div>
-        </nav> -->
+      {% block header%} {% endblock %}
     </header>
     <main>
       {% if mensagem %}
@@ -108,12 +129,23 @@
       {% endif %} {% block content%} {% endblock %}
     </main>
     <footer>
+      {% block footer %} {% endblock %}
+      <br/>
+      <br/>
       <hr />
       <p class="text-center mb-0">
-        Todos os direitos reservados Entre Patas e Mimos 2019
+        Todos os direitos reservados - Pet Tech 2019
       </p>
-      {% block footer %} {% endblock %}
     </footer>
     {% endblock %}
+    {% block javascript %}
+    {% endblock %}
+
+    
   </body>
+  <script>
+    $(document).ready(function(){
+    $('.money').mask('000.000.000.000.000,00', {reverse: true});
+  });
+  </script>
 </html>

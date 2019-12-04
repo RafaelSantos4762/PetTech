@@ -7,12 +7,27 @@
 {% block content%}
 <center>
   <br /><br />
-  <h1>Lista de Produtos</h1>
+  <h1 class="main-title">{{ titulo }}</h1>
 </center>
 <br /><br />
+<div class="col-9 search-div">
+  <form method="GET" id="search-form" class="form-inline md-form form-sm active-pink active-pink-2 mt-2">
+    <input class="form-control form-control-sm ml-3 w-75" type="text" placeholder="{{ placehld }}" id="search" name="search" value="{{request.GET.search}}" >
+    <i class="material-icons search-btnx" aria-hidden="true" id="search-btn">search</i>
+    <div class="btn-group dropright">
+        <button type="button" class="btn  dropdown-toggle drop-style" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Ordenar por
+        </button>
+        <div class="dropdown-menu">
+          <!-- put the dropdown itens here-->
+          </tr>
+        </div>
+    </div>
+  </form>
+</div>
 <table class="table container">
   <tbody>
-    <tr class="text-primary">
+    <tr class="table-text-header">
       <td>ID</td>
       <!-- <td>ID Produto</td> -->
       <td>Descrição</td>
@@ -20,11 +35,9 @@
       <td>Quantidade</td>
       <td>Preço</td>
       <td>
-        <a href="{% url 'registerprodutos' %}">
-          <button type="button" class="btn btn-success col-8" name="button">
-            Novo
-          </button>
-        </a>
+        <a id="novo-produto" href="{% url 'registerprodutos' %}"><i class="material-icons" id="add-icon">add_box</i></a>
+      </td>
+      <td>
       </td>
     </tr>
     {% for produto in produtos %}
@@ -35,22 +48,33 @@
       <td>{{ produto.estoque }}</td>
       <td>{{ produto.venda }}</td>
       <td>
-        <a href="details/{{ produto.id }} ">
-          <button class="btn btn-outline-primary col-8" type="button" name="button">
-            Detalhes
-          </button>
+        <a href="details/{{ produto.id }} "><i class="material-icons" id="detail-icon">view_headline</i>
         </a>
       </td>
       <td>
-        <a href="updateproduto/{{ produto.id }} ">
-          <button class="btn btn-outline-primary col-8" type="button" name="button">
-            Alterar
-          </button>
+        <a href="updateproduto/{{ produto.id }} "><i class="material-icons" id="create-icon" >create</i>
         </a>
       </td>      
     </tr>
     {% endfor %}
   </tbody>
 </table>
+<div class="pagination">
+  <span class="step-links">
+    {% if produtos.has_previous %}
+        <a href="?page={{produtos.previous_page_number }}"><i class="material-icons" id="arrow-style" >keyboard_arrow_left</i></a>
+    {% endif %}
+
+    {% if produtos.has_previous or produtos.has_next %}
+    <span class="current">
+      {{ produtos.number }} de {{ produtos.paginator.num_pages }}
+    </span>
+    {% endif %}
+
+    {% if produtos.has_next %}
+        <a href="?page={{produtos.next_page_number }}"><i class="material-icons" id="arrow-style" >keyboard_arrow_right</i></a>
+    {% endif %}
+  </span>
+</div>
 <br /><br />
 {% endblock %}

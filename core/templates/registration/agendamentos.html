@@ -1,5 +1,11 @@
-{% extends "base.html" %} {% block titulo %} Agendamentos {% endblock %} {% block content %}
-<h2 class="container text-align-center">Cadastro de Agendamentos</h2>
+{% extends "base.html" %} {% block titulo %} Agendamentos {% endblock %} 
+
+{% block header %}   
+  <br/>
+  <h1 class="main-title">{{ titulo }}</h1> 
+{% endblock %}
+
+{% block content %}
 <br />
 <br />
 <div class="container">
@@ -9,7 +15,7 @@
       <div class="container">
         <div class="form-row">
           <div class="col-12">
-            <label>Dono</label>
+            <label>Cliente</label>
             <input
               type="text"
               name="dono"
@@ -27,8 +33,8 @@
           </div>
         </div>
         <div class="form-row">
-          <div class="col-12">
-            <label>Nome Animal</label>
+          <div class="col-10">
+            <label>Nome do Pet</label>
             <input
               type="text"
               name="pet"
@@ -39,7 +45,7 @@
           </div>
         </div>
         <div class="form-row">
-          <div class="alert alert-danger col-12">
+          <div class="alert alert-danger col-10">
             {% if form.pet.errors %}
             <strong>{{ form.pet.errors | escape }}</strong>
             {% endif %}
@@ -47,17 +53,17 @@
         </div>
         <br />
         <div class="form-row">
-          <div id="servicos" class="col-12">
-            <label for="servicos">Selecione o serviço</label>
+          <div id="servicos" class="col-6">
+            <label for="servicos">Tipo de serviço</label>
             <select
               name="servico"
               id="servico"
               value="{% if form.servico.value %}{{ form.servico.value }}{% endif %}"
               class="form-control"
             >
-              <option selected></option>
+              <option selected>-------------------------------</option>
               {% for servico in servicos %}
-              <option>{{ servico.descricao }}</option>
+              <option value="{{ servico.id }}">{{ servico.descricao }}</option>
               {% endfor %}
             </select>
           </div>
@@ -70,10 +76,11 @@
           </div>
         </div>
 
+        <hr/>
         <h4>Selecione a data e hora:</h4>
         <div id="agendamentos">
           <div class="form-row">
-            <div class="col-12">
+            <div class="col-2">
               <label>Data</label>
               <input
                 type="date"
@@ -93,7 +100,7 @@
           </div>
 
           <div class="form-row">
-            <div class="col-12">
+            <div class="col-2">
               <label>Hora</label>
               <input
                 type="time"
