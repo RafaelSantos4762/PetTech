@@ -4,7 +4,7 @@ body {
   position: relative;
   display: flex;
   flex-direction: column;
-  background-color: #3C5AE8 ;
+  background-color: #3c5ae8;
 }
 
 footer {
@@ -35,16 +35,14 @@ footer {
   border-color: transparent !important;
   padding: 10px 0 0 0 !important;
   max-height: 50px !important;
-  color: #F00 !important;
+  color: #f00 !important;
 }
 
 .main-title {
-  font:normal 50px Arial;
-  color:rgb(212, 96, 61);
-  text-shadow: 0 1px 0 #ccc,
-  0 2px 0 #c9c9c9,
-  0 3px 0 #bbb;
-   text-align:center; 
+  font: normal 50px Arial;
+  color: #007bff !important;
+  text-shadow: 0 1px 0 #ccc, 0 2px 0 #c9c9c9, 0 3px 0 #bbb;
+  text-align: center;
 }
 
 .search-btnx {
@@ -58,52 +56,45 @@ footer {
 /* Paginação */
 
 .pagination {
-    margin-bottom: 5px;
-
+  margin-bottom: 5px;
 }
 
 .step-links {
-    
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 15px;
-
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 15px;
 }
 
 .step-links .current {
-    margin-left: 10px;
-    margin-right: 10px;
+  margin-left: 10px;
+  margin-right: 10px;
 }
 
 .table-text-header {
   font-style: italic;
   font-size: 17px;
-  color: rgba(243, 54, 7, 0.87);
-  border-block-end-color: #F00;
-
+  color: #007bff !important;
+  border-block-end-color: #f00;
 }
 
 #arrow-style {
   margin-top: 15px;
-  color: rgb(163, 65, 29);
-
+  color: rgb(29, 83, 163);
 }
 
-#create-icon, #detail-icon, #add-icon {
-  color: rgba(199, 80, 24, 0.932);
-
+#create-icon,
+#detail-icon,
+#add-icon {
+  color: rgba(24, 71, 199, 0.932);
 }
 
 .drop-style {
   margin-left: 20px;
   margin-bottom: 10px;
-
 }
-
 
 .search-div {
   margin-left: 80px;
-
 }
 
 .search-icon {
@@ -116,9 +107,5 @@ footer {
   font-size: 20px;
   margin-bottom: 20px;
   font-family: Arial;
-  color: #F00;
-
+  color: #f00;
 }
-
-
-
