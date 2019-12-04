@@ -49,9 +49,6 @@ class ProdutoForm(forms.Form):
     data_cadastro = forms.DateField(required=True)
     descricao = forms.CharField(required=True)
     marca = forms.CharField(required=True)
-    custo = forms.DecimalField(max_digits=12, decimal_places=2, min_value=0, required=True)
-    venda = forms.DecimalField(max_digits=12, decimal_places=2, min_value=0, required=True)
-    estoque = forms.IntegerField()
 
 
 class PedidoForm(forms.Form):

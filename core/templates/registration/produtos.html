@@ -5,6 +5,9 @@
 {% block content %}
 <h2 class="h2 d-flex justify-content-center">Cadastro de Produtos</h2>
 <br />
+{% if erro %}
+<h2 class="danger">{{erro}}</h2>
+{% endif %}
 <br />
 <div class="h-100 d-flex justify-content-center align-items-center">
   <form action="/registerprodutos/" method="POST" class="text-primary">
