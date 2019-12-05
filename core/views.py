@@ -108,13 +108,12 @@ def produtos(request):
                     marca = marca
                     )
             # em caso de erro
-            except Exception as e:
+            except Exception as exce:
                 
-                erro = e
                 # Incluímos no contexto
                 context = {
                   "titulo":"Cadastro de Produto",
-                  'erro': erro
+                  'erro': "erro"
                 }
                 # retorno a pagina de cadastro com mensagem de erro
                 return render(request, "./registration/produtos.html", context)
