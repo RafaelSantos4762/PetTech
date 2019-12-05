@@ -12,9 +12,8 @@ requests = "*"
 django-heroku = "*"
 gunicorn = "*"
 whitenoise = "*"
-crispy-forms = "*"
 
 
 [requires]
 
-python_version = "3.7.3"
+python_version = "*"
