@@ -118,7 +118,7 @@ def produtos(request):
                 # retorno a pagina de cadastro com mensagem de erro
                 return render(request, "./registration/produtos.html", context)
             # se não houver erros redireciono para a lista de fornecedores
-            return HttpResponseRedirect("/produtos/")
+            return HttpResponseRedirect("/consultas/produtos/")
     
     context['form'] = ProdutoForm()
     # se nenhuma informacao for passada, exibe a pagina de cadastro com o formulario
@@ -150,17 +150,11 @@ def updateproduto(request,id):
             data_cadastro = form.cleaned_data['data_cadastro']
             descricao = form.cleaned_data['descricao']
             marca = form.cleaned_data['marca']
-            custo = form.cleaned_data['custo']
-            venda = form.cleaned_data['venda']
-            estoque = form.cleaned_data['estoque']
 
             try:
                 produto.cod_bar = cod_bar
                 produto.descricao = descricao
                 produto.marca = marca
-                produto.custo = custo
-                produto.venda = venda
-                produto.estoque = estoque
 
                 produto.save()
             except Exception as e:
@@ -169,7 +163,7 @@ def updateproduto(request,id):
                 # retorno a pagina de cadastro com mensagem de erro
                 return render(request, "./update/produtos.html", context)
             # se não houver erros redireciono para a lista de fornecedores
-            return HttpResponseRedirect("/produtos/")
+            return HttpResponseRedirect("/consultas/produtos/")
     form = ProdutoForm()
     
     # se nenhuma informacao for passada, exibe a pagina de cadastro com o formulario
