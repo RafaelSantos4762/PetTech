@@ -130,8 +130,8 @@ class Agendamentos(models.Model):
 
     #Agendamento
     data = models.DateField()
-    dia  = models.CharField(max_length=7)
-    hora = models.CharField(max_length=5)
+    dia  = models.CharField(max_length=10)
+    hora = models.CharField(max_length=10)
 
     def save(self, *args, **kwargs):
         """
