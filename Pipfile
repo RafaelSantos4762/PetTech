@@ -12,7 +12,7 @@ requests = "*"
 django-heroku = "*"
 gunicorn = "*"
 whitenoise = "*"
-
+crispy-forms = "*"
 
 
 [requires]
