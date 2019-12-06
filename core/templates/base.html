@@ -75,6 +75,7 @@
                     <a class="dropdown-item" href="{% url 'registerpedidocompra' %}">Pedido de Compra</a>
                     <a class="dropdown-item" href="{% url 'registerservicos' %}">Serviços</a>
                     <a class="dropdown-item" href="{% url 'registeragenda' %}">Agendamentos</a>
+                    <a class="dropdown-item" href="{% url 'registerpagamentos' %}">forma de pagamento</a>
                     {% if user.is_superuser %}
                         <a class="dropdown-item" href="{% url 'registerusers' %}">Cadastro de usuário</a>
                     {% endif %}
