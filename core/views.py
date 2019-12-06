@@ -287,7 +287,7 @@ def clientes(request):
                 # Incluímos no contexto
                 context = {
                   "titulo":"Cadastro de Clientes",
-                  'erro': 'Dados incorretos!'
+                  'erro': e
                 }
                 # retorno a pagina de cadastro com mensagem de erro
                 return render(request, "./registration/clientes.html", context)
