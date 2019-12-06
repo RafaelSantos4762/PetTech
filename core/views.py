@@ -163,7 +163,7 @@ def updateproduto(request,id):
                 # retorno a pagina de cadastro com mensagem de erro
                 return render(request, "./update/produtos.html", context)
             # se não houver erros redireciono para a lista de fornecedores
-            return HttpResponseRedirect("/consultas/produtos/")
+            return redirect("/consultas/produtos/")
     form = ProdutoForm()
     
     # se nenhuma informacao for passada, exibe a pagina de cadastro com o formulario
@@ -292,7 +292,7 @@ def clientes(request):
                 # retorno a pagina de cadastro com mensagem de erro
                 return render(request, "./registration/clientes.html", context)
             # se não houver erros redireciono para a lista de clientes
-            return HttpResponseRedirect("/clientes/")
+            return redirect("/clientes/")
         else:
             print('entrou no else')
             # se for um get, renderizo a pagina de cadastro de cliente
