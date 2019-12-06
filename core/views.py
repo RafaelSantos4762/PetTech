@@ -732,7 +732,7 @@ def pedido_venda(request):
                 return render(request, "./registration/pedido_venda.html", context)
 
             # se não houver erros redireciono para a lista de fornecedores
-            return redirect("/pedidos/pendentes/")
+            return redirect("/consultas/pedidos/pendentes/")
         else: 
             context['form'] = form
             if not(verifica_item_pedido(request)):
@@ -828,7 +828,7 @@ def pedido_compra(request):
                 return render(request, "./registration/pedido_compra.html", context)
 
             # se não houver erros redireciono para a lista de fornecedores
-            return redirect("/pedidos/pendentes/")
+            return redirect("/consultas/pedidos/pendentes/")
         else: 
             context['form'] = form
             if not(verifica_item_pedido(request)):
@@ -865,7 +865,7 @@ def ped_details_aprovado(request, id_pedido):
     }
     if request.method == 'POST':
         Pedido.objects.get(id=id_pedido).delete()
-        return redirect("/pedidos/pendentes/")
+        return redirect("/consultas/pedidos/pendentes/")
 
     return render(request, "./details/pedidos.html", context)
 
@@ -897,7 +897,7 @@ def ped_details_pendente(request, id_pedido):
     }
     if request.method == 'POST':
         Pedido.objects.get(id=id_pedido).delete()
-        return redirect("/pedidos/pendentes/")
+        return redirect("/consultas/pedidos/pendentes/")
 
     # Retornamos o template no qual o pedido será disposto
     return render(request, "./details/pedidos.html", context)
@@ -1064,7 +1064,7 @@ def efetivar_pedido(request,id):
             pedido.efetivado = True
             pedido.save()
         #Define pedido como efetivado e remove da lista de pendentes        
-        return redirect("/pedidos/aprovados/")
+        return redirect("/consultas/pedidos/aprovados/")
 
     # Retornamos o template no qual o pedido será disposto
     return render(request, 'efetivar/pedido.html', context)
