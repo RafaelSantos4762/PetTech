@@ -925,7 +925,7 @@ def pedidos_pendentes(request):
     aprovado = False
 
     for pedido in pedidos:
-        if pedido.tipo.strip().upper() == "Venda":
+        if pedido.tipo.strip().upper() == "VENDA":
             cli_forn = Cliente.objects.get(pk=pedido.cliente)
             pedido.cliente = cli_forn.nome
         else:
