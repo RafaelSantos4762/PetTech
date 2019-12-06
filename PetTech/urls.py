@@ -54,7 +54,7 @@ urlpatterns = [
     path('servicos/servicedel/<str:id_servico>',views.deleteservico,name='deleteservico'),
     path('clientes/details/<str:id_cliente>', views.client_details, name='detailsclientes'),
     path('fornecedores/details/<str:id_fornecedor>', views.forn_details, name='detailsfornecedores'),
-    path('produtos/details/<str:id>', views.prod_details, name='detailsprodutos'),
+    path('consultas/produtos/details/<str:id>', views.prod_details, name='detailsprodutos'),
 
 
     # --------------------Urls de pedidos---------------------------------
