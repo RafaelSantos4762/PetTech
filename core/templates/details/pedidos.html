@@ -69,11 +69,11 @@
       <form method="POST" class="w-50 d-flex justify-content-around" onclick="confirm_del()">
         <div class="col-5">
           {% if 'pendentes' in request.path %}
-            <a href="consultas/pedidos/pendentes/">
+            <a href="/consultas/pedidos/pendentes/">
               <button type="button" class="btn btn-outline-secondary col-12">Cancelar</button>
             </a>
           {% else %}
-            <a href="consultas/pedidos/aprovados/">
+            <a href="/consultas/pedidos/aprovados/">
               <button type="button" class="btn btn-outline-secondary col-12">Cancelar</button>
             </a>
           {% endif %}
