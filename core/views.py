@@ -1028,7 +1028,7 @@ def efetivar_pedido(request,id):
 
                     entrada =  Entrada(
                         fornecedor = cliente,
-                        fornecedor_nome = cliente.raza_social,
+                        fornecedor_nome = cliente.razao_social,
                         Pedido = pedido,
                         produto = produto,
                         produto_descricao = produto.descricao,
