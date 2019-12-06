@@ -8,7 +8,7 @@ class ClienteForm(forms.Form):
 
     tipo_pessoa = forms.CharField(required=True)
     nome = forms.CharField(required=True)
-    sexo = forms.CharField(required=True)
+    sexo = forms.CharField()
     cpf_cnpj = forms.CharField(required=True)
     rg = forms.CharField(required=True)
     email = forms.EmailField(required=True)

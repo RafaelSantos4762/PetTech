@@ -12,7 +12,7 @@ class Cliente(models.Model):
     email = models.EmailField()
     estado_civil = models.CharField(max_length=10)
     data_nasc = models.DateField()
-    cep = models.CharField(max_length=8)
+    cep = models.CharField(max_length=9)
     endereco = models.CharField(max_length=200)
     complemento = models.CharField(max_length=100)
     numero = models.CharField(max_length=6)
