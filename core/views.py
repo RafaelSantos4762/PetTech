@@ -732,7 +732,7 @@ def pedido_venda(request):
                 return render(request, "./registration/pedido_venda.html", context)
 
             # se não houver erros redireciono para a lista de fornecedores
-            return HttpResponseRedirect("consultas/pedidos/pendentes/")
+            return redirect("/pedidos/pendentes/")
         else: 
             context['form'] = form
             if not(verifica_item_pedido(request)):
@@ -828,7 +828,7 @@ def pedido_compra(request):
                 return render(request, "./registration/pedido_compra.html", context)
 
             # se não houver erros redireciono para a lista de fornecedores
-            return HttpResponseRedirect("consultas/pedidos/pendentes/")
+            return redirect("/pedidos/pendentes/")
         else: 
             context['form'] = form
             if not(verifica_item_pedido(request)):
@@ -865,7 +865,7 @@ def ped_details_aprovado(request, id_pedido):
     }
     if request.method == 'POST':
         Pedido.objects.get(id=id_pedido).delete()
-        return HttpResponseRedirect("consultas/pedidos/pendentes/")
+        return redirect("/pedidos/pendentes/")
 
     return render(request, "./details/pedidos.html", context)
 
@@ -897,7 +897,7 @@ def ped_details_pendente(request, id_pedido):
     }
     if request.method == 'POST':
         Pedido.objects.get(id=id_pedido).delete()
-        return HttpResponseRedirect("consultas/pedidos/pendentes/")
+        return redirect("/pedidos/pendentes/")
 
     # Retornamos o template no qual o pedido será disposto
     return render(request, "./details/pedidos.html", context)
